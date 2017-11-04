@@ -1,0 +1,1141 @@
+[
+  {
+    "__docId__": 1,
+    "kind": "external",
+    "name": "Infinity",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Infinity",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Infinity",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 2,
+    "kind": "external",
+    "name": "NaN",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/NaN",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~NaN",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 3,
+    "kind": "external",
+    "name": "undefined",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~undefined",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 4,
+    "kind": "external",
+    "name": "null",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/null",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~null",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 5,
+    "kind": "external",
+    "name": "Object",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Object",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 6,
+    "kind": "external",
+    "name": "object",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~object",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 7,
+    "kind": "external",
+    "name": "Function",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Function",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 8,
+    "kind": "external",
+    "name": "function",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~function",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 9,
+    "kind": "external",
+    "name": "Boolean",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Boolean",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 10,
+    "kind": "external",
+    "name": "boolean",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~boolean",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 11,
+    "kind": "external",
+    "name": "Symbol",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Symbol",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Symbol",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 12,
+    "kind": "external",
+    "name": "Error",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Error",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 13,
+    "kind": "external",
+    "name": "EvalError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/EvalError",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~EvalError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 14,
+    "kind": "external",
+    "name": "InternalError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/InternalError",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~InternalError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 15,
+    "kind": "external",
+    "name": "RangeError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RangeError",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~RangeError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 16,
+    "kind": "external",
+    "name": "ReferenceError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ReferenceError",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~ReferenceError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 17,
+    "kind": "external",
+    "name": "SyntaxError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/SyntaxError",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~SyntaxError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 18,
+    "kind": "external",
+    "name": "TypeError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/TypeError",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~TypeError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 19,
+    "kind": "external",
+    "name": "URIError",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/URIError",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~URIError",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 20,
+    "kind": "external",
+    "name": "Number",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Number",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 21,
+    "kind": "external",
+    "name": "number",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~number",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 22,
+    "kind": "external",
+    "name": "Date",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Date",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 23,
+    "kind": "external",
+    "name": "String",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~String",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 24,
+    "kind": "external",
+    "name": "string",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~string",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 25,
+    "kind": "external",
+    "name": "RegExp",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~RegExp",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 26,
+    "kind": "external",
+    "name": "Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 27,
+    "kind": "external",
+    "name": "Int8Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int8Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Int8Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 28,
+    "kind": "external",
+    "name": "Uint8Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Uint8Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 29,
+    "kind": "external",
+    "name": "Uint8ClampedArray",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8ClampedArray",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Uint8ClampedArray",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 30,
+    "kind": "external",
+    "name": "Int16Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int16Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Int16Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 31,
+    "kind": "external",
+    "name": "Uint16Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint16Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Uint16Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 32,
+    "kind": "external",
+    "name": "Int32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Int32Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Int32Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 33,
+    "kind": "external",
+    "name": "Uint32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint32Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Uint32Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 34,
+    "kind": "external",
+    "name": "Float32Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float32Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Float32Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 35,
+    "kind": "external",
+    "name": "Float64Array",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Float64Array",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Float64Array",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 36,
+    "kind": "external",
+    "name": "Map",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Map",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 37,
+    "kind": "external",
+    "name": "Set",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Set",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 38,
+    "kind": "external",
+    "name": "WeakMap",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~WeakMap",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 39,
+    "kind": "external",
+    "name": "WeakSet",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakSet",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~WeakSet",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 40,
+    "kind": "external",
+    "name": "ArrayBuffer",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~ArrayBuffer",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 41,
+    "kind": "external",
+    "name": "DataView",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DataView",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~DataView",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 42,
+    "kind": "external",
+    "name": "JSON",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~JSON",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 43,
+    "kind": "external",
+    "name": "Promise",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Promise",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 44,
+    "kind": "external",
+    "name": "Generator",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Generator",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 45,
+    "kind": "external",
+    "name": "GeneratorFunction",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/GeneratorFunction",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~GeneratorFunction",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 46,
+    "kind": "external",
+    "name": "Reflect",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Reflect",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Reflect",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 47,
+    "kind": "external",
+    "name": "Proxy",
+    "externalLink": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy",
+    "memberof": "src/.external-ecmascript.js",
+    "static": true,
+    "longname": "src/.external-ecmascript.js~Proxy",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 48,
+    "kind": "file",
+    "name": "src/comptroller.js",
+    "content": "/** @external {EventEmitter} https://nodejs.org/api/events.html#events_class_eventemitter */\nconst EventEmitter = require('events');\n/** @external {fs} https://www.npmjs.com/package/fs-extra */\nconst fs = require('fs-extra');\n/** @external {path} https://nodejs.org/api/path.html */\nconst path = require('path');\n/** @external {promisify} https://nodejs.org/api/util.html#util_util_promisify_original */\nconst {promisify} = require('util');\n/** @external {glob} https://www.npmjs.com/package/glob */\nconst glob = promisify(require('glob'));\n/** @external {detective} https://www.npmjs.com/package/@zdychacek/detective */\nconst detective = require('@zdychacek/detective');\n/** @external {builtins} https://www.npmjs.com/package/builtin-modules */\nconst builtins = require('builtin-modules');\n\nfs.readFilePromise = promisify(fs.readFile);\nfs.writeFilePromise = promisify(fs.writeFile);\nfs.ensureDirPromise = promisify(fs.ensureDir);\nfs.ensureSymlinkPromise = promisify(fs.ensureSymlink);\n\n/**\n * Provides encapsulation for each local package.\n */\nclass Package\n{\n  /**\n   * Creates a new package.\n   * @param {string} dir - The package's directory.\n   */\n  constructor (dir)\n  {\n    /** @type {string} */\n    this._dir = dir;\n\n    /** @type {string} */\n    this._packageJsonPath = path.join(dir, 'package.json');\n\n    try {\n      /** @type {object} */\n      this._packageJson = require(this._packageJsonPath);\n\n      /** @type {string} */\n      this._name = this._packageJson.name;\n\n      /** @type {string} */\n      this._version = this._packageJson.version;\n    }\n    catch (err)\n    {\n      this._packageJson = null;\n      this._name = null;\n      this._version = null;\n    }\n\n  }\n\n  /**\n   * Evaluates a package's dependencies\n   */\n  async evaluateDependencies (detectiveOpts)\n  {\n    return new Promise(async (res, rej) => {\n      const sourcePaths = await glob(path.join(this._dir, '**/*.js'));\n      const dependencies = {};\n      for (let sourcePath of sourcePaths) {\n        const sourceFile = await fs.readFilePromise(sourcePath);\n        const reqs = detective(sourceFile, detectiveOpts);\n        for (let req of reqs) {\n          // It's a relative dep, so skip it\n          if (/^\\.\\//.test(req)) continue;\n\n          const split = req.split('/');\n          let name = split.shift();\n          if (name.charAt(0) == '@') name += '/' + split.shift();\n\n          // return {file: sourcePath, name};\n          dependencies[name] = {file: sourcePath, name};\n        }\n      }\n\n      res(dependencies);\n    });\n  }\n\n  /**\n   * Writes a package's package.json\n   */\n  async writePackageJson ()\n  {\n    await fs.writeFilePromise(this._packageJsonPath, JSON.stringify(this._packageJson, null, 2));\n  }\n}\n\n/**\n * The core Comptroller class. It provides encapsulation for all of the stuff\n * that Comptroller is supposed to do\n */\nmodule.exports = class Comptroller extends EventEmitter\n{\n\n  /**\n   * Creates a new Comptroller instance.\n   * @param {object} cfg - The configuration options\n   * @param {string} [cfg.root = process.cwd()] - The project root (where your\n   * main package.json lives).\n   * @param {string} [cfg.packages = 'packages'] - The path from `cfg.root` to\n   * the packages directory.\n   * @param {object} [cfg.detectiveOpts={}] - The options to pass to {@link detective}\n   */\n  constructor ({\n    root = process.cwd(),\n    packages = 'packages',\n    ignorePackages = builtins,\n    detectiveOpts = {},\n  }={})\n  {\n    super();\n\n    /** @type {string} */\n    this._rootPath = path.resolve(root);\n\n    /** @type {string} */\n    this._packagesPath = path.resolve(root, packages);\n\n    /** @type {object} */\n    this._packages = {};\n\n    /** @type {string[]} */\n    this._ignorePackages = ignorePackages;\n\n    /** @type {object} */\n    this._detectiveOpts = detectiveOpts;\n\n    /** @type {string} */\n    this._packageJsonPath = path.resolve(root, 'package.json');\n\n    /** @type {object} */\n    this._packageJson = require(this._packageJsonPath);\n  }\n\n  /**\n   * Resolves the dependencies for local packages.\n   */\n  async resolvePackages ()\n  {\n    const packagePaths = await glob(path.join(this._packagesPath, '*'), {ignore: '**/node_modules/**'});\n    for (let packagePath of packagePaths) {\n      const pkg = new Package(packagePath);\n      pkg._dependencies = await pkg.evaluateDependencies(this._detectiveOpts);\n      this._packages[pkg._name] = pkg;\n    }\n  }\n\n  /**\n   * Updates the dependencies for local packages.\n   */\n  async updateDependencies ()\n  {\n    for (let pkgName in this._packages) {\n      const pkg = this._packages[pkgName];\n      for (let depName in pkg._dependencies) {\n        const dep = pkg._dependencies[depName];\n        pkg._packageJson.dependencies = pkg._packageJson.dependencies || {};\n        // local package\n        if (depName in this._packages) {\n          if (!(depName in pkg._packageJson.dependencies)) {\n            pkg._packageJson.dependencies[depName] = this._packages[depName]._version;\n            this.emit('info', {\n              action: 'add',\n              type: 'local',\n              file: dep.file,\n              name: depName,\n              version: this._packages[depName]._version,\n              packageJson: pkg._packageJsonPath,\n            });\n          }\n          else if (pkg._packageJson.dependencies[depName] !== this._packages[depName]._version) {\n            pkg._packageJson.dependencies[depName] = this._packages[depName]._version;\n            this.emit('info', {\n              action: 'update',\n              type: 'local',\n              file: dep.file,\n              name: depName,\n              version: this._packages[depName]._version,\n              packageJson: pkg._packageJsonPath,\n            })\n          }\n        }\n\n        // remote package\n        else {\n          if (!(depName in pkg._packageJson.dependencies)) {\n            if (!(depName in this._packageJson.dependencies)) {\n              this.emit('warn', {\n                type: 'missing',\n                file: dep.file,\n                name: depName\n              });\n            }\n            else {\n              pkg._packageJson.dependencies[depName] = this._packageJson.dependencies[depName];\n              this.emit('info', {\n                action: 'add',\n                type: 'remote',\n                file: dep.file,\n                name: depName,\n                version: this._packageJson.dependencies[depName],\n                packageJson: pkg._packageJsonPath,\n              })\n            }\n          }\n        }\n      }\n    }\n  }\n\n  /**\n   * Writes the updated package.json's for each package.\n   */\n  async writePackageJsons ()\n  {\n    for (let pkgName in this._packages) {\n      const pkg = this._packages[pkgName];\n      await pkg.writePackageJson();\n    }\n  }\n\n  /**\n   * Updates the packge.json's for all packages.\n   */\n  async update ()\n  {\n    this.on('info', (info) => {\n      if (info.action == 'add') {\n        console.log(`Added ${info.type} package \"${info.name}@${info.version}\" to ${info.packageJson}`);\n      }\n      else if (info.action == 'update') {\n        console.log(`Updated ${info.type} package \"${info.name}\" to version ${info.version} to ${info.packageJson}`);\n      }\n    });\n    this.on('warn', (warn) => {\n      if (warn.type == 'missing') {\n        console.warn(`WARNING: remote package \"${warn.name}\" invoked by ${warn.file} not found in package.json`);\n      }\n    });\n    await this.resolvePackages();\n    await this.updateDependencies();\n    await this.writePackageJsons();\n  }\n\n  /**\n   * Creates a symlink'd node_modules to local packages.\n   */\n  async link ()\n  {\n    await fs.ensureDirPromise(path.join(this._packagesPath, 'node_modules'));\n    await this.resolvePackages();\n\n    for (let pkgName in this._packages) {\n      const pkg = this._packages[pkgName];\n      let dstpath = path.join(this._packagesPath, 'node_modules', pkgName);\n      await fs.ensureSymlinkPromise(pkg._dir, dstpath);\n    }\n  }\n}\n\n",
+    "static": true,
+    "longname": "/mnt/storage/Documents/Projects/comptroller/src/comptroller.js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 1
+  },
+  {
+    "__docId__": 49,
+    "kind": "external",
+    "name": "EventEmitter",
+    "externalLink": "https://nodejs.org/api/events.html#events_class_eventemitter",
+    "memberof": "src/comptroller.js",
+    "static": true,
+    "longname": "src/comptroller.js~EventEmitter",
+    "access": "public",
+    "description": null,
+    "lineNumber": 2
+  },
+  {
+    "__docId__": 50,
+    "kind": "external",
+    "name": "fs",
+    "externalLink": "https://www.npmjs.com/package/fs-extra",
+    "memberof": "src/comptroller.js",
+    "static": true,
+    "longname": "src/comptroller.js~fs",
+    "access": "public",
+    "description": null,
+    "lineNumber": 4
+  },
+  {
+    "__docId__": 51,
+    "kind": "external",
+    "name": "path",
+    "externalLink": "https://nodejs.org/api/path.html",
+    "memberof": "src/comptroller.js",
+    "static": true,
+    "longname": "src/comptroller.js~path",
+    "access": "public",
+    "description": null,
+    "lineNumber": 6
+  },
+  {
+    "__docId__": 52,
+    "kind": "external",
+    "name": "promisify",
+    "externalLink": "https://nodejs.org/api/util.html#util_util_promisify_original",
+    "memberof": "src/comptroller.js",
+    "static": true,
+    "longname": "src/comptroller.js~promisify",
+    "access": "public",
+    "description": null,
+    "lineNumber": 8
+  },
+  {
+    "__docId__": 53,
+    "kind": "external",
+    "name": "glob",
+    "externalLink": "https://www.npmjs.com/package/glob",
+    "memberof": "src/comptroller.js",
+    "static": true,
+    "longname": "src/comptroller.js~glob",
+    "access": "public",
+    "description": null,
+    "lineNumber": 10
+  },
+  {
+    "__docId__": 54,
+    "kind": "external",
+    "name": "detective",
+    "externalLink": "https://www.npmjs.com/package/@zdychacek/detective",
+    "memberof": "src/comptroller.js",
+    "static": true,
+    "longname": "src/comptroller.js~detective",
+    "access": "public",
+    "description": null,
+    "lineNumber": 12
+  },
+  {
+    "__docId__": 55,
+    "kind": "external",
+    "name": "builtins",
+    "externalLink": "https://www.npmjs.com/package/builtin-modules",
+    "memberof": "src/comptroller.js",
+    "static": true,
+    "longname": "src/comptroller.js~builtins",
+    "access": "public",
+    "description": null,
+    "lineNumber": 14
+  },
+  {
+    "__docId__": 56,
+    "kind": "class",
+    "name": "Package",
+    "memberof": "src/comptroller.js",
+    "static": true,
+    "longname": "src/comptroller.js~Package",
+    "access": "public",
+    "export": false,
+    "importPath": "comptroller",
+    "importStyle": null,
+    "description": "Provides encapsulation for each local package.",
+    "lineNumber": 24,
+    "interface": false,
+    "ignore": true
+  },
+  {
+    "__docId__": 57,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/comptroller.js~Package",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/comptroller.js~Package#constructor",
+    "access": "public",
+    "description": "Creates a new package.",
+    "lineNumber": 30,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "dir",
+        "description": "The package's directory."
+      }
+    ]
+  },
+  {
+    "__docId__": 58,
+    "kind": "member",
+    "name": "_dir",
+    "memberof": "src/comptroller.js~Package",
+    "static": false,
+    "longname": "src/comptroller.js~Package#_dir",
+    "access": "private",
+    "description": null,
+    "lineNumber": 33,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 59,
+    "kind": "member",
+    "name": "_packageJsonPath",
+    "memberof": "src/comptroller.js~Package",
+    "static": false,
+    "longname": "src/comptroller.js~Package#_packageJsonPath",
+    "access": "private",
+    "description": null,
+    "lineNumber": 36,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 60,
+    "kind": "member",
+    "name": "_packageJson",
+    "memberof": "src/comptroller.js~Package",
+    "static": false,
+    "longname": "src/comptroller.js~Package#_packageJson",
+    "access": "private",
+    "description": null,
+    "lineNumber": 40,
+    "type": {
+      "nullable": null,
+      "types": [
+        "object"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 61,
+    "kind": "member",
+    "name": "_name",
+    "memberof": "src/comptroller.js~Package",
+    "static": false,
+    "longname": "src/comptroller.js~Package#_name",
+    "access": "private",
+    "description": null,
+    "lineNumber": 43,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 62,
+    "kind": "member",
+    "name": "_version",
+    "memberof": "src/comptroller.js~Package",
+    "static": false,
+    "longname": "src/comptroller.js~Package#_version",
+    "access": "private",
+    "description": null,
+    "lineNumber": 46,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 66,
+    "kind": "method",
+    "name": "evaluateDependencies",
+    "memberof": "src/comptroller.js~Package",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/comptroller.js~Package#evaluateDependencies",
+    "access": "public",
+    "description": "Evaluates a package's dependencies",
+    "lineNumber": 60,
+    "params": [
+      {
+        "name": "detectiveOpts",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 67,
+    "kind": "method",
+    "name": "writePackageJson",
+    "memberof": "src/comptroller.js~Package",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/comptroller.js~Package#writePackageJson",
+    "access": "public",
+    "description": "Writes a package's package.json",
+    "lineNumber": 88,
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 68,
+    "kind": "class",
+    "name": "Comptroller",
+    "memberof": "src/comptroller.js",
+    "static": true,
+    "longname": "src/comptroller.js~Comptroller",
+    "access": "public",
+    "export": true,
+    "importPath": "comptroller",
+    "importStyle": "Comptroller",
+    "description": "The core Comptroller class. It provides encapsulation for all of the stuff\nthat Comptroller is supposed to do",
+    "lineNumber": 98,
+    "interface": false,
+    "extends": [
+      "EventEmitter"
+    ]
+  },
+  {
+    "__docId__": 69,
+    "kind": "constructor",
+    "name": "constructor",
+    "memberof": "src/comptroller.js~Comptroller",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/comptroller.js~Comptroller#constructor",
+    "access": "public",
+    "description": "Creates a new Comptroller instance.",
+    "lineNumber": 110,
+    "params": [
+      {
+        "nullable": null,
+        "types": [
+          "object"
+        ],
+        "spread": false,
+        "optional": false,
+        "name": "cfg",
+        "description": "The configuration options"
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": " process.cwd()",
+        "defaultRaw": " process.cwd()",
+        "name": "cfg.root",
+        "description": "The project root (where your\nmain package.json lives)."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "string"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": " 'packages'",
+        "defaultRaw": " 'packages'",
+        "name": "cfg.packages",
+        "description": "The path from `cfg.root` to\nthe packages directory."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "object"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": "{}",
+        "defaultRaw": {},
+        "name": "cfg.detectiveOpts",
+        "description": "The options to pass to {@link detective}"
+      }
+    ]
+  },
+  {
+    "__docId__": 70,
+    "kind": "member",
+    "name": "_rootPath",
+    "memberof": "src/comptroller.js~Comptroller",
+    "static": false,
+    "longname": "src/comptroller.js~Comptroller#_rootPath",
+    "access": "private",
+    "description": null,
+    "lineNumber": 120,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 71,
+    "kind": "member",
+    "name": "_packagesPath",
+    "memberof": "src/comptroller.js~Comptroller",
+    "static": false,
+    "longname": "src/comptroller.js~Comptroller#_packagesPath",
+    "access": "private",
+    "description": null,
+    "lineNumber": 123,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 72,
+    "kind": "member",
+    "name": "_packages",
+    "memberof": "src/comptroller.js~Comptroller",
+    "static": false,
+    "longname": "src/comptroller.js~Comptroller#_packages",
+    "access": "private",
+    "description": null,
+    "lineNumber": 126,
+    "type": {
+      "nullable": null,
+      "types": [
+        "object"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 73,
+    "kind": "member",
+    "name": "_ignorePackages",
+    "memberof": "src/comptroller.js~Comptroller",
+    "static": false,
+    "longname": "src/comptroller.js~Comptroller#_ignorePackages",
+    "access": "private",
+    "description": null,
+    "lineNumber": 129,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string[]"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 74,
+    "kind": "member",
+    "name": "_detectiveOpts",
+    "memberof": "src/comptroller.js~Comptroller",
+    "static": false,
+    "longname": "src/comptroller.js~Comptroller#_detectiveOpts",
+    "access": "private",
+    "description": null,
+    "lineNumber": 132,
+    "type": {
+      "nullable": null,
+      "types": [
+        "object"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 75,
+    "kind": "member",
+    "name": "_packageJsonPath",
+    "memberof": "src/comptroller.js~Comptroller",
+    "static": false,
+    "longname": "src/comptroller.js~Comptroller#_packageJsonPath",
+    "access": "private",
+    "description": null,
+    "lineNumber": 135,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 76,
+    "kind": "member",
+    "name": "_packageJson",
+    "memberof": "src/comptroller.js~Comptroller",
+    "static": false,
+    "longname": "src/comptroller.js~Comptroller#_packageJson",
+    "access": "private",
+    "description": null,
+    "lineNumber": 138,
+    "type": {
+      "nullable": null,
+      "types": [
+        "object"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 77,
+    "kind": "method",
+    "name": "resolvePackages",
+    "memberof": "src/comptroller.js~Comptroller",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/comptroller.js~Comptroller#resolvePackages",
+    "access": "public",
+    "description": "Resolves the dependencies for local packages.",
+    "lineNumber": 144,
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 78,
+    "kind": "method",
+    "name": "updateDependencies",
+    "memberof": "src/comptroller.js~Comptroller",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/comptroller.js~Comptroller#updateDependencies",
+    "access": "public",
+    "description": "Updates the dependencies for local packages.",
+    "lineNumber": 157,
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 79,
+    "kind": "method",
+    "name": "writePackageJsons",
+    "memberof": "src/comptroller.js~Comptroller",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/comptroller.js~Comptroller#writePackageJsons",
+    "access": "public",
+    "description": "Writes the updated package.json's for each package.",
+    "lineNumber": 220,
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 80,
+    "kind": "method",
+    "name": "update",
+    "memberof": "src/comptroller.js~Comptroller",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/comptroller.js~Comptroller#update",
+    "access": "public",
+    "description": "Updates the packge.json's for all packages.",
+    "lineNumber": 231,
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 81,
+    "kind": "method",
+    "name": "link",
+    "memberof": "src/comptroller.js~Comptroller",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/comptroller.js~Comptroller#link",
+    "access": "public",
+    "description": "Creates a symlink'd node_modules to local packages.",
+    "lineNumber": 254,
+    "params": [],
+    "return": null
+  },
+  {
+    "kind": "index",
+    "content": "# Comptroller\n\nA simple and lightweight tool to manage your monorepo.\n\n_Warning: This is a very basic and rough build so far. Also, it automatically\nupdates your local package's package.json dependencies. Use at your own risk!_\n\n## Install\n\n```\nnpm i comptroller\n```\n\n## Usage\n\n__Update dependencies in__ `packages/**/package.json` __with discovered dependencies in main__ `package.json`\n\n```\ncomp update [--root|-r <root dir>] [--packges|-p <packages dir>]\n```\n\n__Link__ `packages/*` __to__ `packages/node_modules/*`\n\n```\ncomp link [--root|-r <root dir>] [--packges|-p <packages dir>]\n```\n\n## How it works\n\n__update__\n\nComptroller's `update` command analyzes the packages in a given directory and\nidentifies static `require` calls. Using this, it is able to update each\npackage's `package.json` to include these as dependencies (Comptroller ignores\nNode.js builtin modules by default). Comptroller finds these modules in the\nproject root's `package.json` (or a specified file) and adds the defined version\nto the subpackage's `package.json`. If a module is required but doesn't exist in\nthe root `package.json` a warning is issued. If a module in the root\n`package.json` has a different version than one used in the subpackage\n`package.json` then it's version is updated in the subpackage. If a dependency\nis listed in the subpackage `package.json` but not found in the package source,\na warning is issued. If a `require` call is found that references a local\npackage, Comptroller locates the specified package's `package.json` and updates\nthe issuing package's `package.json` dependencies with the version information\nof the specified package.\n\n__link__\n\nComptroller's `link` command creates a symlinked `node_modules` directory in the\nspecified `packages` directory. This directory points to the `packages`\ndirectory itself and enables `require` calls to local packages without the need\nfor relative paths or to `npm install` or `npm link` them.\n\n__create__: _Not implemented_\n\nComptroller's `create` command creates a new package in the specified directory\nwith a stub `package.json` just waiting to be \"comp updated\".\n\n__prune__: _Not implemented_\n\nComptroller's `prune` command takes all those extraneous dependencies found by\nthe `update` command and delivers them to the void.\n\n## The nitty gritty\n\n_TODO: describe how to use the thing in detail_\n",
+    "longname": "/mnt/storage/Documents/Projects/comptroller/README.md",
+    "name": "./README.md",
+    "static": true,
+    "access": "public"
+  },
+  {
+    "kind": "packageJSON",
+    "content": "{\n  \"name\": \"comptroller\",\n  \"version\": \"0.0.0\",\n  \"description\": \"A simple and lightweight tool to manage your monorepo.\",\n  \"main\": \"src/comptroller.js\",\n  \"directories\": {\n    \"doc\": \"docs\"\n  },\n  \"dependencies\": {\n    \"@zdychacek/detective\": \"^5.0.2\",\n    \"builtin-modules\": \"^1.1.1\",\n    \"fs-extra\": \"^4.0.2\",\n    \"glob\": \"^7.1.2\",\n    \"minimist\": \"^1.2.0\"\n  },\n  \"devDependencies\": {\n    \"esdoc\": \"^1.0.3\",\n    \"esdoc-commonjs-plugin\": \"^1.0.2\",\n    \"esdoc-ecmascript-proposal-plugin\": \"^1.0.0\",\n    \"esdoc-standard-plugin\": \"^1.0.0\"\n  },\n  \"bin\": {\n    \"comp\": \"./src/cli.js\"\n  },\n  \"scripts\": {\n    \"test\": \"echo \\\"Error: no test specified\\\" && exit 1\"\n  },\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"git+https://github.com/Aldlevine/comptroller.git\"\n  },\n  \"keywords\": [\n    \"mono\",\n    \"repo\",\n    \"monorepo\"\n  ],\n  \"author\": \"Aaron Levine <ald.levine@gmail.com>\",\n  \"license\": \"MIT\",\n  \"bugs\": {\n    \"url\": \"https://github.com/Aldlevine/comptroller/issues\"\n  },\n  \"homepage\": \"https://aldlevine.github.io/comptroller\"\n}\n",
+    "longname": "/mnt/storage/Documents/Projects/comptroller/package.json",
+    "name": "package.json",
+    "static": true,
+    "access": "public"
+  }
+]

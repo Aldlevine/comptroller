@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <base data-ice="baseUrl">
+  <title data-ice="title">Home | comptroller</title>
+  <link type="text/css" rel="stylesheet" href="css/style.css">
+  <link type="text/css" rel="stylesheet" href="css/prettify-tomorrow.css">
+  <script src="script/prettify/prettify.js"></script>
+  <script src="script/manual.js"></script>
+<meta name="description" content="A simple and lightweight tool to manage your monorepo."><meta property="twitter:card" content="summary"><meta property="twitter:title" content="comptroller"><meta property="twitter:description" content="A simple and lightweight tool to manage your monorepo."></head>
+<body class="layout-container" data-ice="rootContainer">
+
+<header>
+  <a href="./">Home</a>
+  
+  <a href="identifiers.html">Reference</a>
+  <a href="source.html">Source</a>
+  
+  <div class="search-box">
+  <span>
+    <img src="./image/search.png">
+    <span class="search-input-edge"></span><input class="search-input"><span class="search-input-edge"></span>
+  </span>
+    <ul class="search-result"></ul>
+  </div>
+<a style="position:relative; top:3px;" href="https://github.com/Aldlevine/comptroller"><img width="20px" src="./image/github.png"></a></header>
+
+<nav class="navigation" data-ice="nav"><div>
+  <ul>
+    
+  <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/comptroller.js~Comptroller.html">Comptroller</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/events.html#events_class_eventemitter">EventEmitter</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://www.npmjs.com/package/builtin-modules">builtins</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://www.npmjs.com/package/@zdychacek/detective">detective</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://www.npmjs.com/package/fs-extra">fs</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://www.npmjs.com/package/glob">glob</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/path.html">path</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/util.html#util_util_promisify_original">promisify</a></span></span></li>
+</ul>
+</div>
+</nav>
+
+<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="comptroller">Comptroller</h1><p>A simple and lightweight tool to manage your monorepo.</p>
+<p><em>Warning: This is a very basic and rough build so far. Also, it automatically
+updates your local package&apos;s package.json dependencies. Use at your own risk!</em></p>
+<h2 id="install">Install</h2><pre><code><code class="source-code prettyprint">npm i comptroller</code>
+</code></pre><h2 id="usage">Usage</h2><p><strong>Update dependencies in</strong> <code>packages/**/package.json</code> <strong>with discovered dependencies in main</strong> <code>package.json</code></p>
+<pre><code><code class="source-code prettyprint">comp update [--root|-r &lt;root dir&gt;] [--packges|-p &lt;packages dir&gt;]</code>
+</code></pre><p><strong>Link</strong> <code>packages/*</code> <strong>to</strong> <code>packages/node_modules/*</code></p>
+<pre><code><code class="source-code prettyprint">comp link [--root|-r &lt;root dir&gt;] [--packges|-p &lt;packages dir&gt;]</code>
+</code></pre><h2 id="how-it-works">How it works</h2><p><strong>update</strong></p>
+<p>Comptroller&apos;s <code>update</code> command analyzes the packages in a given directory and
+identifies static <code>require</code> calls. Using this, it is able to update each
+package&apos;s <code>package.json</code> to include these as dependencies (Comptroller ignores
+Node.js builtin modules by default). Comptroller finds these modules in the
+project root&apos;s <code>package.json</code> (or a specified file) and adds the defined version
+to the subpackage&apos;s <code>package.json</code>. If a module is required but doesn&apos;t exist in
+the root <code>package.json</code> a warning is issued. If a module in the root
+<code>package.json</code> has a different version than one used in the subpackage
+<code>package.json</code> then it&apos;s version is updated in the subpackage. If a dependency
+is listed in the subpackage <code>package.json</code> but not found in the package source,
+a warning is issued. If a <code>require</code> call is found that references a local
+package, Comptroller locates the specified package&apos;s <code>package.json</code> and updates
+the issuing package&apos;s <code>package.json</code> dependencies with the version information
+of the specified package.</p>
+<p><strong>link</strong></p>
+<p>Comptroller&apos;s <code>link</code> command creates a symlinked <code>node_modules</code> directory in the
+specified <code>packages</code> directory. This directory points to the <code>packages</code>
+directory itself and enables <code>require</code> calls to local packages without the need
+for relative paths or to <code>npm install</code> or <code>npm link</code> them.</p>
+<p><strong>create</strong>: <em>Not implemented</em></p>
+<p>Comptroller&apos;s <code>create</code> command creates a new package in the specified directory
+with a stub <code>package.json</code> just waiting to be &quot;comp updated&quot;.</p>
+<p><strong>prune</strong>: <em>Not implemented</em></p>
+<p>Comptroller&apos;s <code>prune</code> command takes all those extraneous dependencies found by
+the <code>update</code> command and delivers them to the void.</p>
+<h2 id="the-nitty-gritty">The nitty gritty</h2><p><em>TODO: describe how to use the thing in detail</em></p>
+</div>
+</div>
+
+<footer class="footer">
+  Generated by <a href="https://esdoc.org">ESDoc<span data-ice="esdocVersion">(1.0.3)</span><img src="./image/esdoc-logo-mini-black.png"></a>
+</footer>
+
+<script src="script/search_index.js"></script>
+<script src="script/search.js"></script>
+<script src="script/pretty-print.js"></script>
+<script src="script/inherited-summary.js"></script>
+<script src="script/test-summary.js"></script>
+<script src="script/inner-link.js"></script>
+<script src="script/patch-for-local.js"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "source": "./src",
+  "destination": "./docs",
+  "excludes": ["cli\\.js"],
+  "plugins": [
+    {"name": "esdoc-commonjs-plugin"},
+    {"name": "esdoc-standard-plugin"},
+    {"name": "esdoc-ecmascript-proposal-plugin", "option": {"all": true}}
+  ]
+}
+

@@ -1,0 +1,43 @@
+{
+  "name": "comptroller",
+  "version": "0.0.0",
+  "description": "A simple and lightweight tool to manage your monorepo.",
+  "main": "src/comptroller.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "dependencies": {
+    "@zdychacek/detective": "^5.0.2",
+    "builtin-modules": "^1.1.1",
+    "fs-extra": "^4.0.2",
+    "glob": "^7.1.2",
+    "minimist": "^1.2.0"
+  },
+  "devDependencies": {
+    "esdoc": "^1.0.3",
+    "esdoc-commonjs-plugin": "^1.0.2",
+    "esdoc-ecmascript-proposal-plugin": "^1.0.0",
+    "esdoc-standard-plugin": "^1.0.0"
+  },
+  "bin": {
+    "comp": "./src/cli.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Aldlevine/comptroller.git"
+  },
+  "keywords": [
+    "mono",
+    "repo",
+    "monorepo"
+  ],
+  "author": "Aaron Levine <ald.levine@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Aldlevine/comptroller/issues"
+  },
+  "homepage": "https://aldlevine.github.io/comptroller"
+}

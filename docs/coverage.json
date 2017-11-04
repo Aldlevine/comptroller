@@ -1,0 +1,12 @@
+{
+  "coverage": "100%",
+  "expectCount": 23,
+  "actualCount": 23,
+  "files": {
+    "src/comptroller.js": {
+      "expectCount": 23,
+      "actualCount": 23,
+      "undocumentLines": []
+    }
+  }
+}
