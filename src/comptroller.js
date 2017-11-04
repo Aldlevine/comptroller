@@ -161,6 +161,9 @@ module.exports = class Comptroller extends EventEmitter
       for (let depName in pkg._dependencies) {
         const dep = pkg._dependencies[depName];
         pkg._packageJson.dependencies = pkg._packageJson.dependencies || {};
+        // ignore package
+        if (this._ignorePackages.indexOf(depName) >= 0) continue;
+
         // local package
         if (depName in this._packages) {
           if (!(depName in pkg._packageJson.dependencies)) {

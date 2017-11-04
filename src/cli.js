@@ -17,8 +17,10 @@ async function cli ()
   switch (argv._[0]) {
     case 'update':
       await c.update();
+      break;
     case 'link':
       await c.link();
+      break;
   }
 }
 
