@@ -320,6 +320,16 @@ module.exports = class Comptroller extends EventEmitter
    */
   async link ()
   {
+    this.on('error', (error) => {
+      if (error.type == 'parse') {
+        console.error(`ERROR: ${error.err.message} ${error.file}:${error.line}:${error.column}`);
+      }
+      else if (error.type == 'config') {
+        console.error(`ERROR: ${error.err.message} in config option "${error.config}"`);
+      }
+      process.exit(1);
+    });
+
     await fs.ensureDirPromise(path.join(this._packagesPath, 'node_modules'));
     await this.resolvePackages();
 
