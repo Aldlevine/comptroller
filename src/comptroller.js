@@ -25,10 +25,14 @@ class Package
 {
   /**
    * Creates a new package.
+   * @param {Comptroller} comptroller - The parent Comptroller instance.
    * @param {string} dir - The package's directory.
    */
-  constructor (dir)
+  constructor (comptroller, dir)
   {
+    /** @type {Comptroller} */
+    this._comptroller = comptroller;
+
     /** @type {string} */
     this._dir = dir;
 
@@ -64,7 +68,29 @@ class Package
       const dependencies = {};
       for (let sourcePath of sourcePaths) {
         const sourceFile = await fs.readFilePromise(sourcePath);
-        const reqs = detective(sourceFile, detectiveOpts);
+        let reqs;
+        try {
+          reqs = detective(sourceFile, detectiveOpts);
+        }
+        catch (err) {
+          // Parser error
+          if (err.loc) {
+            let {line, column} = err.loc;
+            return this._comptroller.emit('error', {
+              type: 'parse',
+              err,
+              file: sourcePath,
+              line,
+              column,
+            });
+          }
+          // Config error
+          return this._comptroller.emit('error', {
+            type: 'config',
+            config: 'detective',
+            err,
+          });
+        }
         for (let req of reqs) {
           // It's a relative dep, so skip it
           if (/^\.\//.test(req)) continue;
@@ -105,13 +131,13 @@ module.exports = class Comptroller extends EventEmitter
    * main package.json lives).
    * @param {string} [cfg.packages = 'packages'] - The path from `cfg.root` to
    * the packages directory.
-   * @param {object} [cfg.detectiveOpts={}] - The options to pass to {@link detective}
+   * @param {object} [cfg.detective={}] - The options to pass to {@link detective}
    */
   constructor ({
     root = process.cwd(),
     packages = 'packages',
     ignorePackages = builtins,
-    detectiveOpts = {},
+    detective = {},
   }={})
   {
     super();
@@ -129,13 +155,18 @@ module.exports = class Comptroller extends EventEmitter
     this._ignorePackages = ignorePackages;
 
     /** @type {object} */
-    this._detectiveOpts = detectiveOpts;
+    this._detectiveOpts = detective;
 
     /** @type {string} */
     this._packageJsonPath = path.resolve(root, 'package.json');
 
-    /** @type {object} */
-    this._packageJson = require(this._packageJsonPath);
+    try {
+      /** @type {object} */
+      this._packageJson = require(this._packageJsonPath);
+    }
+    catch (err) {
+      this._packageJson = null;
+    }
   }
 
   /**
@@ -145,7 +176,14 @@ module.exports = class Comptroller extends EventEmitter
   {
     const packagePaths = await glob(path.join(this._packagesPath, '*'), {ignore: '**/node_modules/**'});
     for (let packagePath of packagePaths) {
-      const pkg = new Package(packagePath);
+      const pkg = new Package(this, packagePath);
+      if (pkg._packageJson == null) {
+        this.emit('warn', {
+          type: 'packagejson',
+          path: packagePath,
+        });
+        continue;
+      }
       pkg._dependencies = await pkg.evaluateDependencies(this._detectiveOpts);
       this._packages[pkg._name] = pkg;
     }
@@ -192,25 +230,35 @@ module.exports = class Comptroller extends EventEmitter
 
         // remote package
         else {
-          if (!(depName in pkg._packageJson.dependencies)) {
-            if (!(depName in this._packageJson.dependencies)) {
-              this.emit('warn', {
-                type: 'missing',
-                file: dep.file,
-                name: depName
-              });
-            }
-            else {
-              pkg._packageJson.dependencies[depName] = this._packageJson.dependencies[depName];
-              this.emit('info', {
-                action: 'add',
-                type: 'remote',
-                file: dep.file,
-                name: depName,
-                version: this._packageJson.dependencies[depName],
-                packageJson: pkg._packageJsonPath,
-              })
-            }
+          if (!(depName in this._packageJson.dependencies)) {
+            // delete pkg._packageJson.dependencies[depName];
+            this.emit('warn', {
+              type: 'missing',
+              file: dep.file,
+              name: depName
+            });
+          }
+          else if (!(depName in pkg._packageJson.dependencies)) {
+            pkg._packageJson.dependencies[depName] = this._packageJson.dependencies[depName];
+            this.emit('info', {
+              action: 'add',
+              type: 'remote',
+              file: dep.file,
+              name: depName,
+              version: this._packageJson.dependencies[depName],
+              packageJson: pkg._packageJsonPath,
+            });
+          }
+          else if (pkg._packageJson.dependencies[depName] != this._packageJson.dependencies[depName]) {
+            pkg._packageJson.dependencies[depName] = this._packageJson.dependencies[depName];
+            this.emit('info', {
+              action: 'update',
+              type: 'remote',
+              file: dep.file,
+              name: depName,
+              version: this._packageJson.dependencies[depName],
+              packageJson: pkg._packageJsonPath,
+            });
           }
         }
       }
@@ -233,18 +281,34 @@ module.exports = class Comptroller extends EventEmitter
    */
   async update ()
   {
+    if (this._packageJson == null) {
+      console.error(`ERROR: package.json not found in ${this._rootPath}`);
+      process.exit(1);
+    }
     this.on('info', (info) => {
       if (info.action == 'add') {
         console.log(`Added ${info.type} package "${info.name}@${info.version}" to ${info.packageJson}`);
       }
       else if (info.action == 'update') {
-        console.log(`Updated ${info.type} package "${info.name}" to version ${info.version} to ${info.packageJson}`);
+        console.log(`Updated ${info.type} package "${info.name}" to version ${info.version} in ${info.packageJson}`);
       }
     });
     this.on('warn', (warn) => {
       if (warn.type == 'missing') {
         console.warn(`WARNING: remote package "${warn.name}" invoked by ${warn.file} not found in package.json`);
       }
+      if (warn.type == 'packagejson') {
+        console.log(`WARNING: package.json not found in ${warn.path}`);
+      }
+    });
+    this.on('error', (error) => {
+      if (error.type == 'parse') {
+        console.error(`ERROR: ${error.err.message} ${error.file}:${error.line}:${error.column}`);
+      }
+      else if (error.type == 'config') {
+        console.error(`ERROR: ${error.err.message} in config option "${error.config}"`);
+      }
+      process.exit(1);
     });
     await this.resolvePackages();
     await this.updateDependencies();
