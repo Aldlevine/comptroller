@@ -30,13 +30,14 @@
   <ul>
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/comptroller.js~Comptroller.html">Comptroller</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/package.js~Package.html">Package</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/events.html#events_class_eventemitter">EventEmitter</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://www.npmjs.com/package/builtin-modules">builtins</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://www.npmjs.com/package/@zdychacek/detective">detective</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://www.npmjs.com/package/fs-extra">fs</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://www.npmjs.com/package/glob">glob</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/path.html">path</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/util.html#util_util_promisify_original">promisify</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://www.npmjs.com/package/@zdychacek/detective">detective</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -52,88 +53,15 @@ const path = require(&apos;path&apos;);
 const {promisify} = require(&apos;util&apos;);
 /** @external {glob} https://www.npmjs.com/package/glob */
 const glob = promisify(require(&apos;glob&apos;));
-/** @external {detective} https://www.npmjs.com/package/@zdychacek/detective */
-const detective = require(&apos;@zdychacek/detective&apos;);
 /** @external {builtins} https://www.npmjs.com/package/builtin-modules */
 const builtins = require(&apos;builtin-modules&apos;);
+/** @type {Package} */
+const Package = require(&apos;./package&apos;);
 
 fs.readFilePromise = promisify(fs.readFile);
 fs.writeFilePromise = promisify(fs.writeFile);
 fs.ensureDirPromise = promisify(fs.ensureDir);
 fs.ensureSymlinkPromise = promisify(fs.ensureSymlink);
-
-/**
- * Provides encapsulation for each local package.
- */
-class Package
-{
-  /**
-   * Creates a new package.
-   * @param {string} dir - The package&apos;s directory.
-   */
-  constructor (dir)
-  {
-    /** @type {string} */
-    this._dir = dir;
-
-    /** @type {string} */
-    this._packageJsonPath = path.join(dir, &apos;package.json&apos;);
-
-    try {
-      /** @type {object} */
-      this._packageJson = require(this._packageJsonPath);
-
-      /** @type {string} */
-      this._name = this._packageJson.name;
-
-      /** @type {string} */
-      this._version = this._packageJson.version;
-    }
-    catch (err)
-    {
-      this._packageJson = null;
-      this._name = null;
-      this._version = null;
-    }
-
-  }
-
-  /**
-   * Evaluates a package&apos;s dependencies
-   */
-  async evaluateDependencies (detectiveOpts)
-  {
-    return new Promise(async (res, rej) =&gt; {
-      const sourcePaths = await glob(path.join(this._dir, &apos;**/*.js&apos;));
-      const dependencies = {};
-      for (let sourcePath of sourcePaths) {
-        const sourceFile = await fs.readFilePromise(sourcePath);
-        const reqs = detective(sourceFile, detectiveOpts);
-        for (let req of reqs) {
-          // It&apos;s a relative dep, so skip it
-          if (/^\.\//.test(req)) continue;
-
-          const split = req.split(&apos;/&apos;);
-          let name = split.shift();
-          if (name.charAt(0) == &apos;@&apos;) name += &apos;/&apos; + split.shift();
-
-          // return {file: sourcePath, name};
-          dependencies[name] = {file: sourcePath, name};
-        }
-      }
-
-      res(dependencies);
-    });
-  }
-
-  /**
-   * Writes a package&apos;s package.json
-   */
-  async writePackageJson ()
-  {
-    await fs.writeFilePromise(this._packageJsonPath, JSON.stringify(this._packageJson, null, 2));
-  }
-}
 
 /**
  * The core Comptroller class. It provides encapsulation for all of the stuff
@@ -149,13 +77,13 @@ module.exports = class Comptroller extends EventEmitter
    * main package.json lives).
    * @param {string} [cfg.packages = &apos;packages&apos;] - The path from `cfg.root` to
    * the packages directory.
-   * @param {object} [cfg.detectiveOpts={}] - The options to pass to {@link detective}
+   * @param {object} [cfg.detective={}] - The options to pass to {@link detective}
    */
   constructor ({
     root = process.cwd(),
     packages = &apos;packages&apos;,
     ignorePackages = builtins,
-    detectiveOpts = {},
+    detective = {},
   }={})
   {
     super();
@@ -173,13 +101,18 @@ module.exports = class Comptroller extends EventEmitter
     this._ignorePackages = ignorePackages;
 
     /** @type {object} */
-    this._detectiveOpts = detectiveOpts;
+    this._detectiveOpts = detective;
 
     /** @type {string} */
     this._packageJsonPath = path.resolve(root, &apos;package.json&apos;);
 
-    /** @type {object} */
-    this._packageJson = require(this._packageJsonPath);
+    try {
+      /** @type {object} */
+      this._packageJson = require(this._packageJsonPath);
+    }
+    catch (err) {
+      this._packageJson = null;
+    }
   }
 
   /**
@@ -189,8 +122,15 @@ module.exports = class Comptroller extends EventEmitter
   {
     const packagePaths = await glob(path.join(this._packagesPath, &apos;*&apos;), {ignore: &apos;**/node_modules/**&apos;});
     for (let packagePath of packagePaths) {
-      const pkg = new Package(packagePath);
-      pkg._dependencies = await pkg.evaluateDependencies(this._detectiveOpts);
+      const pkg = new Package(this, packagePath);
+      if (pkg._packageJson == null) {
+        this.emit(&apos;warn&apos;, {
+          type: &apos;packagejson&apos;,
+          path: packagePath,
+        });
+        continue;
+      }
+      await pkg.evaluateDependencies(this._detectiveOpts);
       this._packages[pkg._name] = pkg;
     }
   }
@@ -201,60 +141,17 @@ module.exports = class Comptroller extends EventEmitter
   async updateDependencies ()
   {
     for (let pkgName in this._packages) {
-      const pkg = this._packages[pkgName];
-      for (let depName in pkg._dependencies) {
-        const dep = pkg._dependencies[depName];
-        pkg._packageJson.dependencies = pkg._packageJson.dependencies || {};
-        // local package
-        if (depName in this._packages) {
-          if (!(depName in pkg._packageJson.dependencies)) {
-            pkg._packageJson.dependencies[depName] = this._packages[depName]._version;
-            this.emit(&apos;info&apos;, {
-              action: &apos;add&apos;,
-              type: &apos;local&apos;,
-              file: dep.file,
-              name: depName,
-              version: this._packages[depName]._version,
-              packageJson: pkg._packageJsonPath,
-            });
-          }
-          else if (pkg._packageJson.dependencies[depName] !== this._packages[depName]._version) {
-            pkg._packageJson.dependencies[depName] = this._packages[depName]._version;
-            this.emit(&apos;info&apos;, {
-              action: &apos;update&apos;,
-              type: &apos;local&apos;,
-              file: dep.file,
-              name: depName,
-              version: this._packages[depName]._version,
-              packageJson: pkg._packageJsonPath,
-            })
-          }
-        }
+      this._packages[pkgName].updateDependencies();
+    }
+  }
 
-        // remote package
-        else {
-          if (!(depName in pkg._packageJson.dependencies)) {
-            if (!(depName in this._packageJson.dependencies)) {
-              this.emit(&apos;warn&apos;, {
-                type: &apos;missing&apos;,
-                file: dep.file,
-                name: depName
-              });
-            }
-            else {
-              pkg._packageJson.dependencies[depName] = this._packageJson.dependencies[depName];
-              this.emit(&apos;info&apos;, {
-                action: &apos;add&apos;,
-                type: &apos;remote&apos;,
-                file: dep.file,
-                name: depName,
-                version: this._packageJson.dependencies[depName],
-                packageJson: pkg._packageJsonPath,
-              })
-            }
-          }
-        }
-      }
+  /**
+   * Prunes the dependencies for local packages.
+   */
+  async pruneDependencies ()
+  {
+    for (let pkgName in this._packages) {
+      this._packages[pkgName].pruneDependencies();
     }
   }
 
@@ -274,21 +171,65 @@ module.exports = class Comptroller extends EventEmitter
    */
   async update ()
   {
+    if (this._packageJson == null) {
+      console.error(`ERROR: package.json not found in ${this._rootPath}`);
+      process.exit(1);
+    }
     this.on(&apos;info&apos;, (info) =&gt; {
       if (info.action == &apos;add&apos;) {
         console.log(`Added ${info.type} package &quot;${info.name}@${info.version}&quot; to ${info.packageJson}`);
       }
       else if (info.action == &apos;update&apos;) {
-        console.log(`Updated ${info.type} package &quot;${info.name}&quot; to version ${info.version} to ${info.packageJson}`);
+        console.log(`Updated ${info.type} package &quot;${info.name}&quot; to version ${info.version} in ${info.packageJson}`);
       }
     });
     this.on(&apos;warn&apos;, (warn) =&gt; {
       if (warn.type == &apos;missing&apos;) {
         console.warn(`WARNING: remote package &quot;${warn.name}&quot; invoked by ${warn.file} not found in package.json`);
       }
+      if (warn.type == &apos;packagejson&apos;) {
+        console.log(`WARNING: package.json not found in ${warn.path}`);
+      }
+    });
+    this.on(&apos;error&apos;, (error) =&gt; {
+      if (error.type == &apos;parse&apos;) {
+        console.error(`ERROR: ${error.err.message} ${error.file}:${error.line}:${error.column}`);
+      }
+      else if (error.type == &apos;config&apos;) {
+        console.error(`ERROR: ${error.err.message} in config option &quot;${error.config}&quot;`);
+      }
+      process.exit(1);
     });
     await this.resolvePackages();
     await this.updateDependencies();
+    await this.writePackageJsons();
+  }
+
+  /**
+   * Prunes the packge.json&apos;s for all packages.
+   */
+  async prune ()
+  {
+    if (this._packageJson == null) {
+      console.error(`ERROR: package.json not found in ${this._rootPath}`);
+      process.exit(1);
+    }
+    this.on(&apos;info&apos;, (info) =&gt; {
+      if (info.action == &apos;remove&apos;) {
+        console.log(`Removed package &quot;${info.name}@${info.version}&quot; from ${info.packageJson}`);
+      }
+    });
+    this.on(&apos;error&apos;, (error) =&gt; {
+      if (error.type == &apos;parse&apos;) {
+        console.error(`ERROR: ${error.err.message} ${error.file}:${error.line}:${error.column}`);
+      }
+      else if (error.type == &apos;config&apos;) {
+        console.error(`ERROR: ${error.err.message} in config option &quot;${error.config}&quot;`);
+      }
+      process.exit(1);
+    });
+    await this.resolvePackages();
+    await this.pruneDependencies();
     await this.writePackageJsons();
   }
 
@@ -297,6 +238,16 @@ module.exports = class Comptroller extends EventEmitter
    */
   async link ()
   {
+    this.on(&apos;error&apos;, (error) =&gt; {
+      if (error.type == &apos;parse&apos;) {
+        console.error(`ERROR: ${error.err.message} ${error.file}:${error.line}:${error.column}`);
+      }
+      else if (error.type == &apos;config&apos;) {
+        console.error(`ERROR: ${error.err.message} in config option &quot;${error.config}&quot;`);
+      }
+      process.exit(1);
+    });
+
     await fs.ensureDirPromise(path.join(this._packagesPath, &apos;node_modules&apos;));
     await this.resolvePackages();
 
@@ -307,7 +258,6 @@ module.exports = class Comptroller extends EventEmitter
     }
   }
 }
-
 </code></pre>
 
 </div>

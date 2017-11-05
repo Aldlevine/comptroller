@@ -42,6 +42,9 @@ async function cli ()
     case 'link':
       await c.link();
       break;
+    case 'prune':
+      await c.prune();
+      break;
   }
 }
 

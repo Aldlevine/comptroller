@@ -8,114 +8,15 @@ const path = require('path');
 const {promisify} = require('util');
 /** @external {glob} https://www.npmjs.com/package/glob */
 const glob = promisify(require('glob'));
-/** @external {detective} https://www.npmjs.com/package/@zdychacek/detective */
-const detective = require('@zdychacek/detective');
 /** @external {builtins} https://www.npmjs.com/package/builtin-modules */
 const builtins = require('builtin-modules');
+/** @type {Package} */
+const Package = require('./package');
 
 fs.readFilePromise = promisify(fs.readFile);
 fs.writeFilePromise = promisify(fs.writeFile);
 fs.ensureDirPromise = promisify(fs.ensureDir);
 fs.ensureSymlinkPromise = promisify(fs.ensureSymlink);
-
-/**
- * Provides encapsulation for each local package.
- */
-class Package
-{
-  /**
-   * Creates a new package.
-   * @param {Comptroller} comptroller - The parent Comptroller instance.
-   * @param {string} dir - The package's directory.
-   */
-  constructor (comptroller, dir)
-  {
-    /** @type {Comptroller} */
-    this._comptroller = comptroller;
-
-    /** @type {string} */
-    this._dir = dir;
-
-    /** @type {string} */
-    this._packageJsonPath = path.join(dir, 'package.json');
-
-    try {
-      /** @type {object} */
-      this._packageJson = require(this._packageJsonPath);
-
-      /** @type {string} */
-      this._name = this._packageJson.name;
-
-      /** @type {string} */
-      this._version = this._packageJson.version;
-    }
-    catch (err)
-    {
-      this._packageJson = null;
-      this._name = null;
-      this._version = null;
-    }
-
-  }
-
-  /**
-   * Evaluates a package's dependencies
-   */
-  async evaluateDependencies (detectiveOpts)
-  {
-    return new Promise(async (res, rej) => {
-      const sourcePaths = await glob(path.join(this._dir, '**/*.js'));
-      const dependencies = {};
-      for (let sourcePath of sourcePaths) {
-        const sourceFile = await fs.readFilePromise(sourcePath);
-        let reqs;
-        try {
-          reqs = detective(sourceFile, detectiveOpts);
-        }
-        catch (err) {
-          // Parser error
-          if (err.loc) {
-            let {line, column} = err.loc;
-            return this._comptroller.emit('error', {
-              type: 'parse',
-              err,
-              file: sourcePath,
-              line,
-              column,
-            });
-          }
-          // Config error
-          return this._comptroller.emit('error', {
-            type: 'config',
-            config: 'detective',
-            err,
-          });
-        }
-        for (let req of reqs) {
-          // It's a relative dep, so skip it
-          if (/^\.\//.test(req)) continue;
-
-          const split = req.split('/');
-          let name = split.shift();
-          if (name.charAt(0) == '@') name += '/' + split.shift();
-
-          // return {file: sourcePath, name};
-          dependencies[name] = {file: sourcePath, name};
-        }
-      }
-
-      res(dependencies);
-    });
-  }
-
-  /**
-   * Writes a package's package.json
-   */
-  async writePackageJson ()
-  {
-    await fs.writeFilePromise(this._packageJsonPath, JSON.stringify(this._packageJson, null, 2));
-  }
-}
 
 /**
  * The core Comptroller class. It provides encapsulation for all of the stuff
@@ -184,7 +85,7 @@ module.exports = class Comptroller extends EventEmitter
         });
         continue;
       }
-      pkg._dependencies = await pkg.evaluateDependencies(this._detectiveOpts);
+      await pkg.evaluateDependencies(this._detectiveOpts);
       this._packages[pkg._name] = pkg;
     }
   }
@@ -195,73 +96,17 @@ module.exports = class Comptroller extends EventEmitter
   async updateDependencies ()
   {
     for (let pkgName in this._packages) {
-      const pkg = this._packages[pkgName];
-      for (let depName in pkg._dependencies) {
-        const dep = pkg._dependencies[depName];
-        pkg._packageJson.dependencies = pkg._packageJson.dependencies || {};
-        // ignore package
-        if (this._ignorePackages.indexOf(depName) >= 0) continue;
+      this._packages[pkgName].updateDependencies();
+    }
+  }
 
-        // local package
-        if (depName in this._packages) {
-          if (!(depName in pkg._packageJson.dependencies)) {
-            pkg._packageJson.dependencies[depName] = this._packages[depName]._version;
-            this.emit('info', {
-              action: 'add',
-              type: 'local',
-              file: dep.file,
-              name: depName,
-              version: this._packages[depName]._version,
-              packageJson: pkg._packageJsonPath,
-            });
-          }
-          else if (pkg._packageJson.dependencies[depName] !== this._packages[depName]._version) {
-            pkg._packageJson.dependencies[depName] = this._packages[depName]._version;
-            this.emit('info', {
-              action: 'update',
-              type: 'local',
-              file: dep.file,
-              name: depName,
-              version: this._packages[depName]._version,
-              packageJson: pkg._packageJsonPath,
-            })
-          }
-        }
-
-        // remote package
-        else {
-          if (!(depName in this._packageJson.dependencies)) {
-            // delete pkg._packageJson.dependencies[depName];
-            this.emit('warn', {
-              type: 'missing',
-              file: dep.file,
-              name: depName
-            });
-          }
-          else if (!(depName in pkg._packageJson.dependencies)) {
-            pkg._packageJson.dependencies[depName] = this._packageJson.dependencies[depName];
-            this.emit('info', {
-              action: 'add',
-              type: 'remote',
-              file: dep.file,
-              name: depName,
-              version: this._packageJson.dependencies[depName],
-              packageJson: pkg._packageJsonPath,
-            });
-          }
-          else if (pkg._packageJson.dependencies[depName] != this._packageJson.dependencies[depName]) {
-            pkg._packageJson.dependencies[depName] = this._packageJson.dependencies[depName];
-            this.emit('info', {
-              action: 'update',
-              type: 'remote',
-              file: dep.file,
-              name: depName,
-              version: this._packageJson.dependencies[depName],
-              packageJson: pkg._packageJsonPath,
-            });
-          }
-        }
-      }
+  /**
+   * Prunes the dependencies for local packages.
+   */
+  async pruneDependencies ()
+  {
+    for (let pkgName in this._packages) {
+      this._packages[pkgName].pruneDependencies();
     }
   }
 
@@ -316,6 +161,34 @@ module.exports = class Comptroller extends EventEmitter
   }
 
   /**
+   * Prunes the packge.json's for all packages.
+   */
+  async prune ()
+  {
+    if (this._packageJson == null) {
+      console.error(`ERROR: package.json not found in ${this._rootPath}`);
+      process.exit(1);
+    }
+    this.on('info', (info) => {
+      if (info.action == 'remove') {
+        console.log(`Removed package "${info.name}@${info.version}" from ${info.packageJson}`);
+      }
+    });
+    this.on('error', (error) => {
+      if (error.type == 'parse') {
+        console.error(`ERROR: ${error.err.message} ${error.file}:${error.line}:${error.column}`);
+      }
+      else if (error.type == 'config') {
+        console.error(`ERROR: ${error.err.message} in config option "${error.config}"`);
+      }
+      process.exit(1);
+    });
+    await this.resolvePackages();
+    await this.pruneDependencies();
+    await this.writePackageJsons();
+  }
+
+  /**
    * Creates a symlink'd node_modules to local packages.
    */
   async link ()
@@ -340,4 +213,3 @@ module.exports = class Comptroller extends EventEmitter
     }
   }
 }
-
