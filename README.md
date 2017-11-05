@@ -25,6 +25,12 @@ __Link__ `packages/*` __to__ `packages/node_modules/*`
 comp link [--root|-r <root dir>] [--packges|-p <packages dir>]
 ```
 
+__Prune extraneous packages from__ `packages/**/package.json`
+
+```
+comp prune [--root|-r <root dir>] [--packges|-p <packages dir>]
+```
+
 ## How it works
 
 __update__
@@ -56,7 +62,7 @@ __create__: _Not implemented_
 Comptroller's `create` command creates a new package in the specified directory
 with a stub `package.json` just waiting to be "comp updated".
 
-__prune__: _Not implemented_
+__prune__
 
 Comptroller's `prune` command takes all those extraneous dependencies found by
 the `update` command and delivers them to the void.
