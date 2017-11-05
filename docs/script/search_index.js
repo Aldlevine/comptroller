@@ -6,6 +6,12 @@ window.esdocSearchIndex = [
     "class"
   ],
   [
+    "comptroller/src/package.js~package",
+    "class/src/package.js~Package.html",
+    "<span>Package</span> <span class=\"search-result-import-path\">comptroller/src/package.js</span>",
+    "class"
+  ],
+  [
     "src/.external-ecmascript.js~array",
     "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array",
     "src/.external-ecmascript.js~Array",
@@ -348,6 +354,18 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/comptroller.js~comptroller#prune",
+    "class/src/comptroller.js~Comptroller.html#instance-method-prune",
+    "src/comptroller.js~Comptroller#prune",
+    "method"
+  ],
+  [
+    "src/comptroller.js~comptroller#prunedependencies",
+    "class/src/comptroller.js~Comptroller.html#instance-method-pruneDependencies",
+    "src/comptroller.js~Comptroller#pruneDependencies",
+    "method"
+  ],
+  [
     "src/comptroller.js~comptroller#resolvepackages",
     "class/src/comptroller.js~Comptroller.html#instance-method-resolvePackages",
     "src/comptroller.js~Comptroller#resolvePackages",
@@ -384,12 +402,6 @@ window.esdocSearchIndex = [
     "external"
   ],
   [
-    "src/comptroller.js~detective",
-    "https://www.npmjs.com/package/@zdychacek/detective",
-    "src/comptroller.js~detective",
-    "external"
-  ],
-  [
     "src/comptroller.js~fs",
     "https://www.npmjs.com/package/fs-extra",
     "src/comptroller.js~fs",
@@ -411,6 +423,90 @@ window.esdocSearchIndex = [
     "src/comptroller.js~promisify",
     "https://nodejs.org/api/util.html#util_util_promisify_original",
     "src/comptroller.js~promisify",
+    "external"
+  ],
+  [
+    "src/package.js",
+    "file/src/package.js.html",
+    "src/package.js",
+    "file"
+  ],
+  [
+    "src/package.js~package#_comptroller",
+    "class/src/package.js~Package.html#instance-member-_comptroller",
+    "src/package.js~Package#_comptroller",
+    "member"
+  ],
+  [
+    "src/package.js~package#_dependencies",
+    "class/src/package.js~Package.html#instance-member-_dependencies",
+    "src/package.js~Package#_dependencies",
+    "member"
+  ],
+  [
+    "src/package.js~package#_dir",
+    "class/src/package.js~Package.html#instance-member-_dir",
+    "src/package.js~Package#_dir",
+    "member"
+  ],
+  [
+    "src/package.js~package#_name",
+    "class/src/package.js~Package.html#instance-member-_name",
+    "src/package.js~Package#_name",
+    "member"
+  ],
+  [
+    "src/package.js~package#_packagejson",
+    "class/src/package.js~Package.html#instance-member-_packageJson",
+    "src/package.js~Package#_packageJson",
+    "member"
+  ],
+  [
+    "src/package.js~package#_packagejsonpath",
+    "class/src/package.js~Package.html#instance-member-_packageJsonPath",
+    "src/package.js~Package#_packageJsonPath",
+    "member"
+  ],
+  [
+    "src/package.js~package#_version",
+    "class/src/package.js~Package.html#instance-member-_version",
+    "src/package.js~Package#_version",
+    "member"
+  ],
+  [
+    "src/package.js~package#constructor",
+    "class/src/package.js~Package.html#instance-constructor-constructor",
+    "src/package.js~Package#constructor",
+    "method"
+  ],
+  [
+    "src/package.js~package#evaluatedependencies",
+    "class/src/package.js~Package.html#instance-method-evaluateDependencies",
+    "src/package.js~Package#evaluateDependencies",
+    "method"
+  ],
+  [
+    "src/package.js~package#prunedependencies",
+    "class/src/package.js~Package.html#instance-method-pruneDependencies",
+    "src/package.js~Package#pruneDependencies",
+    "method"
+  ],
+  [
+    "src/package.js~package#updatedependencies",
+    "class/src/package.js~Package.html#instance-method-updateDependencies",
+    "src/package.js~Package#updateDependencies",
+    "method"
+  ],
+  [
+    "src/package.js~package#writepackagejson",
+    "class/src/package.js~Package.html#instance-method-writePackageJson",
+    "src/package.js~Package#writePackageJson",
+    "method"
+  ],
+  [
+    "src/package.js~detective",
+    "https://www.npmjs.com/package/@zdychacek/detective",
+    "src/package.js~detective",
     "external"
   ]
 ]
