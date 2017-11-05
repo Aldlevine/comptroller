@@ -318,6 +318,12 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/comptroller.js~comptroller#_packagejsonorder",
+    "class/src/comptroller.js~Comptroller.html#instance-member-_packageJsonOrder",
+    "src/comptroller.js~Comptroller#_packageJsonOrder",
+    "member"
+  ],
+  [
     "src/comptroller.js~comptroller#_packagejsonpath",
     "class/src/comptroller.js~Comptroller.html#instance-member-_packageJsonPath",
     "src/comptroller.js~Comptroller#_packageJsonPath",
@@ -381,6 +387,12 @@ window.esdocSearchIndex = [
     "src/comptroller.js~comptroller#updatedependencies",
     "class/src/comptroller.js~Comptroller.html#instance-method-updateDependencies",
     "src/comptroller.js~Comptroller#updateDependencies",
+    "method"
+  ],
+  [
+    "src/comptroller.js~comptroller#updatepackagejson",
+    "class/src/comptroller.js~Comptroller.html#instance-method-updatePackageJson",
+    "src/comptroller.js~Comptroller#updatePackageJson",
     "method"
   ],
   [
@@ -456,6 +468,12 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/package.js~package#_options",
+    "class/src/package.js~Package.html#instance-member-_options",
+    "src/package.js~Package#_options",
+    "member"
+  ],
+  [
     "src/package.js~package#_packagejson",
     "class/src/package.js~Package.html#instance-member-_packageJson",
     "src/package.js~Package#_packageJson",
@@ -486,6 +504,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/package.js~package#formatpackagejson",
+    "class/src/package.js~Package.html#instance-method-formatPackageJson",
+    "src/package.js~Package#formatPackageJson",
+    "method"
+  ],
+  [
     "src/package.js~package#prunedependencies",
     "class/src/package.js~Package.html#instance-method-pruneDependencies",
     "src/package.js~Package#pruneDependencies",
@@ -498,6 +522,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/package.js~package#updatepackagejson",
+    "class/src/package.js~Package.html#instance-method-updatePackageJson",
+    "src/package.js~Package#updatePackageJson",
+    "method"
+  ],
+  [
     "src/package.js~package#writepackagejson",
     "class/src/package.js~Package.html#instance-method-writePackageJson",
     "src/package.js~Package#writePackageJson",
@@ -507,6 +537,12 @@ window.esdocSearchIndex = [
     "src/package.js~detective",
     "https://www.npmjs.com/package/@zdychacek/detective",
     "src/package.js~detective",
+    "external"
+  ],
+  [
+    "src/package.js~format-package",
+    "https://www.npmjs.com/package/format-package",
+    "src/package.js~format-package",
     "external"
   ]
 ]

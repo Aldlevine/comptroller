@@ -38,6 +38,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/path.html">path</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/util.html#util_util_promisify_original">promisify</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://www.npmjs.com/package/@zdychacek/detective">detective</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://www.npmjs.com/package/format-package">format-package</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -53,6 +54,8 @@ const {promisify} = require(&apos;util&apos;);
 const glob = promisify(require(&apos;glob&apos;));
 /** @external {detective} https://www.npmjs.com/package/@zdychacek/detective */
 const detective = require(&apos;@zdychacek/detective&apos;);
+/** @external {format-package} https://www.npmjs.com/package/format-package */
+const format = require(&apos;format-package&apos;);
 
 /**
  * Provides encapsulation for each local package.
@@ -84,6 +87,9 @@ module.exports = class Package
 
       /** @type {string} */
       this._version = this._packageJson.version;
+
+      /** @type {object} */
+      this._options = this._packageJson.comptroller || {};
     }
     catch (err)
     {
@@ -147,6 +153,38 @@ module.exports = class Package
   }
 
   /**
+   * Updates a packages package.json with values found in the main package.json
+   */
+  async updatePackageJson ()
+  {
+    const {inherit} = this._options;
+    const packageJson = this._packageJson;
+    const comptroller = this._comptroller;
+    const mainPackageJson = comptroller._packageJson;
+    if (inherit) {
+      for (let key of inherit) {
+        if (key in mainPackageJson) {
+          if (packageJson[key] == mainPackageJson[key]) continue;
+          packageJson[key] = mainPackageJson[key];
+          comptroller.emit(&apos;info&apos;, {
+            action: &apos;update-field&apos;,
+            key,
+            value: mainPackageJson[key],
+            packageJson: this._packageJsonPath,
+          });
+        }
+        else {
+          comptroller.emit(&apos;warn&apos;, {
+            type: &apos;update-field-missing&apos;,
+            key,
+            packageJson: this._packageJsonPath,
+          });
+        }
+      }
+    }
+  }
+
+  /**
    * Updates a packages package.json dependencies.
    */
   async updateDependencies ()
@@ -174,7 +212,7 @@ module.exports = class Package
         }
         else if (this._packageJson.dependencies[depName] !== localPackage._version) {
           this._packageJson.dependencies[depName] = localPackage._version;
-          this.emit(&apos;info&apos;, {
+          comptroller.emit(&apos;info&apos;, {
             action: &apos;update&apos;,
             type: &apos;local&apos;,
             file: dep.file,
@@ -197,7 +235,7 @@ module.exports = class Package
         }
         else if (!(depName in this._packageJson.dependencies)) {
           this._packageJson.dependencies[depName] = version;
-          this.emit(&apos;info&apos;, {
+          comptroller.emit(&apos;info&apos;, {
             action: &apos;add&apos;,
             type: &apos;remote&apos;,
             file: dep.file,
@@ -242,11 +280,24 @@ module.exports = class Package
   }
 
   /**
+   * Format&apos;s package.json using {@link format-package}
+   */
+  async formatPackageJson ()
+  {
+    const comptroller = this._comptroller;
+    let opts;
+    if (comptroller._packageJsonOrder) {
+      opts = {order: comptroller._packageJsonOrder};
+    }
+    return await format(this._packageJson, opts);
+  }
+
+  /**
    * Writes a package&apos;s package.json
    */
   async writePackageJson ()
   {
-    await fs.writeFilePromise(this._packageJsonPath, JSON.stringify(this._packageJson, null, 2));
+    await fs.writeFilePromise(this._packageJsonPath, await this.formatPackageJson());
   }
 }
 

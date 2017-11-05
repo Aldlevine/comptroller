@@ -567,7 +567,7 @@
     "__docId__": 48,
     "kind": "file",
     "name": "src/comptroller.js",
-    "content": "/** @external {EventEmitter} https://nodejs.org/api/events.html#events_class_eventemitter */\nconst EventEmitter = require('events');\n/** @external {fs} https://www.npmjs.com/package/fs-extra */\nconst fs = require('fs-extra');\n/** @external {path} https://nodejs.org/api/path.html */\nconst path = require('path');\n/** @external {promisify} https://nodejs.org/api/util.html#util_util_promisify_original */\nconst {promisify} = require('util');\n/** @external {glob} https://www.npmjs.com/package/glob */\nconst glob = promisify(require('glob'));\n/** @external {builtins} https://www.npmjs.com/package/builtin-modules */\nconst builtins = require('builtin-modules');\n/** @type {Package} */\nconst Package = require('./package');\n\nfs.readFilePromise = promisify(fs.readFile);\nfs.writeFilePromise = promisify(fs.writeFile);\nfs.ensureDirPromise = promisify(fs.ensureDir);\nfs.ensureSymlinkPromise = promisify(fs.ensureSymlink);\n\n/**\n * The core Comptroller class. It provides encapsulation for all of the stuff\n * that Comptroller is supposed to do\n */\nmodule.exports = class Comptroller extends EventEmitter\n{\n\n  /**\n   * Creates a new Comptroller instance.\n   * @param {object} cfg - The configuration options\n   * @param {string} [cfg.root = process.cwd()] - The project root (where your\n   * main package.json lives).\n   * @param {string} [cfg.packages = 'packages'] - The path from `cfg.root` to\n   * the packages directory.\n   * @param {object} [cfg.detective={}] - The options to pass to {@link detective}\n   */\n  constructor ({\n    root = process.cwd(),\n    packages = 'packages',\n    ignorePackages = builtins,\n    detective = {},\n  }={})\n  {\n    super();\n\n    /** @type {string} */\n    this._rootPath = path.resolve(root);\n\n    /** @type {string} */\n    this._packagesPath = path.resolve(root, packages);\n\n    /** @type {object} */\n    this._packages = {};\n\n    /** @type {string[]} */\n    this._ignorePackages = ignorePackages;\n\n    /** @type {object} */\n    this._detectiveOpts = detective;\n\n    /** @type {string} */\n    this._packageJsonPath = path.resolve(root, 'package.json');\n\n    try {\n      /** @type {object} */\n      this._packageJson = require(this._packageJsonPath);\n    }\n    catch (err) {\n      this._packageJson = null;\n    }\n  }\n\n  /**\n   * Resolves the dependencies for local packages.\n   */\n  async resolvePackages ()\n  {\n    const packagePaths = await glob(path.join(this._packagesPath, '*'), {ignore: '**/node_modules/**'});\n    for (let packagePath of packagePaths) {\n      const pkg = new Package(this, packagePath);\n      if (pkg._packageJson == null) {\n        this.emit('warn', {\n          type: 'packagejson',\n          path: packagePath,\n        });\n        continue;\n      }\n      await pkg.evaluateDependencies(this._detectiveOpts);\n      this._packages[pkg._name] = pkg;\n    }\n  }\n\n  /**\n   * Updates the dependencies for local packages.\n   */\n  async updateDependencies ()\n  {\n    for (let pkgName in this._packages) {\n      this._packages[pkgName].updateDependencies();\n    }\n  }\n\n  /**\n   * Prunes the dependencies for local packages.\n   */\n  async pruneDependencies ()\n  {\n    for (let pkgName in this._packages) {\n      this._packages[pkgName].pruneDependencies();\n    }\n  }\n\n  /**\n   * Writes the updated package.json's for each package.\n   */\n  async writePackageJsons ()\n  {\n    for (let pkgName in this._packages) {\n      const pkg = this._packages[pkgName];\n      await pkg.writePackageJson();\n    }\n  }\n\n  /**\n   * Updates the packge.json's for all packages.\n   */\n  async update ()\n  {\n    if (this._packageJson == null) {\n      console.error(`ERROR: package.json not found in ${this._rootPath}`);\n      process.exit(1);\n    }\n    this.on('info', (info) => {\n      if (info.action == 'add') {\n        console.log(`Added ${info.type} package \"${info.name}@${info.version}\" to ${info.packageJson}`);\n      }\n      else if (info.action == 'update') {\n        console.log(`Updated ${info.type} package \"${info.name}\" to version ${info.version} in ${info.packageJson}`);\n      }\n    });\n    this.on('warn', (warn) => {\n      if (warn.type == 'missing') {\n        console.warn(`WARNING: remote package \"${warn.name}\" invoked by ${warn.file} not found in package.json`);\n      }\n      if (warn.type == 'packagejson') {\n        console.log(`WARNING: package.json not found in ${warn.path}`);\n      }\n    });\n    this.on('error', (error) => {\n      if (error.type == 'parse') {\n        console.error(`ERROR: ${error.err.message} ${error.file}:${error.line}:${error.column}`);\n      }\n      else if (error.type == 'config') {\n        console.error(`ERROR: ${error.err.message} in config option \"${error.config}\"`);\n      }\n      process.exit(1);\n    });\n    await this.resolvePackages();\n    await this.updateDependencies();\n    await this.writePackageJsons();\n  }\n\n  /**\n   * Prunes the packge.json's for all packages.\n   */\n  async prune ()\n  {\n    if (this._packageJson == null) {\n      console.error(`ERROR: package.json not found in ${this._rootPath}`);\n      process.exit(1);\n    }\n    this.on('info', (info) => {\n      if (info.action == 'remove') {\n        console.log(`Removed package \"${info.name}@${info.version}\" from ${info.packageJson}`);\n      }\n    });\n    this.on('error', (error) => {\n      if (error.type == 'parse') {\n        console.error(`ERROR: ${error.err.message} ${error.file}:${error.line}:${error.column}`);\n      }\n      else if (error.type == 'config') {\n        console.error(`ERROR: ${error.err.message} in config option \"${error.config}\"`);\n      }\n      process.exit(1);\n    });\n    await this.resolvePackages();\n    await this.pruneDependencies();\n    await this.writePackageJsons();\n  }\n\n  /**\n   * Creates a symlink'd node_modules to local packages.\n   */\n  async link ()\n  {\n    this.on('error', (error) => {\n      if (error.type == 'parse') {\n        console.error(`ERROR: ${error.err.message} ${error.file}:${error.line}:${error.column}`);\n      }\n      else if (error.type == 'config') {\n        console.error(`ERROR: ${error.err.message} in config option \"${error.config}\"`);\n      }\n      process.exit(1);\n    });\n\n    await fs.ensureDirPromise(path.join(this._packagesPath, 'node_modules'));\n    await this.resolvePackages();\n\n    for (let pkgName in this._packages) {\n      const pkg = this._packages[pkgName];\n      let dstpath = path.join(this._packagesPath, 'node_modules', pkgName);\n      await fs.ensureSymlinkPromise(pkg._dir, dstpath);\n    }\n  }\n}\n",
+    "content": "/** @external {EventEmitter} https://nodejs.org/api/events.html#events_class_eventemitter */\nconst EventEmitter = require('events');\n/** @external {fs} https://www.npmjs.com/package/fs-extra */\nconst fs = require('fs-extra');\n/** @external {path} https://nodejs.org/api/path.html */\nconst path = require('path');\n/** @external {promisify} https://nodejs.org/api/util.html#util_util_promisify_original */\nconst {promisify} = require('util');\n/** @external {glob} https://www.npmjs.com/package/glob */\nconst glob = promisify(require('glob'));\n/** @external {builtins} https://www.npmjs.com/package/builtin-modules */\nconst builtins = require('builtin-modules');\n/** @type {Package} */\nconst Package = require('./package');\n\nfs.readFilePromise = promisify(fs.readFile);\nfs.writeFilePromise = promisify(fs.writeFile);\nfs.ensureDirPromise = promisify(fs.ensureDir);\nfs.ensureSymlinkPromise = promisify(fs.ensureSymlink);\n\n/**\n * The core Comptroller class. It provides encapsulation for all of the stuff\n * that Comptroller is supposed to do\n */\nmodule.exports = class Comptroller extends EventEmitter\n{\n\n  /**\n   * Creates a new Comptroller instance.\n   * @param {object} cfg - The configuration options\n   * @param {string} [cfg.root = process.cwd()] - The project root (where your\n   * main package.json lives).\n   * @param {string} [cfg.packages = 'packages'] - The path from `cfg.root` to\n   * the packages directory.\n   * @param {object} [cfg.detective={}] - The options to pass to {@link detective}\n   * @param {?string[]} [cfg.order] - The order passed to {@link format-package}\n   */\n  constructor ({\n    root = process.cwd(),\n    packages = 'packages',\n    ignorePackages = builtins,\n    detective = {},\n    order,\n  }={})\n  {\n    super();\n\n    /** @type {string} */\n    this._rootPath = path.resolve(root);\n\n    /** @type {string} */\n    this._packagesPath = path.resolve(root, packages);\n\n    /** @type {object} */\n    this._packages = {};\n\n    /** @type {string[]} */\n    this._ignorePackages = ignorePackages;\n\n    /** @type {object} */\n    this._detectiveOpts = detective;\n\n    /** @type {?string[]} */\n    this._packageJsonOrder = order;\n\n    /** @type {string} */\n    this._packageJsonPath = path.resolve(root, 'package.json');\n\n    try {\n      /** @type {object} */\n      this._packageJson = require(this._packageJsonPath);\n    }\n    catch (err) {\n      this._packageJson = null;\n    }\n  }\n\n  /**\n   * Resolves the dependencies for local packages.\n   */\n  async resolvePackages ()\n  {\n    const packagePaths = await glob(path.join(this._packagesPath, '*'), {ignore: '**/node_modules/**'});\n    for (let packagePath of packagePaths) {\n      const pkg = new Package(this, packagePath);\n      if (pkg._packageJson == null) {\n        this.emit('warn', {\n          type: 'packagejson',\n          path: packagePath,\n        });\n        continue;\n      }\n      await pkg.evaluateDependencies(this._detectiveOpts);\n      this._packages[pkg._name] = pkg;\n    }\n  }\n\n  /**\n   * Updates the dependencies for local packages.\n   */\n  async updatePackageJson ()\n  {\n    for (let pkgName in this._packages) {\n      this._packages[pkgName].updatePackageJson();\n    }\n  }\n\n  /**\n   * Updates the dependencies for local packages.\n   */\n  async updateDependencies ()\n  {\n    for (let pkgName in this._packages) {\n      this._packages[pkgName].updateDependencies();\n    }\n  }\n\n  /**\n   * Prunes the dependencies for local packages.\n   */\n  async pruneDependencies ()\n  {\n    for (let pkgName in this._packages) {\n      this._packages[pkgName].pruneDependencies();\n    }\n  }\n\n  /**\n   * Writes the updated package.json's for each package.\n   */\n  async writePackageJsons ()\n  {\n    for (let pkgName in this._packages) {\n      const pkg = this._packages[pkgName];\n      await pkg.writePackageJson();\n    }\n  }\n\n  /**\n   * Updates the packge.json's for all packages.\n   */\n  async update ()\n  {\n    if (this._packageJson == null) {\n      console.error(`ERROR: package.json not found in ${this._rootPath}`);\n      process.exit(1);\n    }\n    this.on('info', (info) => {\n      if (info.action == 'add') {\n        console.log(`Added ${info.type} package \"${info.name}@${info.version}\" to ${info.packageJson}`);\n      }\n      else if (info.action == 'update') {\n        console.log(`Updated ${info.type} package \"${info.name}\" to version ${info.version} in ${info.packageJson}`);\n      }\n      else if (info.action == 'update-field') {\n        console.log(`Updated field \"${info.key}\" to \"${info.value}\" in ${info.packageJson}`);\n      }\n    });\n    this.on('warn', (warn) => {\n      if (warn.type == 'missing') {\n        console.warn(`WARNING: remote package \"${warn.name}\" invoked by ${warn.file} not found in package.json`);\n      }\n      else if (warn.type == 'packagejson') {\n        console.log(`WARNING: package.json not found in ${warn.path}`);\n      }\n      else if (warn.type == 'update-field-missing') {\n        console.log(`WARNING: field \"${warn.key}\" invoked by ${warn.packageJson} not found in main package.json`);\n      }\n    });\n    this.on('error', (error) => {\n      if (error.type == 'parse') {\n        console.error(`ERROR: ${error.err.message} ${error.file}:${error.line}:${error.column}`);\n      }\n      else if (error.type == 'config') {\n        console.error(`ERROR: ${error.err.message} in config option \"${error.config}\"`);\n      }\n      process.exit(1);\n    });\n    await this.resolvePackages();\n    await this.updatePackageJson();\n    await this.updateDependencies();\n    await this.writePackageJsons();\n  }\n\n  /**\n   * Prunes the packge.json's for all packages.\n   */\n  async prune ()\n  {\n    if (this._packageJson == null) {\n      console.error(`ERROR: package.json not found in ${this._rootPath}`);\n      process.exit(1);\n    }\n    this.on('info', (info) => {\n      if (info.action == 'remove') {\n        console.log(`Removed package \"${info.name}@${info.version}\" from ${info.packageJson}`);\n      }\n    });\n    this.on('error', (error) => {\n      if (error.type == 'parse') {\n        console.error(`ERROR: ${error.err.message} ${error.file}:${error.line}:${error.column}`);\n      }\n      else if (error.type == 'config') {\n        console.error(`ERROR: ${error.err.message} in config option \"${error.config}\"`);\n      }\n      process.exit(1);\n    });\n    await this.resolvePackages();\n    await this.pruneDependencies();\n    await this.writePackageJsons();\n  }\n\n  /**\n   * Creates a symlink'd node_modules to local packages.\n   */\n  async link ()\n  {\n    this.on('error', (error) => {\n      if (error.type == 'parse') {\n        console.error(`ERROR: ${error.err.message} ${error.file}:${error.line}:${error.column}`);\n      }\n      else if (error.type == 'config') {\n        console.error(`ERROR: ${error.err.message} in config option \"${error.config}\"`);\n      }\n      process.exit(1);\n    });\n\n    await fs.ensureDirPromise(path.join(this._packagesPath, 'node_modules'));\n    await this.resolvePackages();\n\n    for (let pkgName in this._packages) {\n      const pkg = this._packages[pkgName];\n      let dstpath = path.join(this._packagesPath, 'node_modules', pkgName);\n      await fs.ensureSymlinkPromise(pkg._dir, dstpath);\n    }\n  }\n}\n",
     "static": true,
     "longname": "/mnt/storage/Documents/Projects/comptroller/src/comptroller.js",
     "access": "public",
@@ -698,7 +698,7 @@
     "longname": "src/comptroller.js~Comptroller#constructor",
     "access": "public",
     "description": "Creates a new Comptroller instance.",
-    "lineNumber": 37,
+    "lineNumber": 38,
     "params": [
       {
         "nullable": null,
@@ -745,6 +745,16 @@
         "defaultRaw": {},
         "name": "cfg.detective",
         "description": "The options to pass to {@link detective}"
+      },
+      {
+        "nullable": true,
+        "types": [
+          "string[]"
+        ],
+        "spread": false,
+        "optional": true,
+        "name": "cfg.order",
+        "description": "The order passed to {@link format-package}"
       }
     ]
   },
@@ -757,7 +767,7 @@
     "longname": "src/comptroller.js~Comptroller#_rootPath",
     "access": "private",
     "description": null,
-    "lineNumber": 47,
+    "lineNumber": 49,
     "type": {
       "nullable": null,
       "types": [
@@ -776,7 +786,7 @@
     "longname": "src/comptroller.js~Comptroller#_packagesPath",
     "access": "private",
     "description": null,
-    "lineNumber": 50,
+    "lineNumber": 52,
     "type": {
       "nullable": null,
       "types": [
@@ -795,7 +805,7 @@
     "longname": "src/comptroller.js~Comptroller#_packages",
     "access": "private",
     "description": null,
-    "lineNumber": 53,
+    "lineNumber": 55,
     "type": {
       "nullable": null,
       "types": [
@@ -814,7 +824,7 @@
     "longname": "src/comptroller.js~Comptroller#_ignorePackages",
     "access": "private",
     "description": null,
-    "lineNumber": 56,
+    "lineNumber": 58,
     "type": {
       "nullable": null,
       "types": [
@@ -833,7 +843,7 @@
     "longname": "src/comptroller.js~Comptroller#_detectiveOpts",
     "access": "private",
     "description": null,
-    "lineNumber": 59,
+    "lineNumber": 61,
     "type": {
       "nullable": null,
       "types": [
@@ -846,13 +856,32 @@
   {
     "__docId__": 63,
     "kind": "member",
+    "name": "_packageJsonOrder",
+    "memberof": "src/comptroller.js~Comptroller",
+    "static": false,
+    "longname": "src/comptroller.js~Comptroller#_packageJsonOrder",
+    "access": "private",
+    "description": null,
+    "lineNumber": 64,
+    "type": {
+      "nullable": true,
+      "types": [
+        "string[]"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 64,
+    "kind": "member",
     "name": "_packageJsonPath",
     "memberof": "src/comptroller.js~Comptroller",
     "static": false,
     "longname": "src/comptroller.js~Comptroller#_packageJsonPath",
     "access": "private",
     "description": null,
-    "lineNumber": 62,
+    "lineNumber": 67,
     "type": {
       "nullable": null,
       "types": [
@@ -863,7 +892,7 @@
     }
   },
   {
-    "__docId__": 64,
+    "__docId__": 65,
     "kind": "member",
     "name": "_packageJson",
     "memberof": "src/comptroller.js~Comptroller",
@@ -871,7 +900,7 @@
     "longname": "src/comptroller.js~Comptroller#_packageJson",
     "access": "private",
     "description": null,
-    "lineNumber": 66,
+    "lineNumber": 71,
     "type": {
       "nullable": null,
       "types": [
@@ -882,7 +911,7 @@
     }
   },
   {
-    "__docId__": 66,
+    "__docId__": 67,
     "kind": "method",
     "name": "resolvePackages",
     "memberof": "src/comptroller.js~Comptroller",
@@ -892,12 +921,27 @@
     "longname": "src/comptroller.js~Comptroller#resolvePackages",
     "access": "public",
     "description": "Resolves the dependencies for local packages.",
-    "lineNumber": 76,
+    "lineNumber": 81,
     "params": [],
     "return": null
   },
   {
-    "__docId__": 67,
+    "__docId__": 68,
+    "kind": "method",
+    "name": "updatePackageJson",
+    "memberof": "src/comptroller.js~Comptroller",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/comptroller.js~Comptroller#updatePackageJson",
+    "access": "public",
+    "description": "Updates the dependencies for local packages.",
+    "lineNumber": 101,
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 69,
     "kind": "method",
     "name": "updateDependencies",
     "memberof": "src/comptroller.js~Comptroller",
@@ -907,12 +951,12 @@
     "longname": "src/comptroller.js~Comptroller#updateDependencies",
     "access": "public",
     "description": "Updates the dependencies for local packages.",
-    "lineNumber": 96,
+    "lineNumber": 111,
     "params": [],
     "return": null
   },
   {
-    "__docId__": 68,
+    "__docId__": 70,
     "kind": "method",
     "name": "pruneDependencies",
     "memberof": "src/comptroller.js~Comptroller",
@@ -922,12 +966,12 @@
     "longname": "src/comptroller.js~Comptroller#pruneDependencies",
     "access": "public",
     "description": "Prunes the dependencies for local packages.",
-    "lineNumber": 106,
+    "lineNumber": 121,
     "params": [],
     "return": null
   },
   {
-    "__docId__": 69,
+    "__docId__": 71,
     "kind": "method",
     "name": "writePackageJsons",
     "memberof": "src/comptroller.js~Comptroller",
@@ -937,12 +981,12 @@
     "longname": "src/comptroller.js~Comptroller#writePackageJsons",
     "access": "public",
     "description": "Writes the updated package.json's for each package.",
-    "lineNumber": 116,
+    "lineNumber": 131,
     "params": [],
     "return": null
   },
   {
-    "__docId__": 70,
+    "__docId__": 72,
     "kind": "method",
     "name": "update",
     "memberof": "src/comptroller.js~Comptroller",
@@ -952,12 +996,12 @@
     "longname": "src/comptroller.js~Comptroller#update",
     "access": "public",
     "description": "Updates the packge.json's for all packages.",
-    "lineNumber": 127,
+    "lineNumber": 142,
     "params": [],
     "return": null
   },
   {
-    "__docId__": 71,
+    "__docId__": 73,
     "kind": "method",
     "name": "prune",
     "memberof": "src/comptroller.js~Comptroller",
@@ -967,12 +1011,12 @@
     "longname": "src/comptroller.js~Comptroller#prune",
     "access": "public",
     "description": "Prunes the packge.json's for all packages.",
-    "lineNumber": 166,
+    "lineNumber": 188,
     "params": [],
     "return": null
   },
   {
-    "__docId__": 72,
+    "__docId__": 74,
     "kind": "method",
     "name": "link",
     "memberof": "src/comptroller.js~Comptroller",
@@ -982,15 +1026,15 @@
     "longname": "src/comptroller.js~Comptroller#link",
     "access": "public",
     "description": "Creates a symlink'd node_modules to local packages.",
-    "lineNumber": 194,
+    "lineNumber": 216,
     "params": [],
     "return": null
   },
   {
-    "__docId__": 73,
+    "__docId__": 75,
     "kind": "file",
     "name": "src/package.js",
-    "content": "/** @type {fs} */\nconst fs = require('fs-extra');\n/** @type {path} */\nconst path = require('path');\n/** @type {promisify} */\nconst {promisify} = require('util');\n/** @type {glob} */\nconst glob = promisify(require('glob'));\n/** @external {detective} https://www.npmjs.com/package/@zdychacek/detective */\nconst detective = require('@zdychacek/detective');\n\n/**\n * Provides encapsulation for each local package.\n */\nmodule.exports = class Package\n{\n  /**\n   * Creates a new package.\n   * @param {Comptroller} comptroller - The parent Comptroller instance.\n   * @param {string} dir - The package's directory.\n   */\n  constructor (comptroller, dir)\n  {\n    /** @type {Comptroller} */\n    this._comptroller = comptroller;\n\n    /** @type {string} */\n    this._dir = dir;\n\n    /** @type {string} */\n    this._packageJsonPath = path.join(dir, 'package.json');\n\n    try {\n      /** @type {object} */\n      this._packageJson = require(this._packageJsonPath);\n\n      /** @type {string} */\n      this._name = this._packageJson.name;\n\n      /** @type {string} */\n      this._version = this._packageJson.version;\n    }\n    catch (err)\n    {\n      this._packageJson = null;\n      this._name = null;\n      this._version = null;\n    }\n\n    /** @type {Map<string, string>} */\n    this._dependencies = {};\n  }\n\n  /**\n   * Evaluates a package's dependencies\n   */\n  async evaluateDependencies (detectiveOpts)\n  {\n    return new Promise(async (res, rej) => {\n      const sourcePaths = await glob(path.join(this._dir, '**/*.js'));\n      const dependencies = {};\n      for (let sourcePath of sourcePaths) {\n        const sourceFile = await fs.readFilePromise(sourcePath);\n        let reqs;\n        try {\n          reqs = detective(sourceFile, detectiveOpts);\n        }\n        catch (err) {\n          // Parser error\n          if (err.loc) {\n            let {line, column} = err.loc;\n            return this._comptroller.emit('error', {\n              type: 'parse',\n              err,\n              file: sourcePath,\n              line,\n              column,\n            });\n          }\n          // Config error\n          return this._comptroller.emit('error', {\n            type: 'config',\n            config: 'detective',\n            err,\n          });\n        }\n        for (let req of reqs) {\n          // It's a relative dep, so skip it\n          if (/^\\.\\//.test(req)) continue;\n\n          const split = req.split('/');\n          let name = split.shift();\n          if (name.charAt(0) == '@') name += '/' + split.shift();\n\n          dependencies[name] = {file: sourcePath, name};\n        }\n      }\n\n      this._dependencies = dependencies;\n      res(dependencies);\n    });\n  }\n\n  /**\n   * Updates a packages package.json dependencies.\n   */\n  async updateDependencies ()\n  {\n    const comptroller = this._comptroller;\n    for (let depName in this._dependencies) {\n      const dep = this._dependencies[depName];\n      this._packageJson.dependencies = this._packageJson.dependencies || {};\n      // ignore package\n      if (comptroller._ignorePackages.indexOf(depName) >= 0) continue;\n\n      // local package\n      if (depName in comptroller._packages) {\n        const localPackage = comptroller._packages[depName];\n        if (!(depName in this._packageJson.dependencies)) {\n          this._packageJson.dependencies[depName] = localPackage._version;\n          comptroller.emit('info', {\n            action: 'add',\n            type: 'local',\n            file: dep.file,\n            name: depName,\n            version: localPackage._version,\n            packageJson: this._packageJsonPath,\n          });\n        }\n        else if (this._packageJson.dependencies[depName] !== localPackage._version) {\n          this._packageJson.dependencies[depName] = localPackage._version;\n          this.emit('info', {\n            action: 'update',\n            type: 'local',\n            file: dep.file,\n            name: depName,\n            version: localPackage._version,\n            packageJson: this._packageJsonPath,\n          })\n        }\n      }\n\n      // remote package\n      else {\n        const version = comptroller._packageJson.dependencies[depName];\n        if (!version) {\n          comptroller.emit('warn', {\n            type: 'missing',\n            file: dep.file,\n            name: depName\n          });\n        }\n        else if (!(depName in this._packageJson.dependencies)) {\n          this._packageJson.dependencies[depName] = version;\n          this.emit('info', {\n            action: 'add',\n            type: 'remote',\n            file: dep.file,\n            name: depName,\n            version,\n            packageJson: this._packageJsonPath,\n          });\n        }\n        else if (this._packageJson.dependencies[depName] != version) {\n          this._packageJson.dependencies[depName] = version;\n          comptroller.emit('info', {\n            action: 'update',\n            type: 'remote',\n            file: dep.file,\n            name: depName,\n            version,\n            packageJson: this._packageJsonPath,\n          });\n        }\n      }\n    }\n  }\n\n  /**\n   * Prunes unused dependencies from a packages package.json\n   */\n  async pruneDependencies ()\n  {\n    const comptroller = this._comptroller;\n    for (let depName in this._packageJson.dependencies) {\n      if (!(depName in this._dependencies)) {\n        const version = this._packageJson.dependencies[depName];\n        delete this._packageJson.dependencies[depName];\n        comptroller.emit('info', {\n          action: 'remove',\n          name: depName,\n          version,\n          packageJson: this._packageJsonPath,\n        });\n      }\n    }\n  }\n\n  /**\n   * Writes a package's package.json\n   */\n  async writePackageJson ()\n  {\n    await fs.writeFilePromise(this._packageJsonPath, JSON.stringify(this._packageJson, null, 2));\n  }\n}\n\n\n",
+    "content": "/** @type {fs} */\nconst fs = require('fs-extra');\n/** @type {path} */\nconst path = require('path');\n/** @type {promisify} */\nconst {promisify} = require('util');\n/** @type {glob} */\nconst glob = promisify(require('glob'));\n/** @external {detective} https://www.npmjs.com/package/@zdychacek/detective */\nconst detective = require('@zdychacek/detective');\n/** @external {format-package} https://www.npmjs.com/package/format-package */\nconst format = require('format-package');\n\n/**\n * Provides encapsulation for each local package.\n */\nmodule.exports = class Package\n{\n  /**\n   * Creates a new package.\n   * @param {Comptroller} comptroller - The parent Comptroller instance.\n   * @param {string} dir - The package's directory.\n   */\n  constructor (comptroller, dir)\n  {\n    /** @type {Comptroller} */\n    this._comptroller = comptroller;\n\n    /** @type {string} */\n    this._dir = dir;\n\n    /** @type {string} */\n    this._packageJsonPath = path.join(dir, 'package.json');\n\n    try {\n      /** @type {object} */\n      this._packageJson = require(this._packageJsonPath);\n\n      /** @type {string} */\n      this._name = this._packageJson.name;\n\n      /** @type {string} */\n      this._version = this._packageJson.version;\n\n      /** @type {object} */\n      this._options = this._packageJson.comptroller || {};\n    }\n    catch (err)\n    {\n      this._packageJson = null;\n      this._name = null;\n      this._version = null;\n    }\n\n    /** @type {Map<string, string>} */\n    this._dependencies = {};\n  }\n\n  /**\n   * Evaluates a package's dependencies\n   */\n  async evaluateDependencies (detectiveOpts)\n  {\n    return new Promise(async (res, rej) => {\n      const sourcePaths = await glob(path.join(this._dir, '**/*.js'));\n      const dependencies = {};\n      for (let sourcePath of sourcePaths) {\n        const sourceFile = await fs.readFilePromise(sourcePath);\n        let reqs;\n        try {\n          reqs = detective(sourceFile, detectiveOpts);\n        }\n        catch (err) {\n          // Parser error\n          if (err.loc) {\n            let {line, column} = err.loc;\n            return this._comptroller.emit('error', {\n              type: 'parse',\n              err,\n              file: sourcePath,\n              line,\n              column,\n            });\n          }\n          // Config error\n          return this._comptroller.emit('error', {\n            type: 'config',\n            config: 'detective',\n            err,\n          });\n        }\n        for (let req of reqs) {\n          // It's a relative dep, so skip it\n          if (/^\\.\\//.test(req)) continue;\n\n          const split = req.split('/');\n          let name = split.shift();\n          if (name.charAt(0) == '@') name += '/' + split.shift();\n\n          dependencies[name] = {file: sourcePath, name};\n        }\n      }\n\n      this._dependencies = dependencies;\n      res(dependencies);\n    });\n  }\n\n  /**\n   * Updates a packages package.json with values found in the main package.json\n   */\n  async updatePackageJson ()\n  {\n    const {inherit} = this._options;\n    const packageJson = this._packageJson;\n    const comptroller = this._comptroller;\n    const mainPackageJson = comptroller._packageJson;\n    if (inherit) {\n      for (let key of inherit) {\n        if (key in mainPackageJson) {\n          if (packageJson[key] == mainPackageJson[key]) continue;\n          packageJson[key] = mainPackageJson[key];\n          comptroller.emit('info', {\n            action: 'update-field',\n            key,\n            value: mainPackageJson[key],\n            packageJson: this._packageJsonPath,\n          });\n        }\n        else {\n          comptroller.emit('warn', {\n            type: 'update-field-missing',\n            key,\n            packageJson: this._packageJsonPath,\n          });\n        }\n      }\n    }\n  }\n\n  /**\n   * Updates a packages package.json dependencies.\n   */\n  async updateDependencies ()\n  {\n    const comptroller = this._comptroller;\n    for (let depName in this._dependencies) {\n      const dep = this._dependencies[depName];\n      this._packageJson.dependencies = this._packageJson.dependencies || {};\n      // ignore package\n      if (comptroller._ignorePackages.indexOf(depName) >= 0) continue;\n\n      // local package\n      if (depName in comptroller._packages) {\n        const localPackage = comptroller._packages[depName];\n        if (!(depName in this._packageJson.dependencies)) {\n          this._packageJson.dependencies[depName] = localPackage._version;\n          comptroller.emit('info', {\n            action: 'add',\n            type: 'local',\n            file: dep.file,\n            name: depName,\n            version: localPackage._version,\n            packageJson: this._packageJsonPath,\n          });\n        }\n        else if (this._packageJson.dependencies[depName] !== localPackage._version) {\n          this._packageJson.dependencies[depName] = localPackage._version;\n          comptroller.emit('info', {\n            action: 'update',\n            type: 'local',\n            file: dep.file,\n            name: depName,\n            version: localPackage._version,\n            packageJson: this._packageJsonPath,\n          })\n        }\n      }\n\n      // remote package\n      else {\n        const version = comptroller._packageJson.dependencies[depName];\n        if (!version) {\n          comptroller.emit('warn', {\n            type: 'missing',\n            file: dep.file,\n            name: depName\n          });\n        }\n        else if (!(depName in this._packageJson.dependencies)) {\n          this._packageJson.dependencies[depName] = version;\n          comptroller.emit('info', {\n            action: 'add',\n            type: 'remote',\n            file: dep.file,\n            name: depName,\n            version,\n            packageJson: this._packageJsonPath,\n          });\n        }\n        else if (this._packageJson.dependencies[depName] != version) {\n          this._packageJson.dependencies[depName] = version;\n          comptroller.emit('info', {\n            action: 'update',\n            type: 'remote',\n            file: dep.file,\n            name: depName,\n            version,\n            packageJson: this._packageJsonPath,\n          });\n        }\n      }\n    }\n  }\n\n  /**\n   * Prunes unused dependencies from a packages package.json\n   */\n  async pruneDependencies ()\n  {\n    const comptroller = this._comptroller;\n    for (let depName in this._packageJson.dependencies) {\n      if (!(depName in this._dependencies)) {\n        const version = this._packageJson.dependencies[depName];\n        delete this._packageJson.dependencies[depName];\n        comptroller.emit('info', {\n          action: 'remove',\n          name: depName,\n          version,\n          packageJson: this._packageJsonPath,\n        });\n      }\n    }\n  }\n\n  /**\n   * Format's package.json using {@link format-package}\n   */\n  async formatPackageJson ()\n  {\n    const comptroller = this._comptroller;\n    let opts;\n    if (comptroller._packageJsonOrder) {\n      opts = {order: comptroller._packageJsonOrder};\n    }\n    return await format(this._packageJson, opts);\n  }\n\n  /**\n   * Writes a package's package.json\n   */\n  async writePackageJson ()\n  {\n    await fs.writeFilePromise(this._packageJsonPath, await this.formatPackageJson());\n  }\n}\n\n\n",
     "static": true,
     "longname": "/mnt/storage/Documents/Projects/comptroller/src/package.js",
     "access": "public",
@@ -998,7 +1042,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 74,
+    "__docId__": 76,
     "kind": "variable",
     "name": "fs",
     "memberof": "src/package.js",
@@ -1021,7 +1065,7 @@
     "ignore": true
   },
   {
-    "__docId__": 75,
+    "__docId__": 77,
     "kind": "variable",
     "name": "path",
     "memberof": "src/package.js",
@@ -1044,7 +1088,7 @@
     "ignore": true
   },
   {
-    "__docId__": 76,
+    "__docId__": 78,
     "kind": "variable",
     "name": "promisify",
     "memberof": "src/package.js",
@@ -1067,7 +1111,7 @@
     "ignore": true
   },
   {
-    "__docId__": 77,
+    "__docId__": 79,
     "kind": "variable",
     "name": "glob",
     "memberof": "src/package.js",
@@ -1090,7 +1134,7 @@
     "ignore": true
   },
   {
-    "__docId__": 78,
+    "__docId__": 80,
     "kind": "external",
     "name": "detective",
     "externalLink": "https://www.npmjs.com/package/@zdychacek/detective",
@@ -1102,7 +1146,19 @@
     "lineNumber": 10
   },
   {
-    "__docId__": 79,
+    "__docId__": 81,
+    "kind": "external",
+    "name": "format-package",
+    "externalLink": "https://www.npmjs.com/package/format-package",
+    "memberof": "src/package.js",
+    "static": true,
+    "longname": "src/package.js~format-package",
+    "access": "public",
+    "description": null,
+    "lineNumber": 12
+  },
+  {
+    "__docId__": 82,
     "kind": "class",
     "name": "Package",
     "memberof": "src/package.js",
@@ -1113,11 +1169,11 @@
     "importPath": "comptroller/src/package.js",
     "importStyle": "Package",
     "description": "Provides encapsulation for each local package.",
-    "lineNumber": 15,
+    "lineNumber": 17,
     "interface": false
   },
   {
-    "__docId__": 80,
+    "__docId__": 83,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "src/package.js~Package",
@@ -1127,7 +1183,7 @@
     "longname": "src/package.js~Package#constructor",
     "access": "public",
     "description": "Creates a new package.",
-    "lineNumber": 22,
+    "lineNumber": 24,
     "params": [
       {
         "nullable": null,
@@ -1152,7 +1208,7 @@
     ]
   },
   {
-    "__docId__": 81,
+    "__docId__": 84,
     "kind": "member",
     "name": "_comptroller",
     "memberof": "src/package.js~Package",
@@ -1160,7 +1216,7 @@
     "longname": "src/package.js~Package#_comptroller",
     "access": "private",
     "description": null,
-    "lineNumber": 25,
+    "lineNumber": 27,
     "type": {
       "nullable": null,
       "types": [
@@ -1171,7 +1227,7 @@
     }
   },
   {
-    "__docId__": 82,
+    "__docId__": 85,
     "kind": "member",
     "name": "_dir",
     "memberof": "src/package.js~Package",
@@ -1179,64 +1235,7 @@
     "longname": "src/package.js~Package#_dir",
     "access": "private",
     "description": null,
-    "lineNumber": 28,
-    "type": {
-      "nullable": null,
-      "types": [
-        "string"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 83,
-    "kind": "member",
-    "name": "_packageJsonPath",
-    "memberof": "src/package.js~Package",
-    "static": false,
-    "longname": "src/package.js~Package#_packageJsonPath",
-    "access": "private",
-    "description": null,
-    "lineNumber": 31,
-    "type": {
-      "nullable": null,
-      "types": [
-        "string"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 84,
-    "kind": "member",
-    "name": "_packageJson",
-    "memberof": "src/package.js~Package",
-    "static": false,
-    "longname": "src/package.js~Package#_packageJson",
-    "access": "private",
-    "description": null,
-    "lineNumber": 35,
-    "type": {
-      "nullable": null,
-      "types": [
-        "object"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 85,
-    "kind": "member",
-    "name": "_name",
-    "memberof": "src/package.js~Package",
-    "static": false,
-    "longname": "src/package.js~Package#_name",
-    "access": "private",
-    "description": null,
-    "lineNumber": 38,
+    "lineNumber": 30,
     "type": {
       "nullable": null,
       "types": [
@@ -1249,13 +1248,70 @@
   {
     "__docId__": 86,
     "kind": "member",
+    "name": "_packageJsonPath",
+    "memberof": "src/package.js~Package",
+    "static": false,
+    "longname": "src/package.js~Package#_packageJsonPath",
+    "access": "private",
+    "description": null,
+    "lineNumber": 33,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 87,
+    "kind": "member",
+    "name": "_packageJson",
+    "memberof": "src/package.js~Package",
+    "static": false,
+    "longname": "src/package.js~Package#_packageJson",
+    "access": "private",
+    "description": null,
+    "lineNumber": 37,
+    "type": {
+      "nullable": null,
+      "types": [
+        "object"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 88,
+    "kind": "member",
+    "name": "_name",
+    "memberof": "src/package.js~Package",
+    "static": false,
+    "longname": "src/package.js~Package#_name",
+    "access": "private",
+    "description": null,
+    "lineNumber": 40,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 89,
+    "kind": "member",
     "name": "_version",
     "memberof": "src/package.js~Package",
     "static": false,
     "longname": "src/package.js~Package#_version",
     "access": "private",
     "description": null,
-    "lineNumber": 41,
+    "lineNumber": 43,
     "type": {
       "nullable": null,
       "types": [
@@ -1268,13 +1324,32 @@
   {
     "__docId__": 90,
     "kind": "member",
+    "name": "_options",
+    "memberof": "src/package.js~Package",
+    "static": false,
+    "longname": "src/package.js~Package#_options",
+    "access": "private",
+    "description": null,
+    "lineNumber": 46,
+    "type": {
+      "nullable": null,
+      "types": [
+        "object"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 94,
+    "kind": "member",
     "name": "_dependencies",
     "memberof": "src/package.js~Package",
     "static": false,
     "longname": "src/package.js~Package#_dependencies",
     "access": "private",
     "description": null,
-    "lineNumber": 51,
+    "lineNumber": 56,
     "type": {
       "nullable": null,
       "types": [
@@ -1285,7 +1360,7 @@
     }
   },
   {
-    "__docId__": 91,
+    "__docId__": 95,
     "kind": "method",
     "name": "evaluateDependencies",
     "memberof": "src/package.js~Package",
@@ -1295,7 +1370,7 @@
     "longname": "src/package.js~Package#evaluateDependencies",
     "access": "public",
     "description": "Evaluates a package's dependencies",
-    "lineNumber": 57,
+    "lineNumber": 62,
     "params": [
       {
         "name": "detectiveOpts",
@@ -1311,7 +1386,22 @@
     }
   },
   {
-    "__docId__": 93,
+    "__docId__": 97,
+    "kind": "method",
+    "name": "updatePackageJson",
+    "memberof": "src/package.js~Package",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/package.js~Package#updatePackageJson",
+    "access": "public",
+    "description": "Updates a packages package.json with values found in the main package.json",
+    "lineNumber": 112,
+    "params": [],
+    "return": null
+  },
+  {
+    "__docId__": 98,
     "kind": "method",
     "name": "updateDependencies",
     "memberof": "src/package.js~Package",
@@ -1321,12 +1411,12 @@
     "longname": "src/package.js~Package#updateDependencies",
     "access": "public",
     "description": "Updates a packages package.json dependencies.",
-    "lineNumber": 107,
+    "lineNumber": 144,
     "params": [],
     "return": null
   },
   {
-    "__docId__": 94,
+    "__docId__": 99,
     "kind": "method",
     "name": "pruneDependencies",
     "memberof": "src/package.js~Package",
@@ -1336,12 +1426,31 @@
     "longname": "src/package.js~Package#pruneDependencies",
     "access": "public",
     "description": "Prunes unused dependencies from a packages package.json",
-    "lineNumber": 182,
+    "lineNumber": 219,
     "params": [],
     "return": null
   },
   {
-    "__docId__": 95,
+    "__docId__": 100,
+    "kind": "method",
+    "name": "formatPackageJson",
+    "memberof": "src/package.js~Package",
+    "generator": false,
+    "async": true,
+    "static": false,
+    "longname": "src/package.js~Package#formatPackageJson",
+    "access": "public",
+    "description": "Format's package.json using {@link format-package}",
+    "lineNumber": 239,
+    "params": [],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 101,
     "kind": "method",
     "name": "writePackageJson",
     "memberof": "src/package.js~Package",
@@ -1351,7 +1460,7 @@
     "longname": "src/package.js~Package#writePackageJson",
     "access": "public",
     "description": "Writes a package's package.json",
-    "lineNumber": 202,
+    "lineNumber": 252,
     "params": [],
     "return": null
   },
@@ -1365,7 +1474,7 @@
   },
   {
     "kind": "packageJSON",
-    "content": "{\n  \"name\": \"comptroller\",\n  \"version\": \"0.0.3\",\n  \"description\": \"A simple and lightweight tool to manage your monorepo.\",\n  \"main\": \"src/comptroller.js\",\n  \"directories\": {\n    \"doc\": \"docs\"\n  },\n  \"dependencies\": {\n    \"@zdychacek/detective\": \"^5.0.2\",\n    \"builtin-modules\": \"^1.1.1\",\n    \"fs-extra\": \"^4.0.2\",\n    \"glob\": \"^7.1.2\",\n    \"minimist\": \"^1.2.0\"\n  },\n  \"devDependencies\": {\n    \"esdoc\": \"^1.0.3\",\n    \"esdoc-commonjs-plugin\": \"^1.0.2\",\n    \"esdoc-ecmascript-proposal-plugin\": \"^1.0.0\",\n    \"esdoc-standard-plugin\": \"^1.0.0\"\n  },\n  \"bin\": {\n    \"comp\": \"./src/cli.js\"\n  },\n  \"scripts\": {\n    \"test\": \"echo \\\"Error: no test specified\\\" && exit 1\"\n  },\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"git+https://github.com/Aldlevine/comptroller.git\"\n  },\n  \"keywords\": [\n    \"mono\",\n    \"repo\",\n    \"monorepo\"\n  ],\n  \"author\": \"Aaron Levine <ald.levine@gmail.com>\",\n  \"license\": \"MIT\",\n  \"bugs\": {\n    \"url\": \"https://github.com/Aldlevine/comptroller/issues\"\n  },\n  \"homepage\": \"https://aldlevine.github.io/comptroller\"\n}\n",
+    "content": "{\n  \"name\": \"comptroller\",\n  \"version\": \"0.0.3\",\n  \"description\": \"A simple and lightweight tool to manage your monorepo.\",\n  \"main\": \"src/comptroller.js\",\n  \"directories\": {\n    \"doc\": \"docs\"\n  },\n  \"dependencies\": {\n    \"@zdychacek/detective\": \"^5.0.2\",\n    \"builtin-modules\": \"^1.1.1\",\n    \"format-package\": \"^4.0.2\",\n    \"fs-extra\": \"^4.0.2\",\n    \"glob\": \"^7.1.2\",\n    \"minimist\": \"^1.2.0\"\n  },\n  \"devDependencies\": {\n    \"esdoc\": \"^1.0.3\",\n    \"esdoc-commonjs-plugin\": \"^1.0.2\",\n    \"esdoc-ecmascript-proposal-plugin\": \"^1.0.0\",\n    \"esdoc-standard-plugin\": \"^1.0.0\"\n  },\n  \"bin\": {\n    \"comp\": \"./src/cli.js\"\n  },\n  \"scripts\": {\n    \"test\": \"echo \\\"Error: no test specified\\\" && exit 1\"\n  },\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"git+https://github.com/Aldlevine/comptroller.git\"\n  },\n  \"keywords\": [\n    \"mono\",\n    \"repo\",\n    \"monorepo\"\n  ],\n  \"author\": \"Aaron Levine <ald.levine@gmail.com>\",\n  \"license\": \"MIT\",\n  \"bugs\": {\n    \"url\": \"https://github.com/Aldlevine/comptroller/issues\"\n  },\n  \"homepage\": \"https://aldlevine.github.io/comptroller\"\n}\n",
     "longname": "/mnt/storage/Documents/Projects/comptroller/package.json",
     "name": "package.json",
     "static": true,

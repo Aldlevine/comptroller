@@ -38,6 +38,7 @@
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/path.html">path</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/util.html#util_util_promisify_original">promisify</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://www.npmjs.com/package/@zdychacek/detective">detective</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://www.npmjs.com/package/format-package">format-package</a></span></span></li>
 </ul>
 </div>
 </nav>
@@ -78,12 +79,14 @@ module.exports = class Comptroller extends EventEmitter
    * @param {string} [cfg.packages = &apos;packages&apos;] - The path from `cfg.root` to
    * the packages directory.
    * @param {object} [cfg.detective={}] - The options to pass to {@link detective}
+   * @param {?string[]} [cfg.order] - The order passed to {@link format-package}
    */
   constructor ({
     root = process.cwd(),
     packages = &apos;packages&apos;,
     ignorePackages = builtins,
     detective = {},
+    order,
   }={})
   {
     super();
@@ -102,6 +105,9 @@ module.exports = class Comptroller extends EventEmitter
 
     /** @type {object} */
     this._detectiveOpts = detective;
+
+    /** @type {?string[]} */
+    this._packageJsonOrder = order;
 
     /** @type {string} */
     this._packageJsonPath = path.resolve(root, &apos;package.json&apos;);
@@ -132,6 +138,16 @@ module.exports = class Comptroller extends EventEmitter
       }
       await pkg.evaluateDependencies(this._detectiveOpts);
       this._packages[pkg._name] = pkg;
+    }
+  }
+
+  /**
+   * Updates the dependencies for local packages.
+   */
+  async updatePackageJson ()
+  {
+    for (let pkgName in this._packages) {
+      this._packages[pkgName].updatePackageJson();
     }
   }
 
@@ -182,13 +198,19 @@ module.exports = class Comptroller extends EventEmitter
       else if (info.action == &apos;update&apos;) {
         console.log(`Updated ${info.type} package &quot;${info.name}&quot; to version ${info.version} in ${info.packageJson}`);
       }
+      else if (info.action == &apos;update-field&apos;) {
+        console.log(`Updated field &quot;${info.key}&quot; to &quot;${info.value}&quot; in ${info.packageJson}`);
+      }
     });
     this.on(&apos;warn&apos;, (warn) =&gt; {
       if (warn.type == &apos;missing&apos;) {
         console.warn(`WARNING: remote package &quot;${warn.name}&quot; invoked by ${warn.file} not found in package.json`);
       }
-      if (warn.type == &apos;packagejson&apos;) {
+      else if (warn.type == &apos;packagejson&apos;) {
         console.log(`WARNING: package.json not found in ${warn.path}`);
+      }
+      else if (warn.type == &apos;update-field-missing&apos;) {
+        console.log(`WARNING: field &quot;${warn.key}&quot; invoked by ${warn.packageJson} not found in main package.json`);
       }
     });
     this.on(&apos;error&apos;, (error) =&gt; {
@@ -201,6 +223,7 @@ module.exports = class Comptroller extends EventEmitter
       process.exit(1);
     });
     await this.resolvePackages();
+    await this.updatePackageJson();
     await this.updateDependencies();
     await this.writePackageJsons();
   }
