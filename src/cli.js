@@ -25,7 +25,13 @@ async function cli ()
 {
   let config = {root, packages};
   if (await fs.pathExistsPromise(path.resolve(root, configPath))) {
-    config = {...require(path.resolve(root, configPath)), ...config};
+    try {
+      config = {...require(path.resolve(root, configPath)), ...config};
+    }
+    catch (err) {
+      console.error(`ERROR: ${err.message}`);
+      process.exit(1);
+    }
   }
 
   const c = new Comptroller(config);
@@ -35,6 +41,9 @@ async function cli ()
       break;
     case 'link':
       await c.link();
+      break;
+    case 'prune':
+      await c.prune();
       break;
   }
 }

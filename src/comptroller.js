@@ -8,88 +8,15 @@ const path = require('path');
 const {promisify} = require('util');
 /** @external {glob} https://www.npmjs.com/package/glob */
 const glob = promisify(require('glob'));
-/** @external {detective} https://www.npmjs.com/package/@zdychacek/detective */
-const detective = require('@zdychacek/detective');
 /** @external {builtins} https://www.npmjs.com/package/builtin-modules */
 const builtins = require('builtin-modules');
+/** @type {Package} */
+const Package = require('./package');
 
 fs.readFilePromise = promisify(fs.readFile);
 fs.writeFilePromise = promisify(fs.writeFile);
 fs.ensureDirPromise = promisify(fs.ensureDir);
 fs.ensureSymlinkPromise = promisify(fs.ensureSymlink);
-
-/**
- * Provides encapsulation for each local package.
- */
-class Package
-{
-  /**
-   * Creates a new package.
-   * @param {string} dir - The package's directory.
-   */
-  constructor (dir)
-  {
-    /** @type {string} */
-    this._dir = dir;
-
-    /** @type {string} */
-    this._packageJsonPath = path.join(dir, 'package.json');
-
-    try {
-      /** @type {object} */
-      this._packageJson = require(this._packageJsonPath);
-
-      /** @type {string} */
-      this._name = this._packageJson.name;
-
-      /** @type {string} */
-      this._version = this._packageJson.version;
-    }
-    catch (err)
-    {
-      this._packageJson = null;
-      this._name = null;
-      this._version = null;
-    }
-
-  }
-
-  /**
-   * Evaluates a package's dependencies
-   */
-  async evaluateDependencies (detectiveOpts)
-  {
-    return new Promise(async (res, rej) => {
-      const sourcePaths = await glob(path.join(this._dir, '**/*.js'));
-      const dependencies = {};
-      for (let sourcePath of sourcePaths) {
-        const sourceFile = await fs.readFilePromise(sourcePath);
-        const reqs = detective(sourceFile, detectiveOpts);
-        for (let req of reqs) {
-          // It's a relative dep, so skip it
-          if (/^\.\//.test(req)) continue;
-
-          const split = req.split('/');
-          let name = split.shift();
-          if (name.charAt(0) == '@') name += '/' + split.shift();
-
-          // return {file: sourcePath, name};
-          dependencies[name] = {file: sourcePath, name};
-        }
-      }
-
-      res(dependencies);
-    });
-  }
-
-  /**
-   * Writes a package's package.json
-   */
-  async writePackageJson ()
-  {
-    await fs.writeFilePromise(this._packageJsonPath, JSON.stringify(this._packageJson, null, 2));
-  }
-}
 
 /**
  * The core Comptroller class. It provides encapsulation for all of the stuff
@@ -105,13 +32,15 @@ module.exports = class Comptroller extends EventEmitter
    * main package.json lives).
    * @param {string} [cfg.packages = 'packages'] - The path from `cfg.root` to
    * the packages directory.
-   * @param {object} [cfg.detectiveOpts={}] - The options to pass to {@link detective}
+   * @param {object} [cfg.detective={}] - The options to pass to {@link detective}
+   * @param {?string[]} [cfg.order] - The order passed to {@link format-package}
    */
   constructor ({
     root = process.cwd(),
     packages = 'packages',
     ignorePackages = builtins,
-    detectiveOpts = {},
+    detective = {},
+    order,
   }={})
   {
     super();
@@ -129,13 +58,21 @@ module.exports = class Comptroller extends EventEmitter
     this._ignorePackages = ignorePackages;
 
     /** @type {object} */
-    this._detectiveOpts = detectiveOpts;
+    this._detectiveOpts = detective;
+
+    /** @type {?string[]} */
+    this._packageJsonOrder = order;
 
     /** @type {string} */
     this._packageJsonPath = path.resolve(root, 'package.json');
 
-    /** @type {object} */
-    this._packageJson = require(this._packageJsonPath);
+    try {
+      /** @type {object} */
+      this._packageJson = require(this._packageJsonPath);
+    }
+    catch (err) {
+      this._packageJson = null;
+    }
   }
 
   /**
@@ -145,9 +82,26 @@ module.exports = class Comptroller extends EventEmitter
   {
     const packagePaths = await glob(path.join(this._packagesPath, '*'), {ignore: '**/node_modules/**'});
     for (let packagePath of packagePaths) {
-      const pkg = new Package(packagePath);
-      pkg._dependencies = await pkg.evaluateDependencies(this._detectiveOpts);
+      const pkg = new Package(this, packagePath);
+      if (pkg._packageJson == null) {
+        this.emit('warn', {
+          type: 'packagejson',
+          path: packagePath,
+        });
+        continue;
+      }
+      await pkg.evaluateDependencies(this._detectiveOpts);
       this._packages[pkg._name] = pkg;
+    }
+  }
+
+  /**
+   * Updates the dependencies for local packages.
+   */
+  async updatePackageJson ()
+  {
+    for (let pkgName in this._packages) {
+      this._packages[pkgName].updatePackageJson();
     }
   }
 
@@ -157,63 +111,17 @@ module.exports = class Comptroller extends EventEmitter
   async updateDependencies ()
   {
     for (let pkgName in this._packages) {
-      const pkg = this._packages[pkgName];
-      for (let depName in pkg._dependencies) {
-        const dep = pkg._dependencies[depName];
-        pkg._packageJson.dependencies = pkg._packageJson.dependencies || {};
-        // ignore package
-        if (this._ignorePackages.indexOf(depName) >= 0) continue;
+      this._packages[pkgName].updateDependencies();
+    }
+  }
 
-        // local package
-        if (depName in this._packages) {
-          if (!(depName in pkg._packageJson.dependencies)) {
-            pkg._packageJson.dependencies[depName] = this._packages[depName]._version;
-            this.emit('info', {
-              action: 'add',
-              type: 'local',
-              file: dep.file,
-              name: depName,
-              version: this._packages[depName]._version,
-              packageJson: pkg._packageJsonPath,
-            });
-          }
-          else if (pkg._packageJson.dependencies[depName] !== this._packages[depName]._version) {
-            pkg._packageJson.dependencies[depName] = this._packages[depName]._version;
-            this.emit('info', {
-              action: 'update',
-              type: 'local',
-              file: dep.file,
-              name: depName,
-              version: this._packages[depName]._version,
-              packageJson: pkg._packageJsonPath,
-            })
-          }
-        }
-
-        // remote package
-        else {
-          if (!(depName in pkg._packageJson.dependencies)) {
-            if (!(depName in this._packageJson.dependencies)) {
-              this.emit('warn', {
-                type: 'missing',
-                file: dep.file,
-                name: depName
-              });
-            }
-            else {
-              pkg._packageJson.dependencies[depName] = this._packageJson.dependencies[depName];
-              this.emit('info', {
-                action: 'add',
-                type: 'remote',
-                file: dep.file,
-                name: depName,
-                version: this._packageJson.dependencies[depName],
-                packageJson: pkg._packageJsonPath,
-              })
-            }
-          }
-        }
-      }
+  /**
+   * Prunes the dependencies for local packages.
+   */
+  async pruneDependencies ()
+  {
+    for (let pkgName in this._packages) {
+      this._packages[pkgName].pruneDependencies();
     }
   }
 
@@ -233,21 +141,72 @@ module.exports = class Comptroller extends EventEmitter
    */
   async update ()
   {
+    if (this._packageJson == null) {
+      console.error(`ERROR: package.json not found in ${this._rootPath}`);
+      process.exit(1);
+    }
     this.on('info', (info) => {
       if (info.action == 'add') {
         console.log(`Added ${info.type} package "${info.name}@${info.version}" to ${info.packageJson}`);
       }
       else if (info.action == 'update') {
-        console.log(`Updated ${info.type} package "${info.name}" to version ${info.version} to ${info.packageJson}`);
+        console.log(`Updated ${info.type} package "${info.name}" to version ${info.version} in ${info.packageJson}`);
+      }
+      else if (info.action == 'update-field') {
+        console.log(`Updated field "${info.key}" to ${JSON.stringify(info.value)} in ${info.packageJson}`);
       }
     });
     this.on('warn', (warn) => {
       if (warn.type == 'missing') {
         console.warn(`WARNING: remote package "${warn.name}" invoked by ${warn.file} not found in package.json`);
       }
+      else if (warn.type == 'packagejson') {
+        console.log(`WARNING: package.json not found in ${warn.path}`);
+      }
+      else if (warn.type == 'update-field-missing') {
+        console.log(`WARNING: field "${warn.key}" invoked by ${warn.packageJson} not found in main package.json`);
+      }
+    });
+    this.on('error', (error) => {
+      if (error.type == 'parse') {
+        console.error(`ERROR: ${error.err.message} ${error.file}:${error.line}:${error.column}`);
+      }
+      else if (error.type == 'config') {
+        console.error(`ERROR: ${error.err.message} in config option "${error.config}"`);
+      }
+      process.exit(1);
     });
     await this.resolvePackages();
+    await this.updatePackageJson();
     await this.updateDependencies();
+    await this.writePackageJsons();
+  }
+
+  /**
+   * Prunes the packge.json's for all packages.
+   */
+  async prune ()
+  {
+    if (this._packageJson == null) {
+      console.error(`ERROR: package.json not found in ${this._rootPath}`);
+      process.exit(1);
+    }
+    this.on('info', (info) => {
+      if (info.action == 'remove') {
+        console.log(`Removed package "${info.name}@${info.version}" from ${info.packageJson}`);
+      }
+    });
+    this.on('error', (error) => {
+      if (error.type == 'parse') {
+        console.error(`ERROR: ${error.err.message} ${error.file}:${error.line}:${error.column}`);
+      }
+      else if (error.type == 'config') {
+        console.error(`ERROR: ${error.err.message} in config option "${error.config}"`);
+      }
+      process.exit(1);
+    });
+    await this.resolvePackages();
+    await this.pruneDependencies();
     await this.writePackageJsons();
   }
 
@@ -256,6 +215,16 @@ module.exports = class Comptroller extends EventEmitter
    */
   async link ()
   {
+    this.on('error', (error) => {
+      if (error.type == 'parse') {
+        console.error(`ERROR: ${error.err.message} ${error.file}:${error.line}:${error.column}`);
+      }
+      else if (error.type == 'config') {
+        console.error(`ERROR: ${error.err.message} in config option "${error.config}"`);
+      }
+      process.exit(1);
+    });
+
     await fs.ensureDirPromise(path.join(this._packagesPath, 'node_modules'));
     await this.resolvePackages();
 
@@ -266,4 +235,3 @@ module.exports = class Comptroller extends EventEmitter
     }
   }
 }
-

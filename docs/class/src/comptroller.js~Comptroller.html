@@ -30,25 +30,28 @@
   <ul>
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/comptroller.js~Comptroller.html">Comptroller</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/package.js~Package.html">Package</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/events.html#events_class_eventemitter">EventEmitter</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://www.npmjs.com/package/builtin-modules">builtins</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://www.npmjs.com/package/@zdychacek/detective">detective</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://www.npmjs.com/package/fs-extra">fs</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://www.npmjs.com/package/glob">glob</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/path.html">path</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/util.html#util_util_promisify_original">promisify</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://www.npmjs.com/package/deep-equal">deep-equal</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://www.npmjs.com/package/@zdychacek/detective">detective</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://www.npmjs.com/package/format-package">format-package</a></span></span></li>
 </ul>
 </div>
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import Comptroller from &apos;<span><a href="file/src/comptroller.js.html#lineNumber98">comptroller</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import Comptroller from &apos;<span><a href="file/src/comptroller.js.html#lineNumber25">comptroller</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
   
   
   
-  <span data-ice="source">| <span><a href="file/src/comptroller.js.html#lineNumber98">source</a></span></span>
+  <span data-ice="source">| <span><a href="file/src/comptroller.js.html#lineNumber25">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
@@ -195,6 +198,34 @@ that Comptroller is supposed to do</p>
           
           
           <span class="code" data-ice="name"><span><a href="class/src/comptroller.js~Comptroller.html#instance-member-_packageJson">_packageJson</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span></span>
+        </p>
+      </div>
+      <div>
+        
+        
+        
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">private</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          
+          
+          <span class="code" data-ice="name"><span><a href="class/src/comptroller.js~Comptroller.html#instance-member-_packageJsonOrder">_packageJsonOrder</a></span></span><span class="code" data-ice="signature">: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span><span>[]</span></span></span>
         </p>
       </div>
       <div>
@@ -370,6 +401,64 @@ that Comptroller is supposed to do</p>
           
           <span data-ice="async">async</span>
           
+          <span class="code" data-ice="name"><span><a href="class/src/comptroller.js~Comptroller.html#instance-method-prune">prune</a></span></span><span class="code" data-ice="signature">()</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Prunes the packge.json&apos;s for all packages.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          <span data-ice="async">async</span>
+          
+          <span class="code" data-ice="name"><span><a href="class/src/comptroller.js~Comptroller.html#instance-method-pruneDependencies">pruneDependencies</a></span></span><span class="code" data-ice="signature">()</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Prunes the dependencies for local packages.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          <span data-ice="async">async</span>
+          
           <span class="code" data-ice="name"><span><a href="class/src/comptroller.js~Comptroller.html#instance-method-resolvePackages">resolvePackages</a></span></span><span class="code" data-ice="signature">()</span>
         </p>
       </div>
@@ -457,6 +546,35 @@ that Comptroller is supposed to do</p>
           
           <span data-ice="async">async</span>
           
+          <span class="code" data-ice="name"><span><a href="class/src/comptroller.js~Comptroller.html#instance-method-updatePackageJson">updatePackageJson</a></span></span><span class="code" data-ice="signature">()</span>
+        </p>
+      </div>
+      <div>
+        
+        
+        <div data-ice="description"><p>Updates the dependencies for local packages.</p>
+</div>
+      </div>
+    </td>
+    <td>
+      
+      
+    </td>
+  </tr>
+<tr data-ice="target">
+    <td>
+      <span class="access" data-ice="access">public</span>
+      
+      
+      
+      <span class="override" data-ice="override"></span>
+    </td>
+    <td>
+      <div>
+        <p>
+          
+          <span data-ice="async">async</span>
+          
           <span class="code" data-ice="name"><span><a href="class/src/comptroller.js~Comptroller.html#instance-method-writePackageJsons">writePackageJsons</a></span></span><span class="code" data-ice="signature">()</span>
         </p>
       </div>
@@ -494,7 +612,7 @@ that Comptroller is supposed to do</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/comptroller.js.html#lineNumber110">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/comptroller.js.html#lineNumber38">source</a></span></span>
     </span>
   </h3>
 
@@ -540,11 +658,19 @@ the packages directory.</p>
 </td>
     </tr>
 <tr data-ice="property" data-depth="1">
-      <td data-ice="name" class="code" data-depth="1">cfg.detectiveOpts</td>
+      <td data-ice="name" class="code" data-depth="1">cfg.detective</td>
       <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span></td>
       <td data-ice="appendix"><ul><li>optional</li>
 <li>default: {}</li></ul></td>
       <td data-ice="description"><p>The options to pass to <span><a href="https://www.npmjs.com/package/@zdychacek/detective">detective</a></span></p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="1">
+      <td data-ice="name" class="code" data-depth="1">cfg.order</td>
+      <td data-ice="type" class="code"><span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span><span>[]</span></span></td>
+      <td data-ice="appendix"><ul><li>optional</li>
+<li>nullable: true</li></ul></td>
+      <td data-ice="description"><p>The order passed to <span><a href="https://www.npmjs.com/package/format-package">format-package</a></span></p>
 </td>
     </tr>
 </tbody>
@@ -584,7 +710,7 @@ the packages directory.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/comptroller.js.html#lineNumber132">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/comptroller.js.html#lineNumber61">source</a></span></span>
     </span>
   </h3>
 
@@ -627,7 +753,7 @@ the packages directory.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/comptroller.js.html#lineNumber129">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/comptroller.js.html#lineNumber58">source</a></span></span>
     </span>
   </h3>
 
@@ -670,7 +796,50 @@ the packages directory.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/comptroller.js.html#lineNumber138">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/comptroller.js.html#lineNumber71">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-member-_packageJsonOrder">
+    <span class="access" data-ice="access">private</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">_packageJsonOrder</span><span class="code" data-ice="signature">: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span><span>[]</span></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/comptroller.js.html#lineNumber64">source</a></span></span>
     </span>
   </h3>
 
@@ -713,7 +882,7 @@ the packages directory.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/comptroller.js.html#lineNumber135">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/comptroller.js.html#lineNumber67">source</a></span></span>
     </span>
   </h3>
 
@@ -756,7 +925,7 @@ the packages directory.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/comptroller.js.html#lineNumber126">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/comptroller.js.html#lineNumber55">source</a></span></span>
     </span>
   </h3>
 
@@ -799,7 +968,7 @@ the packages directory.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/comptroller.js.html#lineNumber123">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/comptroller.js.html#lineNumber52">source</a></span></span>
     </span>
   </h3>
 
@@ -842,7 +1011,7 @@ the packages directory.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/comptroller.js.html#lineNumber120">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/comptroller.js.html#lineNumber49">source</a></span></span>
     </span>
   </h3>
 
@@ -888,7 +1057,7 @@ the packages directory.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/comptroller.js.html#lineNumber254">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/comptroller.js.html#lineNumber216">source</a></span></span>
     </span>
   </h3>
 
@@ -896,6 +1065,94 @@ the packages directory.</p>
   
   
   <div data-ice="description"><p>Creates a symlink&apos;d node_modules to local packages.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-prune">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    <span data-ice="async">async</span>
+    
+    <span class="code" data-ice="name">prune</span><span class="code" data-ice="signature">()</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/comptroller.js.html#lineNumber188">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Prunes the packge.json&apos;s for all packages.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-pruneDependencies">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    <span data-ice="async">async</span>
+    
+    <span class="code" data-ice="name">pruneDependencies</span><span class="code" data-ice="signature">()</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/comptroller.js.html#lineNumber121">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Prunes the dependencies for local packages.</p>
 </div>
 
   
@@ -932,7 +1189,7 @@ the packages directory.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/comptroller.js.html#lineNumber144">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/comptroller.js.html#lineNumber81">source</a></span></span>
     </span>
   </h3>
 
@@ -976,7 +1233,7 @@ the packages directory.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/comptroller.js.html#lineNumber231">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/comptroller.js.html#lineNumber142">source</a></span></span>
     </span>
   </h3>
 
@@ -1020,7 +1277,51 @@ the packages directory.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/comptroller.js.html#lineNumber157">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/comptroller.js.html#lineNumber111">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Updates the dependencies for local packages.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-updatePackageJson">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    <span data-ice="async">async</span>
+    
+    <span class="code" data-ice="name">updatePackageJson</span><span class="code" data-ice="signature">()</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/comptroller.js.html#lineNumber101">source</a></span></span>
     </span>
   </h3>
 
@@ -1064,7 +1365,7 @@ the packages directory.</p>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/comptroller.js.html#lineNumber220">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/comptroller.js.html#lineNumber131">source</a></span></span>
     </span>
   </h3>
 
