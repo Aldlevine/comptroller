@@ -33,12 +33,14 @@ module.exports = class Comptroller extends EventEmitter
    * @param {string} [cfg.packages = 'packages'] - The path from `cfg.root` to
    * the packages directory.
    * @param {object} [cfg.detective={}] - The options to pass to {@link detective}
+   * @param {?string[]} [cfg.order] - The order passed to {@link format-package}
    */
   constructor ({
     root = process.cwd(),
     packages = 'packages',
     ignorePackages = builtins,
     detective = {},
+    order,
   }={})
   {
     super();
@@ -57,6 +59,9 @@ module.exports = class Comptroller extends EventEmitter
 
     /** @type {object} */
     this._detectiveOpts = detective;
+
+    /** @type {?string[]} */
+    this._packageJsonOrder = order;
 
     /** @type {string} */
     this._packageJsonPath = path.resolve(root, 'package.json');
@@ -87,6 +92,16 @@ module.exports = class Comptroller extends EventEmitter
       }
       await pkg.evaluateDependencies(this._detectiveOpts);
       this._packages[pkg._name] = pkg;
+    }
+  }
+
+  /**
+   * Updates the dependencies for local packages.
+   */
+  async updatePackageJson ()
+  {
+    for (let pkgName in this._packages) {
+      this._packages[pkgName].updatePackageJson();
     }
   }
 
@@ -137,13 +152,19 @@ module.exports = class Comptroller extends EventEmitter
       else if (info.action == 'update') {
         console.log(`Updated ${info.type} package "${info.name}" to version ${info.version} in ${info.packageJson}`);
       }
+      else if (info.action == 'update-field') {
+        console.log(`Updated field "${info.key}" to "${info.value}" in ${info.packageJson}`);
+      }
     });
     this.on('warn', (warn) => {
       if (warn.type == 'missing') {
         console.warn(`WARNING: remote package "${warn.name}" invoked by ${warn.file} not found in package.json`);
       }
-      if (warn.type == 'packagejson') {
+      else if (warn.type == 'packagejson') {
         console.log(`WARNING: package.json not found in ${warn.path}`);
+      }
+      else if (warn.type == 'update-field-missing') {
+        console.log(`WARNING: field "${warn.key}" invoked by ${warn.packageJson} not found in main package.json`);
       }
     });
     this.on('error', (error) => {
@@ -156,6 +177,7 @@ module.exports = class Comptroller extends EventEmitter
       process.exit(1);
     });
     await this.resolvePackages();
+    await this.updatePackageJson();
     await this.updateDependencies();
     await this.writePackageJsons();
   }

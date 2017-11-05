@@ -8,6 +8,8 @@ const {promisify} = require('util');
 const glob = promisify(require('glob'));
 /** @external {detective} https://www.npmjs.com/package/@zdychacek/detective */
 const detective = require('@zdychacek/detective');
+/** @external {format-package} https://www.npmjs.com/package/format-package */
+const format = require('format-package');
 
 /**
  * Provides encapsulation for each local package.
@@ -39,6 +41,9 @@ module.exports = class Package
 
       /** @type {string} */
       this._version = this._packageJson.version;
+
+      /** @type {object} */
+      this._options = this._packageJson.comptroller || {};
     }
     catch (err)
     {
@@ -102,6 +107,38 @@ module.exports = class Package
   }
 
   /**
+   * Updates a packages package.json with values found in the main package.json
+   */
+  async updatePackageJson ()
+  {
+    const {inherit} = this._options;
+    const packageJson = this._packageJson;
+    const comptroller = this._comptroller;
+    const mainPackageJson = comptroller._packageJson;
+    if (inherit) {
+      for (let key of inherit) {
+        if (key in mainPackageJson) {
+          if (packageJson[key] == mainPackageJson[key]) continue;
+          packageJson[key] = mainPackageJson[key];
+          comptroller.emit('info', {
+            action: 'update-field',
+            key,
+            value: mainPackageJson[key],
+            packageJson: this._packageJsonPath,
+          });
+        }
+        else {
+          comptroller.emit('warn', {
+            type: 'update-field-missing',
+            key,
+            packageJson: this._packageJsonPath,
+          });
+        }
+      }
+    }
+  }
+
+  /**
    * Updates a packages package.json dependencies.
    */
   async updateDependencies ()
@@ -129,7 +166,7 @@ module.exports = class Package
         }
         else if (this._packageJson.dependencies[depName] !== localPackage._version) {
           this._packageJson.dependencies[depName] = localPackage._version;
-          this.emit('info', {
+          comptroller.emit('info', {
             action: 'update',
             type: 'local',
             file: dep.file,
@@ -152,7 +189,7 @@ module.exports = class Package
         }
         else if (!(depName in this._packageJson.dependencies)) {
           this._packageJson.dependencies[depName] = version;
-          this.emit('info', {
+          comptroller.emit('info', {
             action: 'add',
             type: 'remote',
             file: dep.file,
@@ -197,11 +234,24 @@ module.exports = class Package
   }
 
   /**
+   * Format's package.json using {@link format-package}
+   */
+  async formatPackageJson ()
+  {
+    const comptroller = this._comptroller;
+    let opts;
+    if (comptroller._packageJsonOrder) {
+      opts = {order: comptroller._packageJsonOrder};
+    }
+    return await format(this._packageJson, opts);
+  }
+
+  /**
    * Writes a package's package.json
    */
   async writePackageJson ()
   {
-    await fs.writeFilePromise(this._packageJsonPath, JSON.stringify(this._packageJson, null, 2));
+    await fs.writeFilePromise(this._packageJsonPath, await this.formatPackageJson());
   }
 }
 
