@@ -153,7 +153,7 @@ module.exports = class Comptroller extends EventEmitter
         console.log(`Updated ${info.type} package "${info.name}" to version ${info.version} in ${info.packageJson}`);
       }
       else if (info.action == 'update-field') {
-        console.log(`Updated field "${info.key}" to "${info.value}" in ${info.packageJson}`);
+        console.log(`Updated field "${info.key}" to ${JSON.stringify(info.value)} in ${info.packageJson}`);
       }
     });
     this.on('warn', (warn) => {

@@ -486,12 +486,6 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
-    "src/package.js~package#_version",
-    "class/src/package.js~Package.html#instance-member-_version",
-    "src/package.js~Package#_version",
-    "member"
-  ],
-  [
     "src/package.js~package#constructor",
     "class/src/package.js~Package.html#instance-constructor-constructor",
     "src/package.js~Package#constructor",
@@ -528,10 +522,22 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/package.js~package#version",
+    "class/src/package.js~Package.html#instance-get-version",
+    "src/package.js~Package#version",
+    "member"
+  ],
+  [
     "src/package.js~package#writepackagejson",
     "class/src/package.js~Package.html#instance-method-writePackageJson",
     "src/package.js~Package#writePackageJson",
     "method"
+  ],
+  [
+    "src/package.js~deep-equal",
+    "https://www.npmjs.com/package/deep-equal",
+    "src/package.js~deep-equal",
+    "external"
   ],
   [
     "src/package.js~detective",

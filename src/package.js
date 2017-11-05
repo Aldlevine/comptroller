@@ -10,6 +10,8 @@ const glob = promisify(require('glob'));
 const detective = require('@zdychacek/detective');
 /** @external {format-package} https://www.npmjs.com/package/format-package */
 const format = require('format-package');
+/** @external {deep-equal} https://www.npmjs.com/package/deep-equal */
+const deepEqual = require('deep-equal');
 
 /**
  * Provides encapsulation for each local package.
@@ -39,9 +41,6 @@ module.exports = class Package
       /** @type {string} */
       this._name = this._packageJson.name;
 
-      /** @type {string} */
-      this._version = this._packageJson.version;
-
       /** @type {object} */
       this._options = this._packageJson.comptroller || {};
     }
@@ -49,12 +48,15 @@ module.exports = class Package
     {
       this._packageJson = null;
       this._name = null;
-      this._version = null;
+      this._options = {};
     }
 
     /** @type {Map<string, string>} */
     this._dependencies = {};
   }
+
+  /** Gets the package version */
+  get version () {return this._packageJson.version}
 
   /**
    * Evaluates a package's dependencies
@@ -118,7 +120,8 @@ module.exports = class Package
     if (inherit) {
       for (let key of inherit) {
         if (key in mainPackageJson) {
-          if (packageJson[key] == mainPackageJson[key]) continue;
+          if (deepEqual(packageJson[key], mainPackageJson[key])) continue;
+          // if (packageJson[key] == mainPackageJson[key]) continue;
           packageJson[key] = mainPackageJson[key];
           comptroller.emit('info', {
             action: 'update-field',
@@ -154,24 +157,24 @@ module.exports = class Package
       if (depName in comptroller._packages) {
         const localPackage = comptroller._packages[depName];
         if (!(depName in this._packageJson.dependencies)) {
-          this._packageJson.dependencies[depName] = localPackage._version;
+          this._packageJson.dependencies[depName] = localPackage.version;
           comptroller.emit('info', {
             action: 'add',
             type: 'local',
             file: dep.file,
             name: depName,
-            version: localPackage._version,
+            version: localPackage.version,
             packageJson: this._packageJsonPath,
           });
         }
-        else if (this._packageJson.dependencies[depName] !== localPackage._version) {
-          this._packageJson.dependencies[depName] = localPackage._version;
+        else if (this._packageJson.dependencies[depName] !== localPackage.version) {
+          this._packageJson.dependencies[depName] = localPackage.version;
           comptroller.emit('info', {
             action: 'update',
             type: 'local',
             file: dep.file,
             name: depName,
-            version: localPackage._version,
+            version: localPackage.version,
             packageJson: this._packageJsonPath,
           })
         }
