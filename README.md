@@ -1,9 +1,11 @@
 # Comptroller
 
+[![Docs Status](https://aldlevine.github.io/comptroller/badge.svg)](https://aldlevine.github.io/comptroller/source.html)
+
 A simple and lightweight tool to manage your monorepo.
 
-_Warning: This is a very basic and rough build so far. Also, it automatically
-updates your local package's package.json dependencies. Use at your own risk!_
+_Warning: This automatically updates your local package's package.json
+dependencies. Use at your own risk!_
 
 ## Install
 
@@ -13,25 +15,24 @@ npm i comptroller
 
 ## Usage
 
-__Update dependencies in__ `packages/**/package.json` __with discovered dependencies in main__ `package.json`
-
 ```
-comp update [--root|-r <root dir>] [--packges|-p <packages dir>]
-```
+comp <command> [options]
 
-__Link__ `packages/*` __to__ `packages/node_modules/*`
+Commands:
+--------
+help                      Show this message
+update [root-directory]   Update all subpackages of package found at [root-directory]
+link [root-directory]     Create symlink in node_modules for each subpackage found at [root-directory]
+version                   Print Comptroller version
 
-```
-comp link [--root|-r <root dir>] [--packges|-p <packages dir>]
-```
-
-__Prune extraneous packages from__ `packages/**/package.json`
-
-```
-comp prune [--root|-r <root dir>] [--packges|-p <packages dir>]
+Options:
+--------
+--prune -p                 Remove unused dependencies from subpackges' package.json
 ```
 
 ## How it works
+
+### Commands
 
 __update__
 
@@ -57,10 +58,7 @@ specified `packages` directory. This directory points to the `packages`
 directory itself and enables `require` calls to local packages without the need
 for relative paths or to `npm install` or `npm link` them.
 
-__create__: _Not implemented_
-
-Comptroller's `create` command creates a new package in the specified directory
-with a stub `package.json` just waiting to be "comp updated".
+### Options
 
 __prune__
 
