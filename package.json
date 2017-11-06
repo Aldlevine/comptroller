@@ -17,16 +17,19 @@
     "minimist": "^1.2.0"
   },
   "devDependencies": {
+    "chai": "^4.1.2",
     "esdoc": "^1.0.3",
     "esdoc-ecmascript-proposal-plugin": "^1.0.0",
     "esdoc-node": "^1.0.2",
-    "esdoc-standard-plugin": "^1.0.0"
+    "esdoc-standard-plugin": "^1.0.0",
+    "mocha": "^4.0.1",
+    "nyc": "^11.3.0"
   },
   "bin": {
     "comp": "./src/cli.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "nyc mocha"
   },
   "repository": {
     "type": "git",
