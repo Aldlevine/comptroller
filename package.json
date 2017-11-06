@@ -9,6 +9,7 @@
   "dependencies": {
     "@zdychacek/detective": "^5.0.2",
     "builtin-modules": "^1.1.1",
+    "dedent": "^0.7.0",
     "deep-equal": "^1.0.1",
     "format-package": "^4.0.2",
     "fs-extra": "^4.0.2",
@@ -17,8 +18,8 @@
   },
   "devDependencies": {
     "esdoc": "^1.0.3",
-    "esdoc-commonjs-plugin": "^1.0.2",
     "esdoc-ecmascript-proposal-plugin": "^1.0.0",
+    "esdoc-node": "^1.0.2",
     "esdoc-standard-plugin": "^1.0.0"
   },
   "bin": {
@@ -41,5 +42,14 @@
   "bugs": {
     "url": "https://github.com/Aldlevine/comptroller/issues"
   },
-  "homepage": "https://aldlevine.github.io/comptroller"
+  "homepage": "https://aldlevine.github.io/comptroller",
+  "comptroller": {
+    "detective": {
+      "parse": {
+        "plugins": [
+          "objectRestSpread"
+        ]
+      }
+    }
+  }
 }

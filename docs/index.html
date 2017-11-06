@@ -31,30 +31,29 @@
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/comptroller.js~Comptroller.html">Comptroller</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/package.js~Package.html">Package</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/events.html#events_class_eventemitter">EventEmitter</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://www.npmjs.com/package/builtin-modules">builtins</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://www.npmjs.com/package/fs-extra">fs</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://www.npmjs.com/package/glob">glob</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/path.html">path</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/util.html#util_util_promisify_original">promisify</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://www.npmjs.com/package/deep-equal">deep-equal</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://www.npmjs.com/package/@zdychacek/detective">detective</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://www.npmjs.com/package/format-package">format-package</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/patch.js~Patch.html">Patch</a></span></span></li>
 </ul>
 </div>
 </nav>
 
-<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="comptroller">Comptroller</h1><p>A simple and lightweight tool to manage your monorepo.</p>
-<p><em>Warning: This is a very basic and rough build so far. Also, it automatically
-updates your local package&apos;s package.json dependencies. Use at your own risk!</em></p>
+<div class="content" data-ice="content"><div data-ice="index" class="github-markdown"><h1 id="comptroller">Comptroller</h1><p><a href="https://aldlevine.github.io/comptroller/source.html"><img src="https://aldlevine.github.io/comptroller/badge.svg" alt="Docs Status"></a></p>
+<p>A simple and lightweight tool to manage your monorepo.</p>
+<p><em>Warning: This automatically updates your local package&apos;s package.json
+dependencies. Use at your own risk!</em></p>
 <h2 id="install">Install</h2><pre><code><code class="source-code prettyprint">npm i comptroller</code>
-</code></pre><h2 id="usage">Usage</h2><p><strong>Update dependencies in</strong> <code>packages/**/package.json</code> <strong>with discovered dependencies in main</strong> <code>package.json</code></p>
-<pre><code><code class="source-code prettyprint">comp update [--root|-r &lt;root dir&gt;] [--packges|-p &lt;packages dir&gt;]</code>
-</code></pre><p><strong>Link</strong> <code>packages/*</code> <strong>to</strong> <code>packages/node_modules/*</code></p>
-<pre><code><code class="source-code prettyprint">comp link [--root|-r &lt;root dir&gt;] [--packges|-p &lt;packages dir&gt;]</code>
-</code></pre><p><strong>Prune extraneous packages from</strong> <code>packages/**/package.json</code></p>
-<pre><code><code class="source-code prettyprint">comp prune [--root|-r &lt;root dir&gt;] [--packges|-p &lt;packages dir&gt;]</code>
-</code></pre><h2 id="how-it-works">How it works</h2><p><strong>update</strong></p>
+</code></pre><h2 id="usage">Usage</h2><pre><code><code class="source-code prettyprint">comp &lt;command&gt; [options]
+
+Commands:
+--------
+help                      Show this message
+update [root-directory]   Update all subpackages of package found at [root-directory]
+link [root-directory]     Create symlink in node_modules for each subpackage found at [root-directory]
+version                   Print Comptroller version
+
+Options:
+--------
+--prune -p                 Remove unused dependencies from subpackges&apos; package.json</code>
+</code></pre><h2 id="how-it-works">How it works</h2><h3 id="commands">Commands</h3><p><strong>update</strong></p>
 <p>Comptroller&apos;s <code>update</code> command analyzes the packages in a given directory and
 identifies static <code>require</code> calls. Using this, it is able to update each
 package&apos;s <code>package.json</code> to include these as dependencies (Comptroller ignores
@@ -74,10 +73,7 @@ of the specified package.</p>
 specified <code>packages</code> directory. This directory points to the <code>packages</code>
 directory itself and enables <code>require</code> calls to local packages without the need
 for relative paths or to <code>npm install</code> or <code>npm link</code> them.</p>
-<p><strong>create</strong>: <em>Not implemented</em></p>
-<p>Comptroller&apos;s <code>create</code> command creates a new package in the specified directory
-with a stub <code>package.json</code> just waiting to be &quot;comp updated&quot;.</p>
-<p><strong>prune</strong></p>
+<h3 id="options">Options</h3><p><strong>prune</strong></p>
 <p>Comptroller&apos;s <code>prune</code> command takes all those extraneous dependencies found by
 the <code>update</code> command and delivers them to the void.</p>
 <h2 id="the-nitty-gritty">The nitty gritty</h2><p><em>TODO: describe how to use the thing in detail</em></p>
