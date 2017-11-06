@@ -10,7 +10,6 @@
     "@zdychacek/detective": "^5.0.2",
     "builtin-modules": "^1.1.1",
     "dedent": "^0.7.0",
-    "deep-equal": "^1.0.1",
     "format-package": "^4.0.2",
     "fs-extra": "^4.0.2",
     "glob": "^7.1.2",
