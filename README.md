@@ -62,7 +62,7 @@ for relative paths or to `npm install` or `npm link` them.
 
 __prune__
 
-Comptroller's `prune` command takes all those extraneous dependencies found by
+Comptroller's `prune` option takes all those extraneous dependencies found by
 the `update` command and delivers them to the void.
 
 ## The nitty gritty

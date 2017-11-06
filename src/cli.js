@@ -7,14 +7,38 @@ const dedent = require('dedent');
 const fs = require('./fs');
 const Comptroller = require('./comptroller');
 
-/** The cli arguments */
+/**
+ * The cli arguments
+ * @type {object}
+ */
 const argv = minimist(process.argv.slice(2));
+
+/**
+ * The command to run
+ * @type {string}
+ */
 const command = argv._[0] || 'help';
+
+/**
+ * The package root dir
+ * @type {string}
+ */
 const root = argv._[1] || '.';
 
+/**
+ * Whether or not Comtroller should prune dependencies.
+ * @type {boolean}
+ */
 const prune = argv.prune || argv.p;
 
+/**
+ * A function map for all cli commands
+ * @type {Map<string, function>}
+ */
 const cli = {
+  /**
+   * Prints the help message
+   */
   help ()
   {
     console.log(dedent`
@@ -37,6 +61,9 @@ const cli = {
     `);
   },
 
+  /**
+   * Updates all subpackages of package found at [root-directory]
+   */
   async update ()
   {
     const comp = new Comptroller({root, prune});
@@ -44,12 +71,18 @@ const cli = {
     await comp.writePackages();
   },
 
+  /**
+   * Creates symlink in node_modules for each subpackage found at [root-directory]
+   */
   async link ()
   {
     const comp = new Comptroller({root, prune});
     await comp.linkPackages();
   },
 
+  /**
+   * Prints Comptroller version
+   */
   version ()
   {
     console.log(`Comptroller ${version}`);

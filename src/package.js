@@ -227,6 +227,8 @@ module.exports = class Package
    */
   applyPatch (patch)
   {
+    if (patch.disabled) return;
+
     switch (patch.type) {
       case Patch.ADD:
       case Patch.UPDATE:
