@@ -6,6 +6,7 @@ const Package = require('../src/package');
 describe('Package', function () {
   beforeEach(async function () {
     this.packageDir = path.resolve(__dirname, 'test-package')
+    await rempkg(this.packageDir);
     await makepkg(this.packageDir, fileStructure);
     this.package = new Package({root: this.packageDir});
   });
@@ -45,7 +46,29 @@ describe('Package', function () {
         'events': {files: ['packages/package-1/index.js']},
         '@test/package-1': {files: ['packages/package-2/index.js']}
       };
-      expect(await this.package.analyzeSourceDependencies()).to.deep.equal(dependencies);
+      const analyzed = await this.package.analyzeSourceDependencies();
+      expect(analyzed).to.have.all.keys('dependency-1', 'dependency-2', 'http', 'not-a-package', 'doesnt-exist', 'events', '@test/package-1');
+
+      expect(analyzed['dependency-1']).to.have.key('files');
+      expect(analyzed['dependency-1']['files']).to.include('index.js', 'packages/package-1/index.js', 'packages/package-2/index.js');
+
+      expect(analyzed['dependency-2']).to.have.key('files');
+      expect(analyzed['dependency-2']['files']).to.include('index.js', 'packages/package-2/index.js');
+
+      expect(analyzed['http']).to.have.key('files');
+      expect(analyzed['http']['files']).to.include('index.js');
+
+      expect(analyzed['not-a-package']).to.have.key('files');
+      expect(analyzed['not-a-package']['files']).to.include('index.js');
+
+      expect(analyzed['doesnt-exist']).to.have.key('files');
+      expect(analyzed['doesnt-exist']['files']).to.include('packages/package-1/index.js');
+
+      expect(analyzed['events']).to.have.key('files');
+      expect(analyzed['events']['files']).to.include('packages/package-1/index.js');
+
+      expect(analyzed['@test/package-1']).to.have.key('files');
+      expect(analyzed['@test/package-1']['files']).to.include('packages/package-2/index.js');
     });
   });
 });

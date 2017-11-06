@@ -1,5 +1,7 @@
 # Comptroller
 
+[![Build Status](https://travis-ci.org/Aldlevine/comptroller.svg?branch=master)](https://travis-ci.org/Aldlevine/comptroller)
+[![Coverage Status](https://coveralls.io/repos/github/Aldlevine/comptroller/badge.svg?branch=master)](https://coveralls.io/github/Aldlevine/comptroller?branch=master)
 [![Greenkeeper badge](https://badges.greenkeeper.io/Aldlevine/comptroller.svg)](https://greenkeeper.io/)
 [![Docs Status](https://aldlevine.github.io/comptroller/badge.svg)](https://aldlevine.github.io/comptroller/source.html)
 
