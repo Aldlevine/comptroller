@@ -1,9 +1,9 @@
 const path = require('path');
-const {should, expect, assert} = require('chai');
+const {expect} = require('chai');
 const {makepkg, rempkg, fileStructure} = require('./makepkg');
-const Package = require('../src/package');
-const Patch = require('../src/patch');
 const fs = require('../src/fs');
+const Patch = require('../src/patch');
+const Package = require('../src/package');
 
 describe('Package', function () {
   beforeEach(async function () {

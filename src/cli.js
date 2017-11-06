@@ -5,6 +5,7 @@ const path = require('path');
 const minimist = require('minimist');
 const dedent = require('dedent');
 const fs = require('./fs');
+const logger = require('./logger');
 const Comptroller = require('./comptroller');
 
 /**
@@ -41,7 +42,7 @@ const cli = {
    */
   help ()
   {
-    console.log(dedent`
+    logger.log(dedent`
       Comptroller ${version}
 
       Usage:
@@ -85,7 +86,7 @@ const cli = {
    */
   version ()
   {
-    console.log(`Comptroller ${version}`);
+    logger.log(`Comptroller ${version}`);
   },
 }
 
@@ -95,8 +96,8 @@ const cli = {
   }
   catch (err) {
     if (err instanceof Error) {
-      return console.error(err.stack);
+      return logger.error(err.stack);
     }
-    console.error(err);
+    logger.error(err);
   }
 })();

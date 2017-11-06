@@ -4243,13 +4243,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~stream~_destroy",
-    "https://nodejs.org/api/stream.html#stream_writable_destroy_err_callback",
+    "https://nodejs.org/api/stream.html#stream_readable_destroy_err_callback",
     "src/.external-node.js~stream~_destroy",
     "external"
   ],
   [
     "src/.external-node.js~stream~_destroy",
-    "https://nodejs.org/api/stream.html#stream_readable_destroy_err_callback",
+    "https://nodejs.org/api/stream.html#stream_writable_destroy_err_callback",
     "src/.external-node.js~stream~_destroy",
     "external"
   ],
@@ -4579,13 +4579,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~tls~connect",
-    "https://nodejs.org/api/tls.html#tls_tls_connect_options_callback",
+    "https://nodejs.org/api/tls.html#tls_tls_connect_path_options_callback",
     "src/.external-node.js~tls~connect",
     "external"
   ],
   [
     "src/.external-node.js~tls~connect",
-    "https://nodejs.org/api/tls.html#tls_tls_connect_path_options_callback",
+    "https://nodejs.org/api/tls.html#tls_tls_connect_options_callback",
     "src/.external-node.js~tls~connect",
     "external"
   ],
@@ -5070,6 +5070,12 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "src/logger.js",
+    "file/src/logger.js.html",
+    "src/logger.js",
+    "file"
+  ],
+  [
     "src/package.js",
     "file/src/package.js.html",
     "src/package.js",
@@ -5092,6 +5098,12 @@ window.esdocSearchIndex = [
     "class/src/package.js~Package.html#instance-constructor-constructor",
     "src/package.js~Package#constructor",
     "method"
+  ],
+  [
+    "src/package.js~package#dependencies",
+    "class/src/package.js~Package.html#instance-get-dependencies",
+    "src/package.js~Package#dependencies",
+    "member"
   ],
   [
     "src/package.js~package#detective",

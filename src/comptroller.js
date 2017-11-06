@@ -1,6 +1,7 @@
 const path = require('path');
 const fs = require('./fs');
 const glob = require('./glob');
+const logger = require('./logger');
 const Package = require('./package');
 const Patch = require('./patch');
 
@@ -62,7 +63,7 @@ module.exports = class Comptroller extends Package
   {
     for (let child of this.children) {
       try {await child.writePackageJson()}
-      catch (err) {console.error(err); return}
+      catch (err) {logger.error(err); return}
     }
   }
 
@@ -140,34 +141,34 @@ module.exports = class Comptroller extends Package
     const disabled = patch.disabled ? 'DISABLED: ' : '';
 
     if ((patch.type == Patch.ADD || patch.type == Patch.UPDATE) && !patch.value) {
-      console.warn(`WARNING: '${patch.name}' required by ${childName} (${patch.files}) not found in package.json or local packages.`);
+      logger.warn(`WARNING: '${patch.name}' required by ${childName} (${patch.files}) not found in package.json or local packages.`);
       return;
     }
 
     switch (patch.type) {
       case Patch.ADD:
-        console.log(`${disabled}Adding package ${patch.source} package '${patch.name}@${patch.value}' to package '${childName}'`);
+        logger.log(`${disabled}Adding package ${patch.source} package '${patch.name}@${patch.value}' to package '${childName}'`);
         break;
 
       case Patch.UPDATE:
         const oldVersion = child.packageJson.dependencies[patch.name];
         if (oldVersion !== patch.value) {
-          console.log(`${disabled}Updating ${patch.source} package '${patch.name}' from ${oldVersion} to ${patch.value} in package '${childName}'`);
+          logger.log(`${disabled}Updating ${patch.source} package '${patch.name}' from ${oldVersion} to ${patch.value} in package '${childName}'`);
         }
         break;
 
       case Patch.REMOVE:
-        console.log(`${disabled}Removing package '${patch.name}' from '${childName}'`);
+        logger.log(`${disabled}Removing package '${patch.name}' from '${childName}'`);
         break;
 
       case Patch.INHERIT:
         const oldValue = child.packageJson[patch.name];
         if (oldValue !== patch.value) {
           if (oldValue) {
-            console.log(`${disabled}Updating field ${patch.name} from '${oldValue}' to '${patch.value}' in package '${childName}'`);
+            logger.log(`${disabled}Updating field ${patch.name} from '${oldValue}' to '${patch.value}' in package '${childName}'`);
           }
           else {
-            console.log(`${disabled}Adding field ${patch.name} as '${patch.value}' to package '${childName}'`);
+            logger.log(`${disabled}Adding field ${patch.name} as '${patch.value}' to package '${childName}'`);
           }
         }
     }

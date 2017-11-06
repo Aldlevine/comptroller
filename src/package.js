@@ -89,6 +89,12 @@ module.exports = class Package
   get packageJson () {return this._packageJson}
 
   /**
+   * An object representing the package's dependencies.
+   * @type {object}
+   */
+  get dependencies () {return this.packageJson.dependencies || (this.packageJson.dependencies = {})}
+
+  /**
    * A glob that matches the package's source files
    * @type {glob}
    */
@@ -195,7 +201,7 @@ module.exports = class Package
     {
       let {files} = dependencies[dep];
       usedDeps[dep] = true;
-      if (!(dep in this.packageJson.dependencies)) {
+      if (!(dep in this.dependencies)) {
         patches.push(new Patch(Patch.ADD, {name: dep, files}));
       }
       else {
@@ -203,7 +209,7 @@ module.exports = class Package
       }
     }
 
-    for (let dep in this.packageJson.dependencies) {
+    for (let dep in this.dependencies) {
       if (!usedDeps[dep]) {
         patches.push(new Patch(Patch.REMOVE, {name: dep}))
       }
@@ -232,13 +238,17 @@ module.exports = class Package
     switch (patch.type) {
       case Patch.ADD:
       case Patch.UPDATE:
-        this.packageJson.dependencies[patch.name] = patch.value;
+        if (typeof patch.value !== 'undefined') {
+          this.dependencies[patch.name] = patch.value;
+        }
         break;
       case Patch.REMOVE:
-        delete this.packageJson.dependencies[patch.name];
+        delete this.dependencies[patch.name];
         break;
       case Patch.INHERIT:
-        this.packageJson[patch.name] = patch.value;
+        if (typeof patch.value !== 'undefined') {
+          this.packageJson[patch.name] = patch.value;
+        }
       default:
         break;
     }
