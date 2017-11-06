@@ -1,7 +1,6 @@
 # Comptroller
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/Aldlevine/comptroller.svg)](https://greenkeeper.io/)
-
 [![Docs Status](https://aldlevine.github.io/comptroller/badge.svg)](https://aldlevine.github.io/comptroller/source.html)
 
 A simple and lightweight tool to manage your monorepo.
