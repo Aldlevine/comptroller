@@ -58,12 +58,14 @@ module.exports = class Patch
    * @param {string} config.name - The name of the item being patched.
    * @param {object} config.value - The value of the item being patched.
    * @param {string?} config.source - The dependency type being patched.
-   * @param {string[]} config.files - The files that necessitate the patch.
+   * @param {boolean} [config.disabled = false] - Whether or not the patch is disabled.
+   * @param {string[]} [config.files = []] - The files that necessitate the patch.
    */
   constructor (type, {
     name,
     value,
     source,
+    disabled = false,
     files = [],
   }={})
   {
@@ -90,6 +92,12 @@ module.exports = class Patch
      * @type {string}
      */
     this.source = source;
+
+    /**
+     * Whether or not the patch is disabled
+     * @type {boolean}
+     */
+    this.disabled = disabled;
 
     /**
      * The files that necessitate the patch.

@@ -1867,13 +1867,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~dgram~socket#bind",
-    "https://nodejs.org/api/dgram.html#dgram_socket_bind_options_callback",
+    "https://nodejs.org/api/dgram.html#dgram_socket_bind_port_address_callback",
     "src/.external-node.js~dgram~Socket#bind",
     "external"
   ],
   [
     "src/.external-node.js~dgram~socket#bind",
-    "https://nodejs.org/api/dgram.html#dgram_socket_bind_port_address_callback",
+    "https://nodejs.org/api/dgram.html#dgram_socket_bind_options_callback",
     "src/.external-node.js~dgram~Socket#bind",
     "external"
   ],
@@ -2671,13 +2671,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~fs~write",
-    "https://nodejs.org/api/fs.html#fs_fs_write_fd_buffer_offset_length_position_callback",
+    "https://nodejs.org/api/fs.html#fs_fs_write_fd_string_position_encoding_callback",
     "src/.external-node.js~fs~write",
     "external"
   ],
   [
     "src/.external-node.js~fs~write",
-    "https://nodejs.org/api/fs.html#fs_fs_write_fd_string_position_encoding_callback",
+    "https://nodejs.org/api/fs.html#fs_fs_write_fd_buffer_offset_length_position_callback",
     "src/.external-node.js~fs~write",
     "external"
   ],
@@ -2695,13 +2695,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~fs~writesync",
-    "https://nodejs.org/api/fs.html#fs_fs_writesync_fd_buffer_offset_length_position",
+    "https://nodejs.org/api/fs.html#fs_fs_writesync_fd_string_position_encoding",
     "src/.external-node.js~fs~writeSync",
     "external"
   ],
   [
     "src/.external-node.js~fs~writesync",
-    "https://nodejs.org/api/fs.html#fs_fs_writesync_fd_string_position_encoding",
+    "https://nodejs.org/api/fs.html#fs_fs_writesync_fd_buffer_offset_length_position",
     "src/.external-node.js~fs~writeSync",
     "external"
   ],
@@ -4195,13 +4195,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~stream~writable",
-    "https://nodejs.org/api/stream.html#stream_constructor:newstream_writable_options",
+    "https://nodejs.org/api/stream.html#stream_class_stream_writable",
     "src/.external-node.js~stream~Writable",
     "external"
   ],
   [
     "src/.external-node.js~stream~writable",
-    "https://nodejs.org/api/stream.html#stream_class_stream_writable",
+    "https://nodejs.org/api/stream.html#stream_constructor:newstream_writable_options",
     "src/.external-node.js~stream~Writable",
     "external"
   ],
@@ -4243,13 +4243,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~stream~_destroy",
-    "https://nodejs.org/api/stream.html#stream_readable_destroy_err_callback",
+    "https://nodejs.org/api/stream.html#stream_writable_destroy_err_callback",
     "src/.external-node.js~stream~_destroy",
     "external"
   ],
   [
     "src/.external-node.js~stream~_destroy",
-    "https://nodejs.org/api/stream.html#stream_writable_destroy_err_callback",
+    "https://nodejs.org/api/stream.html#stream_readable_destroy_err_callback",
     "src/.external-node.js~stream~_destroy",
     "external"
   ],
@@ -4579,7 +4579,7 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~tls~connect",
-    "https://nodejs.org/api/tls.html#tls_tls_connect_port_host_options_callback",
+    "https://nodejs.org/api/tls.html#tls_tls_connect_options_callback",
     "src/.external-node.js~tls~connect",
     "external"
   ],
@@ -4591,7 +4591,7 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~tls~connect",
-    "https://nodejs.org/api/tls.html#tls_tls_connect_options_callback",
+    "https://nodejs.org/api/tls.html#tls_tls_connect_port_host_options_callback",
     "src/.external-node.js~tls~connect",
     "external"
   ],
@@ -4986,6 +4986,12 @@ window.esdocSearchIndex = [
     "external"
   ],
   [
+    "src/cli.js",
+    "file/src/cli.js.html",
+    "src/cli.js",
+    "file"
+  ],
+  [
     "src/comptroller.js",
     "file/src/comptroller.js.html",
     "src/comptroller.js",
@@ -5170,6 +5176,12 @@ window.esdocSearchIndex = [
     "class/src/patch.js~Patch.html#instance-constructor-constructor",
     "src/patch.js~Patch#constructor",
     "method"
+  ],
+  [
+    "src/patch.js~patch#disabled",
+    "class/src/patch.js~Patch.html#instance-member-disabled",
+    "src/patch.js~Patch#disabled",
+    "member"
   ],
   [
     "src/patch.js~patch#files",
