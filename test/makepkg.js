@@ -12,6 +12,7 @@ exports.fileStructure = {
         "dependency-2": "0.0.1"
       },
       "comptroller": {
+        "inherits": ["version", "author"],
         "exclude": ["excluded-dependency"]
       }
     }

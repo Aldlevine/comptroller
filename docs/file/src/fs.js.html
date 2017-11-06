@@ -40,7 +40,7 @@
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">const fs = require(&apos;fs-extra&apos;);
 const {promisify} = require(&apos;util&apos;);
 
-for (let key of [&apos;writeFile&apos;, &apos;readFile&apos;, &apos;ensureDir&apos;, &apos;ensureSymlink&apos;, &apos;remove&apos;]) {
+for (let key of [&apos;writeFile&apos;, &apos;readFile&apos;, &apos;readJson&apos;, &apos;ensureDir&apos;, &apos;ensureSymlink&apos;, &apos;remove&apos;]) {
   fs[`${key}Please`] = promisify(fs[key]);
 }
 
