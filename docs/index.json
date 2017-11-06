@@ -10369,7 +10369,7 @@
     "__docId__": 850,
     "kind": "file",
     "name": "src/fs.js",
-    "content": "const fs = require('fs-extra');\nconst {promisify} = require('util');\n\nfor (let key of ['writeFile', 'readFile', 'ensureDir', 'ensureSymlink', 'remove']) {\n  fs[`${key}Please`] = promisify(fs[key]);\n}\n\nmodule.exports = fs;\n",
+    "content": "const fs = require('fs-extra');\nconst {promisify} = require('util');\n\nfor (let key of ['writeFile', 'readFile', 'readJson', 'ensureDir', 'ensureSymlink', 'remove']) {\n  fs[`${key}Please`] = promisify(fs[key]);\n}\n\nmodule.exports = fs;\n",
     "static": true,
     "longname": "/mnt/storage/Documents/Projects/comptroller/src/fs.js",
     "access": "public",
