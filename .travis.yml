@@ -2,3 +2,11 @@ language: node_js
 node_js:
   - 'node'
   - '8'
+before_install:
+  - npm i -g greenkeeper-lockfile@1
+  - npm i -D coveralls
+  - npm i -D mocha-lcov-reporter
+before_script:
+  - greenkeeper-lockfile-update
+script:
+  - npm run test && npx nyc report --reporter=texr-lcov | coveralls
