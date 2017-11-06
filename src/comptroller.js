@@ -1,237 +1,213 @@
-/** @external {EventEmitter} https://nodejs.org/api/events.html#events_class_eventemitter */
-const EventEmitter = require('events');
-/** @external {fs} https://www.npmjs.com/package/fs-extra */
-const fs = require('fs-extra');
-/** @external {path} https://nodejs.org/api/path.html */
 const path = require('path');
-/** @external {promisify} https://nodejs.org/api/util.html#util_util_promisify_original */
-const {promisify} = require('util');
-/** @external {glob} https://www.npmjs.com/package/glob */
-const glob = promisify(require('glob'));
-/** @external {builtins} https://www.npmjs.com/package/builtin-modules */
-const builtins = require('builtin-modules');
-/** @type {Package} */
+const fs = require('./fs');
+const glob = require('./glob');
 const Package = require('./package');
-
-fs.readFilePromise = promisify(fs.readFile);
-fs.writeFilePromise = promisify(fs.writeFile);
-fs.ensureDirPromise = promisify(fs.ensureDir);
-fs.ensureSymlinkPromise = promisify(fs.ensureSymlink);
+const Patch = require('./patch');
 
 /**
- * The core Comptroller class. It provides encapsulation for all of the stuff
- * that Comptroller is supposed to do
+ * This is the main Comptroller class. It serves as the entry point into all of
+ * Comptroller's higher level functionality.
  */
-module.exports = class Comptroller extends EventEmitter
+module.exports = class Comptroller extends Package
 {
-
   /**
-   * Creates a new Comptroller instance.
-   * @param {object} cfg - The configuration options
-   * @param {string} [cfg.root = process.cwd()] - The project root (where your
-   * main package.json lives).
-   * @param {string} [cfg.packages = 'packages'] - The path from `cfg.root` to
-   * the packages directory.
-   * @param {object} [cfg.detective={}] - The options to pass to {@link detective}
-   * @param {?string[]} [cfg.order] - The order passed to {@link format-package}
+   * Creates a new Comptroller instance. It accepts all of the arguments in
+   * {@link Package#constructor} as well as...
+   * @param {string} [opts.config.packages = packages] - The directory name
+   * where packages can be found.
    */
-  constructor ({
-    root = process.cwd(),
-    packages = 'packages',
-    ignorePackages = builtins,
-    detective = {},
-    order,
-  }={})
+  constructor (config)
   {
-    super();
+    super(config);
 
     /** @type {string} */
-    this._rootPath = path.resolve(root);
+    this._packages = config.packages || 'packages';
 
-    /** @type {string} */
-    this._packagesPath = path.resolve(root, packages);
-
-    /** @type {object} */
-    this._packages = {};
-
-    /** @type {string[]} */
-    this._ignorePackages = ignorePackages;
-
-    /** @type {object} */
-    this._detectiveOpts = detective;
-
-    /** @type {?string[]} */
-    this._packageJsonOrder = order;
-
-    /** @type {string} */
-    this._packageJsonPath = path.resolve(root, 'package.json');
-
-    try {
-      /** @type {object} */
-      this._packageJson = require(this._packageJsonPath);
-    }
-    catch (err) {
-      this._packageJson = null;
-    }
+    /** @type {Package[]} */
+    this._children = this.readChildren();
   }
 
   /**
-   * Resolves the dependencies for local packages.
+   * The packages directory.
+   * @type {string}
    */
-  async resolvePackages ()
-  {
-    const packagePaths = await glob(path.join(this._packagesPath, '*'), {ignore: '**/node_modules/**'});
-    for (let packagePath of packagePaths) {
-      const pkg = new Package(this, packagePath);
-      if (pkg._packageJson == null) {
-        this.emit('warn', {
-          type: 'packagejson',
-          path: packagePath,
-        });
-        continue;
-      }
-      await pkg.evaluateDependencies(this._detectiveOpts);
-      this._packages[pkg._name] = pkg;
-    }
-  }
+  get packages () {return this._packages}
 
   /**
-   * Updates the dependencies for local packages.
+   * The child packages.
+   * @type {Package[]}
    */
-  async updatePackageJson ()
-  {
-    for (let pkgName in this._packages) {
-      this._packages[pkgName].updatePackageJson();
-    }
-  }
+  get children () {return this._children}
 
   /**
-   * Updates the dependencies for local packages.
+   * Scans the {@link Comptroller#packages} directory, finds package.json files
+   * and generates {@link Package}s. Note that all package.json files must be
+   * in a direct subdirectory of the packages directory.
+   * @return {Package[]} - The child packages.
    */
-  async updateDependencies ()
+  readChildren ()
   {
-    for (let pkgName in this._packages) {
-      this._packages[pkgName].updateDependencies();
-    }
-  }
-
-  /**
-   * Prunes the dependencies for local packages.
-   */
-  async pruneDependencies ()
-  {
-    for (let pkgName in this._packages) {
-      this._packages[pkgName].pruneDependencies();
-    }
-  }
-
-  /**
-   * Writes the updated package.json's for each package.
-   */
-  async writePackageJsons ()
-  {
-    for (let pkgName in this._packages) {
-      const pkg = this._packages[pkgName];
-      await pkg.writePackageJson();
-    }
-  }
-
-  /**
-   * Updates the packge.json's for all packages.
-   */
-  async update ()
-  {
-    if (this._packageJson == null) {
-      console.error(`ERROR: package.json not found in ${this._rootPath}`);
-      process.exit(1);
-    }
-    this.on('info', (info) => {
-      if (info.action == 'add') {
-        console.log(`Added ${info.type} package "${info.name}@${info.version}" to ${info.packageJson}`);
-      }
-      else if (info.action == 'update') {
-        console.log(`Updated ${info.type} package "${info.name}" to version ${info.version} in ${info.packageJson}`);
-      }
-      else if (info.action == 'update-field') {
-        console.log(`Updated field "${info.key}" to ${JSON.stringify(info.value)} in ${info.packageJson}`);
-      }
+    const packageJsons = glob.sync(path.resolve(this.root, this.packages, '*', 'package.json'), {
+      ignore: this.ignore,
+      nodir: true,
     });
-    this.on('warn', (warn) => {
-      if (warn.type == 'missing') {
-        console.warn(`WARNING: remote package "${warn.name}" invoked by ${warn.file} not found in package.json`);
-      }
-      else if (warn.type == 'packagejson') {
-        console.log(`WARNING: package.json not found in ${warn.path}`);
-      }
-      else if (warn.type == 'update-field-missing') {
-        console.log(`WARNING: field "${warn.key}" invoked by ${warn.packageJson} not found in main package.json`);
-      }
-    });
-    this.on('error', (error) => {
-      if (error.type == 'parse') {
-        console.error(`ERROR: ${error.err.message} ${error.file}:${error.line}:${error.column}`);
-      }
-      else if (error.type == 'config') {
-        console.error(`ERROR: ${error.err.message} in config option "${error.config}"`);
-      }
-      process.exit(1);
-    });
-    await this.resolvePackages();
-    await this.updatePackageJson();
-    await this.updateDependencies();
-    await this.writePackageJsons();
+    return packageJsons.map((pkgjson) => new Package({root: path.dirname(pkgjson), config: this}));
   }
 
   /**
-   * Prunes the packge.json's for all packages.
+   * Loops through all packages in {@link Comptroller#children} and writes it's
+   * package.json.
    */
-  async prune ()
+  async writePackages ()
   {
-    if (this._packageJson == null) {
-      console.error(`ERROR: package.json not found in ${this._rootPath}`);
-      process.exit(1);
+    for (let child of this.children) {
+      try {await child.writePackageJson()}
+      catch (err) {console.error(err); return}
     }
-    this.on('info', (info) => {
-      if (info.action == 'remove') {
-        console.log(`Removed package "${info.name}@${info.version}" from ${info.packageJson}`);
-      }
-    });
-    this.on('error', (error) => {
-      if (error.type == 'parse') {
-        console.error(`ERROR: ${error.err.message} ${error.file}:${error.line}:${error.column}`);
-      }
-      else if (error.type == 'config') {
-        console.error(`ERROR: ${error.err.message} in config option "${error.config}"`);
-      }
-      process.exit(1);
-    });
-    await this.resolvePackages();
-    await this.pruneDependencies();
-    await this.writePackageJsons();
   }
 
   /**
-   * Creates a symlink'd node_modules to local packages.
+   * A convenience method that locates a package in {@link Comptroller#children}
+   * by it's name in {@link Package#packageJson}.
+   * @return {Package | boolean} - The found package, or `false` if not found.
    */
-  async link ()
+  getChildByName (name)
   {
-    this.on('error', (error) => {
-      if (error.type == 'parse') {
-        console.error(`ERROR: ${error.err.message} ${error.file}:${error.line}:${error.column}`);
-      }
-      else if (error.type == 'config') {
-        console.error(`ERROR: ${error.err.message} in config option "${error.config}"`);
-      }
-      process.exit(1);
-    });
-
-    await fs.ensureDirPromise(path.join(this._packagesPath, 'node_modules'));
-    await this.resolvePackages();
-
-    for (let pkgName in this._packages) {
-      const pkg = this._packages[pkgName];
-      let dstpath = path.join(this._packagesPath, 'node_modules', pkgName);
-      await fs.ensureSymlinkPromise(pkg._dir, dstpath);
+    for (let child of this.children) {
+      if (child.packageJson.name == name) return child;
     }
+    return false;
+  }
+
+  /**
+   * Takes an array of raw patches (returned by
+   * {@link Package#generateDependencyPatches} or
+   * {@link Package#generateInheritPatches}) and updates them with the
+   * information in the {@link Comptroller#packageJson}
+   * @param {Patch[]} patches - The patches to update.
+   * @return {Patch[]} - The updated patches.
+   */
+  updatePatches (patches)
+  {
+    const newPatches = [];
+    for (let patch of patches) {
+      switch (patch.type) {
+        case Patch.ADD:
+        case Patch.UPDATE:
+          const child = this.getChildByName(patch.name);
+
+          // local package
+          if (child) {
+            newPatches.push(new Patch(patch.type, {
+              ...patch,
+              source: 'local',
+              value: child.packageJson.version,
+            }));
+          }
+
+          // remote package
+          else {
+            newPatches.push(new Patch(patch.type, {
+              ...patch,
+              source: 'remote',
+              value: this.packageJson.dependencies[patch.name],
+            }));
+          }
+          break;
+
+        case Patch.REMOVE:
+          if (this.prune) {
+            newPatches.push(new Patch(patch.type, {
+              ...patch,
+            }));
+          }
+          break;
+
+        case Patch.INHERIT:
+          newPatches.push(new Patch(patch.type, {
+            ...patch,
+            value: this.packageJson[patch.name],
+          }));
+          break;
+
+        default:
+          break;
+      }
+    }
+    return newPatches;
+  }
+
+  /**
+   * Logs patch operations.
+   * @param {Package} child - The child the patch is being applied to.
+   * @param {Patch} patch - The patch being applied.
+   */
+  logPatch (child, patch)
+  {
+    const childName = child.packageJson.name;
+    if ((patch.type == Patch.ADD || patch.type == Patch.UPDATE) && !patch.value) {
+      console.warn(`WARNING: '${patch.name}' required by ${childName} (${patch.files}) not found in package.json or local packages.`);
+      return;
+    }
+    switch (patch.type) {
+      case Patch.ADD:
+        console.log(`Adding package ${patch.source} package '${patch.name}@${patch.value}' to package '${childName}'`);
+        break;
+      case Patch.UPDATE:
+        const oldVersion = child.packageJson.dependencies[patch.name];
+        if (oldVersion !== patch.value) {
+          console.log(`Updating ${patch.source} package '${patch.name}' from ${oldVersion} to ${patch.value} in package '${childName}'`);
+        }
+        break;
+      case Patch.REMOVE:
+        console.log(`Removing package '${patch.name}' from '${childName}'`);
+        break;
+      case Patch.INHERIT:
+        const oldValue = child.packageJson[patch.name];
+        if (oldValue !== patch.value) {
+          if (oldValue) {
+            console.log(`Updating field ${patch.name} from '${oldValue}' to '${patch.value}' in package '${childName}'`);
+          }
+          else {
+            console.log(`Adding field ${patch.name} as '${patch.value}' to package '${childName}'`);
+          }
+        }
+    }
+  }
+
+  /**
+   * Analyzes the dependencies and inherits of each package and applies the
+   * respective patches to each package.
+   */
+  async updatePackages ()
+  {
+    for (let child of this.children) {
+      let deps = await child.analyzeSourceDependencies();
+      let patches = [
+        ...child.generateDependencyPatches(deps),
+        ...child.generateInheritPatches(),
+      ];
+      patches = this.updatePatches(patches);
+      for (let patch of patches) {
+        this.logPatch(child, patch);
+        child.applyPatch(patch);
+      }
+    }
+  }
+
+  /**
+   * Links the packages to node_modules in a way that enables them to be
+   * resolved by other packages by name.
+   */
+  async linkPackages ()
+  {
+    const node_modules = path.resolve(this.root, 'node_modules');
+    await fs.ensureDirPlease(node_modules);
+
+    for (let child of this.children) {
+      const name = child.packageJson.name;
+      await fs.ensureSymlinkPlease(child.root, path.resolve(node_modules, name));
+    }
+
   }
 }

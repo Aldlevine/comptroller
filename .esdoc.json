@@ -3,8 +3,18 @@
   "destination": "./docs",
   "excludes": ["cli\\.js"],
   "plugins": [
-    {"name": "esdoc-commonjs-plugin"},
-    {"name": "esdoc-standard-plugin"},
+    {"name": "./utils/esdoc-require.js"},
+    {"name": "esdoc-node"},
+    {"name": "./utils/esdoc-external-node/Plugin.js", "option": {"enable": true}},
+    {"name": "esdoc-standard-plugin",
+     "option": {
+       "lint": {"enable": true},
+       "coverage": {"enable": true},
+       "accessor": {"access": ["public"], "autoPrivate": true},
+       "undocumentIdentifier": {"enable": true},
+       "unexportedIdentifier": {"enable": false},
+       "typeInference": {"enable": true},
+       "brand": {"name": "Comptroller"}}},
     {"name": "esdoc-ecmascript-proposal-plugin", "option": {"all": true}}
   ]
 }

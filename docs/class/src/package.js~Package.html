@@ -31,27 +31,19 @@
     
   <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/comptroller.js~Comptroller.html">Comptroller</a></span></span></li>
 <li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/package.js~Package.html">Package</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/events.html#events_class_eventemitter">EventEmitter</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://www.npmjs.com/package/builtin-modules">builtins</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://www.npmjs.com/package/fs-extra">fs</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://www.npmjs.com/package/glob">glob</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/path.html">path</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://nodejs.org/api/util.html#util_util_promisify_original">promisify</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://www.npmjs.com/package/deep-equal">deep-equal</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://www.npmjs.com/package/@zdychacek/detective">detective</a></span></span></li>
-<li data-ice="doc"><span data-ice="kind" class="kind-external">E</span><span data-ice="name"><span><a href="https://www.npmjs.com/package/format-package">format-package</a></span></span></li>
+<li data-ice="doc"><span data-ice="kind" class="kind-class">C</span><span data-ice="name"><span><a href="class/src/patch.js~Patch.html">Patch</a></span></span></li>
 </ul>
 </div>
 </nav>
 
 <div class="content" data-ice="content"><div class="header-notice">
-  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import Package from &apos;<span><a href="file/src/package.js.html#lineNumber19">comptroller/src/package.js</a></span>&apos;</code></pre></div>
+  <div data-ice="importPath" class="import-path"><pre class="prettyprint"><code data-ice="importPathCode">import Package from &apos;<span><a href="file/src/package.js.html#lineNumber14">comptroller/src/package.js</a></span>&apos;</code></pre></div>
   <span data-ice="access">public</span>
   <span data-ice="kind">class</span>
   
   
   
-  <span data-ice="source">| <span><a href="file/src/package.js.html#lineNumber19">source</a></span></span>
+  <span data-ice="source">| <span><a href="file/src/package.js.html#lineNumber14">source</a></span></span>
 </div>
 
 <div class="self-detail detail">
@@ -62,7 +54,7 @@
   
   
   
-  
+  <div class="flat-list" data-ice="directSubclass"><h4>Direct Subclass:</h4><div><span><a href="class/src/comptroller.js~Comptroller.html">Comptroller</a></span></div></div>
   
   
   
@@ -71,7 +63,9 @@
 
   
   
-  <div class="description" data-ice="description"><p>Provides encapsulation for each local package.</p>
+  <div class="description" data-ice="description"><p>This is the package class. It serves as encapsulation for individual
+packages, as a means of querying for package info, and as an outlet for
+changes to a package.</p>
 </div>
   
 
@@ -104,13 +98,13 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/package.js~Package.html#instance-constructor-constructor">constructor</a></span></span><span class="code" data-ice="signature">(comptroller: <span><a href="class/src/comptroller.js~Comptroller.html">Comptroller</a></span>, dir: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>)</span>
+          <span class="code" data-ice="name"><span><a href="class/src/package.js~Package.html#instance-constructor-constructor">constructor</a></span></span><span class="code" data-ice="signature">(opts: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span>)</span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Creates a new package.</p>
+        <div data-ice="description"><p>Creates a new package instance.</p>
 </div>
       </div>
     </td>
@@ -140,13 +134,13 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/package.js~Package.html#instance-get-version">version</a></span></span><span class="code" data-ice="signature">: <span>*</span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/package.js~Package.html#instance-get-detective">detective</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Gets the package version</p>
+        <div data-ice="description"><p>The options to pass through to <a href="https://npmjs.com/package/@zdychacek/detective">detective</a>.</p>
 </div>
       </div>
     </td>
@@ -155,17 +149,11 @@
       
     </td>
   </tr>
-</tbody>
-</table>
-<table class="summary" data-ice="summary">
-  <thead><tr><td data-ice="title" colspan="3">Private Members</td></tr></thead>
-  <tbody>
-  
-  <tr data-ice="target">
+<tr data-ice="target">
     <td>
-      <span class="access" data-ice="access">private</span>
+      <span class="access" data-ice="access">public</span>
       
-      
+      <span class="kind" data-ice="kind">get</span>
       
       <span class="override" data-ice="override"></span>
     </td>
@@ -175,13 +163,14 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/package.js~Package.html#instance-member-_comptroller">_comptroller</a></span></span><span class="code" data-ice="signature">: <span><a href="class/src/comptroller.js~Comptroller.html">Comptroller</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/package.js~Package.html#instance-get-exclude">exclude</a></span></span><span class="code" data-ice="signature">: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span><span>[]</span></span></span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>An array of package names to ignore in all operations.</p>
+</div>
       </div>
     </td>
     <td>
@@ -191,9 +180,9 @@
   </tr>
 <tr data-ice="target">
     <td>
-      <span class="access" data-ice="access">private</span>
+      <span class="access" data-ice="access">public</span>
       
-      
+      <span class="kind" data-ice="kind">get</span>
       
       <span class="override" data-ice="override"></span>
     </td>
@@ -203,13 +192,15 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/package.js~Package.html#instance-member-_dependencies">_dependencies</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map">Map</a></span>&lt;<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>&gt;</span>
+          <span class="code" data-ice="name"><span><a href="class/src/package.js~Package.html#instance-get-ignore">ignore</a></span></span><span class="code" data-ice="signature">: <span><span><a href="https://github.com/isaacs/node-glob#readme">glob</a></span><span>[]</span></span></span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>An array of globs that match files not to be included with the package&apos;s
+source files.</p>
+</div>
       </div>
     </td>
     <td>
@@ -219,9 +210,9 @@
   </tr>
 <tr data-ice="target">
     <td>
-      <span class="access" data-ice="access">private</span>
+      <span class="access" data-ice="access">public</span>
       
-      
+      <span class="kind" data-ice="kind">get</span>
       
       <span class="override" data-ice="override"></span>
     </td>
@@ -231,13 +222,15 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/package.js~Package.html#instance-member-_dir">_dir</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/package.js~Package.html#instance-get-inherits">inherits</a></span></span><span class="code" data-ice="signature">: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span><span>[]</span></span></span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>An array of field names the package should inherit from it&apos;s parent
+package.json.</p>
+</div>
       </div>
     </td>
     <td>
@@ -247,9 +240,9 @@
   </tr>
 <tr data-ice="target">
     <td>
-      <span class="access" data-ice="access">private</span>
+      <span class="access" data-ice="access">public</span>
       
-      
+      <span class="kind" data-ice="kind">get</span>
       
       <span class="override" data-ice="override"></span>
     </td>
@@ -259,13 +252,14 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/package.js~Package.html#instance-member-_name">_name</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/package.js~Package.html#instance-get-packageJson">packageJson</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span></span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>An object representing the package&apos;s package.json.</p>
+</div>
       </div>
     </td>
     <td>
@@ -275,9 +269,9 @@
   </tr>
 <tr data-ice="target">
     <td>
-      <span class="access" data-ice="access">private</span>
+      <span class="access" data-ice="access">public</span>
       
-      
+      <span class="kind" data-ice="kind">get</span>
       
       <span class="override" data-ice="override"></span>
     </td>
@@ -287,13 +281,14 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/package.js~Package.html#instance-member-_options">_options</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/package.js~Package.html#instance-get-prune">prune</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>Whether or not unused dependencies should be pruned from the package.json.</p>
+</div>
       </div>
     </td>
     <td>
@@ -303,9 +298,9 @@
   </tr>
 <tr data-ice="target">
     <td>
-      <span class="access" data-ice="access">private</span>
+      <span class="access" data-ice="access">public</span>
       
-      
+      <span class="kind" data-ice="kind">get</span>
       
       <span class="override" data-ice="override"></span>
     </td>
@@ -315,13 +310,14 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/package.js~Package.html#instance-member-_packageJson">_packageJson</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/package.js~Package.html#instance-get-root">root</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>The package&apos;s root directory.</p>
+</div>
       </div>
     </td>
     <td>
@@ -331,9 +327,9 @@
   </tr>
 <tr data-ice="target">
     <td>
-      <span class="access" data-ice="access">private</span>
+      <span class="access" data-ice="access">public</span>
       
-      
+      <span class="kind" data-ice="kind">get</span>
       
       <span class="override" data-ice="override"></span>
     </td>
@@ -343,13 +339,14 @@
           
           
           
-          <span class="code" data-ice="name"><span><a href="class/src/package.js~Package.html#instance-member-_packageJsonPath">_packageJsonPath</a></span></span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/package.js~Package.html#instance-get-source">source</a></span></span><span class="code" data-ice="signature">: <span><a href="https://github.com/isaacs/node-glob#readme">glob</a></span></span>
         </p>
       </div>
       <div>
         
         
-        
+        <div data-ice="description"><p>A glob that matches the package&apos;s source files</p>
+</div>
       </div>
     </td>
     <td>
@@ -378,13 +375,14 @@
           
           <span data-ice="async">async</span>
           
-          <span class="code" data-ice="name"><span><a href="class/src/package.js~Package.html#instance-method-evaluateDependencies">evaluateDependencies</a></span></span><span class="code" data-ice="signature">(detectiveOpts: <span>*</span>): <span>*</span></span>
+          <span class="code" data-ice="name"><span><a href="class/src/package.js~Package.html#instance-method-analyzeSourceDependencies">analyzeSourceDependencies</a></span></span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map">Map</a></span>&lt;<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span>&gt;</span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Evaluates a package&apos;s dependencies</p>
+        <div data-ice="description"><p>Analyzes the package&apos;s source files and returns all of the invoked
+dependencies mapped to the files invoking them.</p>
 </div>
       </div>
     </td>
@@ -405,15 +403,15 @@
       <div>
         <p>
           
-          <span data-ice="async">async</span>
           
-          <span class="code" data-ice="name"><span><a href="class/src/package.js~Package.html#instance-method-formatPackageJson">formatPackageJson</a></span></span><span class="code" data-ice="signature">(): <span>*</span></span>
+          
+          <span class="code" data-ice="name"><span><a href="class/src/package.js~Package.html#instance-method-applyPatch">applyPatch</a></span></span><span class="code" data-ice="signature">(patch: <span><a href="class/src/patch.js~Patch.html">Patch</a></span>)</span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Format&apos;s package.json using <span><a href="https://www.npmjs.com/package/format-package">format-package</a></span></p>
+        <div data-ice="description"><p>Applies a given patch to <span><a href="class/src/package.js~Package.html#instance-get-packageJson">Package#packageJson</a></span>.</p>
 </div>
       </div>
     </td>
@@ -434,15 +432,17 @@
       <div>
         <p>
           
-          <span data-ice="async">async</span>
           
-          <span class="code" data-ice="name"><span><a href="class/src/package.js~Package.html#instance-method-pruneDependencies">pruneDependencies</a></span></span><span class="code" data-ice="signature">()</span>
+          
+          <span class="code" data-ice="name"><span><a href="class/src/package.js~Package.html#instance-method-generateDependencyPatches">generateDependencyPatches</a></span></span><span class="code" data-ice="signature">(dependencies: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span>): <span><span><a href="class/src/patch.js~Patch.html">Patch</a></span><span>[]</span></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Prunes unused dependencies from a packages package.json</p>
+        <div data-ice="description"><p>Compares a dependency object (as returned from <span><a href="class/src/package.js~Package.html#instance-method-analyzeSourceDependencies">Package#analyzeSourceDependencies</a></span>)
+with the dependencies listed in {@link Package@packageJson} and returns an
+array of patches.</p>
 </div>
       </div>
     </td>
@@ -463,15 +463,15 @@
       <div>
         <p>
           
-          <span data-ice="async">async</span>
           
-          <span class="code" data-ice="name"><span><a href="class/src/package.js~Package.html#instance-method-updateDependencies">updateDependencies</a></span></span><span class="code" data-ice="signature">()</span>
+          
+          <span class="code" data-ice="name"><span><a href="class/src/package.js~Package.html#instance-method-generateInheritPatches">generateInheritPatches</a></span></span><span class="code" data-ice="signature">(): <span><span><a href="class/src/patch.js~Patch.html">Patch</a></span><span>[]</span></span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Updates a packages package.json dependencies.</p>
+        <div data-ice="description"><p>Generates the patches that will satisfy <span><a href="class/src/package.js~Package.html#instance-get-inherits">Package#inherits</a></span></p>
 </div>
       </div>
     </td>
@@ -492,15 +492,17 @@
       <div>
         <p>
           
-          <span data-ice="async">async</span>
           
-          <span class="code" data-ice="name"><span><a href="class/src/package.js~Package.html#instance-method-updatePackageJson">updatePackageJson</a></span></span><span class="code" data-ice="signature">()</span>
+          
+          <span class="code" data-ice="name"><span><a href="class/src/package.js~Package.html#instance-method-resolveDependency">resolveDependency</a></span></span><span class="code" data-ice="signature">(dependency: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span>string </span> | <span> boolean</span></span>
         </p>
       </div>
       <div>
         
         
-        <div data-ice="description"><p>Updates a packages package.json with values found in the main package.json</p>
+        <div data-ice="description"><p>Takes a dependency name and resolves it to the actual dependency name,
+stripping any subdirectories from the dependency name (retaining @org
+style dependencies).</p>
 </div>
       </div>
     </td>
@@ -529,7 +531,7 @@
       <div>
         
         
-        <div data-ice="description"><p>Writes a package&apos;s package.json</p>
+        <div data-ice="description"><p>Writes <span><a href="class/src/package.js~Package.html#instance-get-packageJson">Package#packageJson</a></span> to it&apos;s respective package.json file.</p>
 </div>
       </div>
     </td>
@@ -556,18 +558,19 @@
     
     
     
-    <span class="code" data-ice="name">constructor</span><span class="code" data-ice="signature">(comptroller: <span><a href="class/src/comptroller.js~Comptroller.html">Comptroller</a></span>, dir: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>)</span>
+    <span class="code" data-ice="name">constructor</span><span class="code" data-ice="signature">(opts: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span>)</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/package.js.html#lineNumber26">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/package.js.html#lineNumber41">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>Creates a new package.</p>
+  <div data-ice="description"><p>Creates a new package instance. It can accept it&apos;s configuration either
+through the package.json file or through the constructor arguments.</p>
 </div>
 
   
@@ -581,17 +584,92 @@
     <tbody>
     
     <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">comptroller</td>
-      <td data-ice="type" class="code"><span><a href="class/src/comptroller.js~Comptroller.html">Comptroller</a></span></td>
+      <td data-ice="name" class="code" data-depth="0">opts</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span></td>
       <td data-ice="appendix"></td>
-      <td data-ice="description"><p>The parent Comptroller instance.</p>
+      <td data-ice="description"><p>The package options.</p>
 </td>
     </tr>
-<tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">dir</td>
+<tr data-ice="property" data-depth="1">
+      <td data-ice="name" class="code" data-depth="1">opts.root</td>
       <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
       <td data-ice="appendix"></td>
-      <td data-ice="description"><p>The package&apos;s directory.</p>
+      <td data-ice="description"><p>The root directory of the package.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="1">
+      <td data-ice="name" class="code" data-depth="1">opts.packageJson</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span></td>
+      <td data-ice="appendix"><ul><li>optional</li>
+<li>default:  fs.readJson(&apos;root package.json&apos;)</li></ul></td>
+      <td data-ice="description"><p>The
+package&apos;s package.json. If not specified, it&apos;s read from the root
+directory.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="1">
+      <td data-ice="name" class="code" data-depth="1">opts.config</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span></td>
+      <td data-ice="appendix"><ul><li>optional</li>
+<li>default:  opts.packageJson.comptroller || {}</li></ul></td>
+      <td data-ice="description"><p>The
+Comptroller configurations options.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="2">
+      <td data-ice="name" class="code" data-depth="2">opts.config.source</td>
+      <td data-ice="type" class="code"><span><a href="https://github.com/isaacs/node-glob#readme">glob</a></span></td>
+      <td data-ice="appendix"><ul><li>optional</li>
+<li>default:  &apos;&#x26B9;&#x26B9;/&#x26B9;.js&apos;</li></ul></td>
+      <td data-ice="description"><p>A glob that selects
+the packages source files.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="2">
+      <td data-ice="name" class="code" data-depth="2">opts.config.ignore</td>
+      <td data-ice="type" class="code"><span><span><a href="https://github.com/isaacs/node-glob#readme">glob</a></span><span>[]</span></span></td>
+      <td data-ice="appendix"><ul><li>optional</li>
+<li>default:  [&apos;&#x26B9;&#x26B9;/node_modules/&#x26B9;&#x26B9;&apos;]</li></ul></td>
+      <td data-ice="description"><p>An array
+of globs to pass into <span><a href="https://github.com/isaacs/node-glob#readme">glob</a></span>&apos;s <code>ignore</code> option when searching for
+source files.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="2">
+      <td data-ice="name" class="code" data-depth="2">opts.config.exclude</td>
+      <td data-ice="type" class="code"><span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span><span>[]</span></span></td>
+      <td data-ice="appendix"><ul><li>optional</li>
+<li>default:  builtins</li></ul></td>
+      <td data-ice="description"><p>An array of package
+names to ignore in all operations. Defaults to <span><a href="https://github.com/sindresorhus/builtin-modules#readme">builtin-modules</a></span>.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="2">
+      <td data-ice="name" class="code" data-depth="2">opts.config.inherits</td>
+      <td data-ice="type" class="code"><span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span><span>[]</span></span></td>
+      <td data-ice="appendix"><ul><li>optional</li>
+<li>default:  []</li></ul></td>
+      <td data-ice="description"><p>An array of field names to
+inherit from the parent package.json. This is useful for values that
+remain the same across all packages.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="2">
+      <td data-ice="name" class="code" data-depth="2">opts.config.detective</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span></td>
+      <td data-ice="appendix"><ul><li>optional</li>
+<li>default:  {}</li></ul></td>
+      <td data-ice="description"><p>The options to pass through
+to <a href="https://npmjs.com/package/@zdychacek/detective">detective</a>.</p>
+</td>
+    </tr>
+<tr data-ice="property" data-depth="2">
+      <td data-ice="name" class="code" data-depth="2">opts.config.prune</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></td>
+      <td data-ice="appendix"><ul><li>optional</li>
+<li>default:  false</li></ul></td>
+      <td data-ice="description"><p>Whether or not unused
+dependencies should be pruned from the package.json.</p>
 </td>
     </tr>
 </tbody>
@@ -620,25 +698,25 @@
 <div data-ice="memberDetails"><h2 data-ice="title">Public Members</h2>
 
 <div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-get-version">
+  <h3 data-ice="anchor" id="instance-get-detective">
     <span class="access" data-ice="access">public</span>
     
     <span class="kind" data-ice="kind">get</span>
     
     
     
-    <span class="code" data-ice="name">version</span><span class="code" data-ice="signature">: <span>*</span></span>
+    <span class="code" data-ice="name">detective</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/package.js.html#lineNumber59">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/package.js.html#lineNumber121">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>Gets the package version</p>
+  <div data-ice="description"><p>The options to pass through to <a href="https://npmjs.com/package/@zdychacek/detective">detective</a>.</p>
 </div>
 
   
@@ -663,28 +741,27 @@
   
   
 </div>
-<h2 data-ice="title">Private Members</h2>
-
 <div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-member-_comptroller">
-    <span class="access" data-ice="access">private</span>
+  <h3 data-ice="anchor" id="instance-get-exclude">
+    <span class="access" data-ice="access">public</span>
+    
+    <span class="kind" data-ice="kind">get</span>
     
     
     
-    
-    
-    <span class="code" data-ice="name">_comptroller</span><span class="code" data-ice="signature">: <span><a href="class/src/comptroller.js~Comptroller.html">Comptroller</a></span></span>
+    <span class="code" data-ice="name">exclude</span><span class="code" data-ice="signature">: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span><span>[]</span></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/package.js.html#lineNumber29">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/package.js.html#lineNumber108">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>An array of package names to ignore in all operations.</p>
+</div>
 
   
 
@@ -709,25 +786,27 @@
   
 </div>
 <div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-member-_dependencies">
-    <span class="access" data-ice="access">private</span>
+  <h3 data-ice="anchor" id="instance-get-ignore">
+    <span class="access" data-ice="access">public</span>
+    
+    <span class="kind" data-ice="kind">get</span>
     
     
     
-    
-    
-    <span class="code" data-ice="name">_dependencies</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map">Map</a></span>&lt;<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>&gt;</span>
+    <span class="code" data-ice="name">ignore</span><span class="code" data-ice="signature">: <span><span><a href="https://github.com/isaacs/node-glob#readme">glob</a></span><span>[]</span></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/package.js.html#lineNumber55">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/package.js.html#lineNumber102">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>An array of globs that match files not to be included with the package&apos;s
+source files.</p>
+</div>
 
   
 
@@ -752,25 +831,27 @@
   
 </div>
 <div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-member-_dir">
-    <span class="access" data-ice="access">private</span>
+  <h3 data-ice="anchor" id="instance-get-inherits">
+    <span class="access" data-ice="access">public</span>
+    
+    <span class="kind" data-ice="kind">get</span>
     
     
     
-    
-    
-    <span class="code" data-ice="name">_dir</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+    <span class="code" data-ice="name">inherits</span><span class="code" data-ice="signature">: <span><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span><span>[]</span></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/package.js.html#lineNumber32">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/package.js.html#lineNumber115">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>An array of field names the package should inherit from it&apos;s parent
+package.json.</p>
+</div>
 
   
 
@@ -795,25 +876,26 @@
   
 </div>
 <div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-member-_name">
-    <span class="access" data-ice="access">private</span>
+  <h3 data-ice="anchor" id="instance-get-packageJson">
+    <span class="access" data-ice="access">public</span>
+    
+    <span class="kind" data-ice="kind">get</span>
     
     
     
-    
-    
-    <span class="code" data-ice="name">_name</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+    <span class="code" data-ice="name">packageJson</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/package.js.html#lineNumber42">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/package.js.html#lineNumber89">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>An object representing the package&apos;s package.json.</p>
+</div>
 
   
 
@@ -838,25 +920,26 @@
   
 </div>
 <div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-member-_options">
-    <span class="access" data-ice="access">private</span>
+  <h3 data-ice="anchor" id="instance-get-prune">
+    <span class="access" data-ice="access">public</span>
+    
+    <span class="kind" data-ice="kind">get</span>
     
     
     
-    
-    
-    <span class="code" data-ice="name">_options</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span></span>
+    <span class="code" data-ice="name">prune</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean">boolean</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/package.js.html#lineNumber45">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/package.js.html#lineNumber127">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>Whether or not unused dependencies should be pruned from the package.json.</p>
+</div>
 
   
 
@@ -881,25 +964,26 @@
   
 </div>
 <div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-member-_packageJson">
-    <span class="access" data-ice="access">private</span>
+  <h3 data-ice="anchor" id="instance-get-root">
+    <span class="access" data-ice="access">public</span>
+    
+    <span class="kind" data-ice="kind">get</span>
     
     
     
-    
-    
-    <span class="code" data-ice="name">_packageJson</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span></span>
+    <span class="code" data-ice="name">root</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/package.js.html#lineNumber39">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/package.js.html#lineNumber83">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>The package&apos;s root directory.</p>
+</div>
 
   
 
@@ -924,25 +1008,26 @@
   
 </div>
 <div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-member-_packageJsonPath">
-    <span class="access" data-ice="access">private</span>
+  <h3 data-ice="anchor" id="instance-get-source">
+    <span class="access" data-ice="access">public</span>
+    
+    <span class="kind" data-ice="kind">get</span>
     
     
     
-    
-    
-    <span class="code" data-ice="name">_packageJsonPath</span><span class="code" data-ice="signature">: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></span>
+    <span class="code" data-ice="name">source</span><span class="code" data-ice="signature">: <span><a href="https://github.com/isaacs/node-glob#readme">glob</a></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/package.js.html#lineNumber35">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/package.js.html#lineNumber95">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  
+  <div data-ice="description"><p>A glob that matches the package&apos;s source files</p>
+</div>
 
   
 
@@ -970,25 +1055,84 @@
 <div data-ice="methodDetails"><h2 data-ice="title">Public Methods</h2>
 
 <div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-evaluateDependencies">
+  <h3 data-ice="anchor" id="instance-method-analyzeSourceDependencies">
     <span class="access" data-ice="access">public</span>
     
     
     
     <span data-ice="async">async</span>
     
-    <span class="code" data-ice="name">evaluateDependencies</span><span class="code" data-ice="signature">(detectiveOpts: <span>*</span>): <span>*</span></span>
+    <span class="code" data-ice="name">analyzeSourceDependencies</span><span class="code" data-ice="signature">(): <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map">Map</a></span>&lt;<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span>&gt;</span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/package.js.html#lineNumber64">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/package.js.html#lineNumber161">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>Evaluates a package&apos;s dependencies</p>
+  <div data-ice="description"><p>Analyzes the package&apos;s source files and returns all of the invoked
+dependencies mapped to the files invoking them.</p>
+</div>
+
+  
+
+  <div data-ice="properties">
+</div>
+
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map">Map</a></span>&lt;<span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>, <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span>&gt;</td>
+          <td class="return-desc" data-ice="returnDescription"><p>A map with the dependency names as keys
+and the dependency metadata as values.</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
+</div>
+  </div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-applyPatch">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">applyPatch</span><span class="code" data-ice="signature">(patch: <span><a href="class/src/patch.js~Patch.html">Patch</a></span>)</span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/package.js.html#lineNumber228">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Applies a given patch to <span><a href="class/src/package.js~Package.html#instance-get-packageJson">Package#packageJson</a></span>.</p>
 </div>
 
   
@@ -1002,10 +1146,74 @@
     <tbody>
     
     <tr data-ice="property" data-depth="0">
-      <td data-ice="name" class="code" data-depth="0">detectiveOpts</td>
-      <td data-ice="type" class="code"><span>*</span></td>
+      <td data-ice="name" class="code" data-depth="0">patch</td>
+      <td data-ice="type" class="code"><span><a href="class/src/patch.js~Patch.html">Patch</a></span></td>
       <td data-ice="appendix"></td>
-      <td data-ice="description"></td>
+      <td data-ice="description"><p>The patch to apply,</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
+</div>
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+</div>
+<div class="detail" data-ice="detail">
+  <h3 data-ice="anchor" id="instance-method-generateDependencyPatches">
+    <span class="access" data-ice="access">public</span>
+    
+    
+    
+    
+    
+    <span class="code" data-ice="name">generateDependencyPatches</span><span class="code" data-ice="signature">(dependencies: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span>): <span><span><a href="class/src/patch.js~Patch.html">Patch</a></span><span>[]</span></span></span>
+    <span class="right-info">
+      
+      
+      <span data-ice="source"><span><a href="file/src/package.js.html#lineNumber189">source</a></span></span>
+    </span>
+  </h3>
+
+  
+  
+  
+  <div data-ice="description"><p>Compares a dependency object (as returned from <span><a href="class/src/package.js~Package.html#instance-method-analyzeSourceDependencies">Package#analyzeSourceDependencies</a></span>)
+with the dependencies listed in {@link Package@packageJson} and returns an
+array of patches.</p>
+</div>
+
+  
+
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
+    
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">dependencies</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object">object</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>The dependencies to generate a patch for.</p>
+</td>
     </tr>
 </tbody>
   </table>
@@ -1017,8 +1225,9 @@
     <table>
       <tbody>
         <tr>
-          <td class="return-type code" data-ice="returnType"><span>*</span></td>
-          
+          <td class="return-type code" data-ice="returnType"><span><span><a href="class/src/patch.js~Patch.html">Patch</a></span><span>[]</span></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>The patches that will make <span><a href="class/src/package.js~Package.html#instance-get-packageJson">Package#packageJson</a></span> match the inputted dependencies</p>
+</td>
         </tr>
       </tbody>
     </table>
@@ -1042,25 +1251,25 @@
   
 </div>
 <div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-formatPackageJson">
+  <h3 data-ice="anchor" id="instance-method-generateInheritPatches">
     <span class="access" data-ice="access">public</span>
     
     
     
-    <span data-ice="async">async</span>
     
-    <span class="code" data-ice="name">formatPackageJson</span><span class="code" data-ice="signature">(): <span>*</span></span>
+    
+    <span class="code" data-ice="name">generateInheritPatches</span><span class="code" data-ice="signature">(): <span><span><a href="class/src/patch.js~Patch.html">Patch</a></span><span>[]</span></span></span>
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/package.js.html#lineNumber242">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/package.js.html#lineNumber219">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>Format&apos;s package.json using <span><a href="https://www.npmjs.com/package/format-package">format-package</a></span></p>
+  <div data-ice="description"><p>Generates the patches that will satisfy <span><a href="class/src/package.js~Package.html#instance-get-inherits">Package#inherits</a></span></p>
 </div>
 
   
@@ -1073,8 +1282,9 @@
     <table>
       <tbody>
         <tr>
-          <td class="return-type code" data-ice="returnType"><span>*</span></td>
-          
+          <td class="return-type code" data-ice="returnType"><span><span><a href="class/src/patch.js~Patch.html">Patch</a></span><span>[]</span></span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>The patches that will update <span><a href="class/src/package.js~Package.html#instance-get-packageJson">Package#packageJson</a></span> with the inherited fields.</p>
+</td>
         </tr>
       </tbody>
     </table>
@@ -1098,58 +1308,14 @@
   
 </div>
 <div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-pruneDependencies">
+  <h3 data-ice="anchor" id="instance-method-resolveDependency">
     <span class="access" data-ice="access">public</span>
     
     
     
-    <span data-ice="async">async</span>
-    
-    <span class="code" data-ice="name">pruneDependencies</span><span class="code" data-ice="signature">()</span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/package.js.html#lineNumber222">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>Prunes unused dependencies from a packages package.json</p>
-</div>
-
-  
-
-  <div data-ice="properties">
-</div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-updateDependencies">
-    <span class="access" data-ice="access">public</span>
     
     
-    
-    <span data-ice="async">async</span>
-    
-    <span class="code" data-ice="name">updateDependencies</span><span class="code" data-ice="signature">()</span>
+    <span class="code" data-ice="name">resolveDependency</span><span class="code" data-ice="signature">(dependency: <span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span>): <span>string </span> | <span> boolean</span></span>
     <span class="right-info">
       
       
@@ -1160,59 +1326,49 @@
   
   
   
-  <div data-ice="description"><p>Updates a packages package.json dependencies.</p>
+  <div data-ice="description"><p>Takes a dependency name and resolves it to the actual dependency name,
+stripping any subdirectories from the dependency name (retaining @org
+style dependencies). It also excludes dependencies with relative paths (./
+or ../ style) and any dependencies listed in <span><a href="class/src/package.js~Package.html#instance-get-exclude">Package#exclude</a></span></p>
 </div>
 
   
 
-  <div data-ice="properties">
-</div>
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-  
-</div>
-<div class="detail" data-ice="detail">
-  <h3 data-ice="anchor" id="instance-method-updatePackageJson">
-    <span class="access" data-ice="access">public</span>
+  <div data-ice="properties"><div data-ice="properties">
+  <h4 data-ice="title">Params:</h4>
+  <table class="params">
+    <thead>
+    <tr><td>Name</td><td>Type</td><td>Attribute</td><td>Description</td></tr>
+    </thead>
+    <tbody>
     
-    
-    
-    <span data-ice="async">async</span>
-    
-    <span class="code" data-ice="name">updatePackageJson</span><span class="code" data-ice="signature">()</span>
-    <span class="right-info">
-      
-      
-      <span data-ice="source"><span><a href="file/src/package.js.html#lineNumber114">source</a></span></span>
-    </span>
-  </h3>
-
-  
-  
-  
-  <div data-ice="description"><p>Updates a packages package.json with values found in the main package.json</p>
+    <tr data-ice="property" data-depth="0">
+      <td data-ice="name" class="code" data-depth="0">dependency</td>
+      <td data-ice="type" class="code"><span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String">string</a></span></td>
+      <td data-ice="appendix"></td>
+      <td data-ice="description"><p>The dependency to resolve</p>
+</td>
+    </tr>
+</tbody>
+  </table>
+</div>
 </div>
 
-  
-
-  <div data-ice="properties">
+  <div class="return-params" data-ice="returnParams">
+    <h4>Return:</h4>
+    <table>
+      <tbody>
+        <tr>
+          <td class="return-type code" data-ice="returnType"><span>string </span> | <span> boolean</span></td>
+          <td class="return-desc" data-ice="returnDescription"><p>The resolved dependency name, or false if the
+the dependency is excluded.</p>
+</td>
+        </tr>
+      </tbody>
+    </table>
+    <div data-ice="returnProperties">
 </div>
-
-  
+  </div>
 
   
 
@@ -1241,14 +1397,14 @@
     <span class="right-info">
       
       
-      <span data-ice="source"><span><a href="file/src/package.js.html#lineNumber255">source</a></span></span>
+      <span data-ice="source"><span><a href="file/src/package.js.html#lineNumber132">source</a></span></span>
     </span>
   </h3>
 
   
   
   
-  <div data-ice="description"><p>Writes a package&apos;s package.json</p>
+  <div data-ice="description"><p>Writes <span><a href="class/src/package.js~Package.html#instance-get-packageJson">Package#packageJson</a></span> to it&apos;s respective package.json file.</p>
 </div>
 
   
