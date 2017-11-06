@@ -7,6 +7,7 @@ exports.fileStructure = {
     {
       "name": "test-package",
       "version": "0.0.1",
+      "author": "Some Body",
       "dependencies": {
         "dependency-1": "0.0.0",
         "dependency-2": "0.0.1"
@@ -31,12 +32,18 @@ exports.fileStructure = {
           "name": "@test/package-1",
           "version": "0.0.0",
           "comptroller": {
-            "inherit": ["version"]
+            "inherit": ["version", "author"]
+          },
+          "dependencies": {
+            "dependency-1": "0.0.0",
+            "dependency-2": "0.0.0",
+            "extra-package": "1.2.3"
           }
         }
       `,
       'index.js': dedent`
         require('dependency-1');
+        require('dependency-2');
         require('doesnt-exist');
         require('events');
       `
@@ -58,7 +65,7 @@ exports.fileStructure = {
       `
     }
   }
-}
+};
 
 exports.makepkg = async function makepkg (location, structure)
 {
@@ -73,9 +80,9 @@ exports.makepkg = async function makepkg (location, structure)
       await fs.writeFilePlease(dir, content);
     }
   }
-}
+};
 
 exports.rempkg = async function rempkg (location)
 {
   await fs.removePlease(location);
-}
+};

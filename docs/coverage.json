@@ -1,7 +1,7 @@
 {
   "coverage": "100%",
-  "expectCount": 58,
-  "actualCount": 58,
+  "expectCount": 59,
+  "actualCount": 59,
   "files": {
     "src/cli.js": {
       "expectCount": 5,
@@ -14,8 +14,8 @@
       "undocumentLines": []
     },
     "src/package.js": {
-      "expectCount": 24,
-      "actualCount": 24,
+      "expectCount": 25,
+      "actualCount": 25,
       "undocumentLines": []
     },
     "src/patch.js": {
