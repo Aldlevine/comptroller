@@ -95,32 +95,24 @@ module.exports = class Comptroller extends Package
         case Patch.ADD:
         case Patch.UPDATE:
           const child = this.getChildByName(patch.name);
+          const source = child ? 'local' : 'remote';
+          const value = child ?
+            child.packageJson.version :
+            this.packageJson.dependencies[patch.name];
 
-          // local package
-          if (child) {
-            newPatches.push(new Patch(patch.type, {
-              ...patch,
-              source: 'local',
-              value: child.packageJson.version,
-            }));
-          }
+          newPatches.push(new Patch(patch.type, {
+            ...patch,
+            source,
+            value,
+          }));
 
-          // remote package
-          else {
-            newPatches.push(new Patch(patch.type, {
-              ...patch,
-              source: 'remote',
-              value: this.packageJson.dependencies[patch.name],
-            }));
-          }
           break;
 
         case Patch.REMOVE:
-          if (this.prune) {
-            newPatches.push(new Patch(patch.type, {
-              ...patch,
-            }));
-          }
+          newPatches.push(new Patch(patch.type, {
+            ...patch,
+            disabled: !this.prune,
+          }));
           break;
 
         case Patch.INHERIT:
@@ -145,31 +137,37 @@ module.exports = class Comptroller extends Package
   logPatch (child, patch)
   {
     const childName = child.packageJson.name;
+    const disabled = patch.disabled ? 'DISABLED: ' : '';
+
     if ((patch.type == Patch.ADD || patch.type == Patch.UPDATE) && !patch.value) {
       console.warn(`WARNING: '${patch.name}' required by ${childName} (${patch.files}) not found in package.json or local packages.`);
       return;
     }
+
     switch (patch.type) {
       case Patch.ADD:
-        console.log(`Adding package ${patch.source} package '${patch.name}@${patch.value}' to package '${childName}'`);
+        console.log(`${disabled}Adding package ${patch.source} package '${patch.name}@${patch.value}' to package '${childName}'`);
         break;
+
       case Patch.UPDATE:
         const oldVersion = child.packageJson.dependencies[patch.name];
         if (oldVersion !== patch.value) {
-          console.log(`Updating ${patch.source} package '${patch.name}' from ${oldVersion} to ${patch.value} in package '${childName}'`);
+          console.log(`${disabled}Updating ${patch.source} package '${patch.name}' from ${oldVersion} to ${patch.value} in package '${childName}'`);
         }
         break;
+
       case Patch.REMOVE:
-        console.log(`Removing package '${patch.name}' from '${childName}'`);
+        console.log(`${disabled}Removing package '${patch.name}' from '${childName}'`);
         break;
+
       case Patch.INHERIT:
         const oldValue = child.packageJson[patch.name];
         if (oldValue !== patch.value) {
           if (oldValue) {
-            console.log(`Updating field ${patch.name} from '${oldValue}' to '${patch.value}' in package '${childName}'`);
+            console.log(`${disabled}Updating field ${patch.name} from '${oldValue}' to '${patch.value}' in package '${childName}'`);
           }
           else {
-            console.log(`Adding field ${patch.name} as '${patch.value}' to package '${childName}'`);
+            console.log(`${disabled}Adding field ${patch.name} as '${patch.value}' to package '${childName}'`);
           }
         }
     }
