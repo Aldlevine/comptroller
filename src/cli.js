@@ -57,5 +57,13 @@ const cli = {
 }
 
 ;(async function main () {
-  await cli[command]();
+  try {
+    await cli[command]();
+  }
+  catch (err) {
+    if (err instanceof Error) {
+      return console.error(err.stack);
+    }
+    console.error(err);
+  }
 })();
