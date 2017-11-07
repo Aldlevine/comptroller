@@ -9,6 +9,7 @@
   "dependencies": {
     "@zdychacek/detective": "^5.0.2",
     "babel-traverse": "^6.26.0",
+    "babylon": "^6.18.0",
     "builtin-modules": "^1.1.1",
     "dedent": "^0.7.0",
     "format-package": "^4.0.2",
