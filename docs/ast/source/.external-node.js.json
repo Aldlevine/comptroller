@@ -1,28 +1,28 @@
 {
   "type": "File",
   "start": 0,
-  "end": 95853,
+  "end": 95770,
   "loc": {
     "start": {
       "line": 1,
       "column": 0
     },
     "end": {
-      "line": 2344,
+      "line": 2341,
       "column": 0
     }
   },
   "program": {
     "type": "Program",
     "start": 0,
-    "end": 95853,
+    "end": 95770,
     "loc": {
       "start": {
         "line": 1,
         "column": 0
       },
       "end": {
-        "line": 2344,
+        "line": 2341,
         "column": 0
       }
     },
@@ -12449,9 +12449,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n* @external {deep-equal} https://github.com/substack/node-deep-equal#readme\n",
+        "value": "*\n* @external {format-package} https://github.com/camacho/format-package#readme\n",
         "start": 95473,
-        "end": 95555,
+        "end": 95557,
         "loc": {
           "start": {
             "line": 2329,
@@ -12465,9 +12465,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n* @external {format-package} https://github.com/camacho/format-package#readme\n",
-        "start": 95556,
-        "end": 95640,
+        "value": "*\n* @external {fs-extra} https://github.com/jprichardson/node-fs-extra\n",
+        "start": 95558,
+        "end": 95633,
         "loc": {
           "start": {
             "line": 2332,
@@ -12481,9 +12481,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n* @external {fs-extra} https://github.com/jprichardson/node-fs-extra\n",
-        "start": 95641,
-        "end": 95716,
+        "value": "*\n* @external {glob} https://github.com/isaacs/node-glob#readme\n",
+        "start": 95634,
+        "end": 95702,
         "loc": {
           "start": {
             "line": 2335,
@@ -12497,9 +12497,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n* @external {glob} https://github.com/isaacs/node-glob#readme\n",
-        "start": 95717,
-        "end": 95785,
+        "value": "*\n* @external {minimist} https://github.com/substack/minimist\n",
+        "start": 95703,
+        "end": 95769,
         "loc": {
           "start": {
             "line": 2338,
@@ -12507,22 +12507,6 @@
           },
           "end": {
             "line": 2340,
-            "column": 2
-          }
-        }
-      },
-      {
-        "type": "CommentBlock",
-        "value": "*\n* @external {minimist} https://github.com/substack/minimist\n",
-        "start": 95786,
-        "end": 95852,
-        "loc": {
-          "start": {
-            "line": 2341,
-            "column": 0
-          },
-          "end": {
-            "line": 2343,
             "column": 2
           }
         }
@@ -24948,9 +24932,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {deep-equal} https://github.com/substack/node-deep-equal#readme\n",
+      "value": "*\n* @external {format-package} https://github.com/camacho/format-package#readme\n",
       "start": 95473,
-      "end": 95555,
+      "end": 95557,
       "loc": {
         "start": {
           "line": 2329,
@@ -24964,9 +24948,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {format-package} https://github.com/camacho/format-package#readme\n",
-      "start": 95556,
-      "end": 95640,
+      "value": "*\n* @external {fs-extra} https://github.com/jprichardson/node-fs-extra\n",
+      "start": 95558,
+      "end": 95633,
       "loc": {
         "start": {
           "line": 2332,
@@ -24980,9 +24964,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {fs-extra} https://github.com/jprichardson/node-fs-extra\n",
-      "start": 95641,
-      "end": 95716,
+      "value": "*\n* @external {glob} https://github.com/isaacs/node-glob#readme\n",
+      "start": 95634,
+      "end": 95702,
       "loc": {
         "start": {
           "line": 2335,
@@ -24996,9 +24980,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {glob} https://github.com/isaacs/node-glob#readme\n",
-      "start": 95717,
-      "end": 95785,
+      "value": "*\n* @external {minimist} https://github.com/substack/minimist\n",
+      "start": 95703,
+      "end": 95769,
       "loc": {
         "start": {
           "line": 2338,
@@ -25006,22 +24990,6 @@
         },
         "end": {
           "line": 2340,
-          "column": 2
-        }
-      }
-    },
-    {
-      "type": "CommentBlock",
-      "value": "*\n* @external {minimist} https://github.com/substack/minimist\n",
-      "start": 95786,
-      "end": 95852,
-      "loc": {
-        "start": {
-          "line": 2341,
-          "column": 0
-        },
-        "end": {
-          "line": 2343,
           "column": 2
         }
       }
@@ -37446,9 +37414,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {deep-equal} https://github.com/substack/node-deep-equal#readme\n",
+      "value": "*\n* @external {format-package} https://github.com/camacho/format-package#readme\n",
       "start": 95473,
-      "end": 95555,
+      "end": 95557,
       "loc": {
         "start": {
           "line": 2329,
@@ -37462,9 +37430,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {format-package} https://github.com/camacho/format-package#readme\n",
-      "start": 95556,
-      "end": 95640,
+      "value": "*\n* @external {fs-extra} https://github.com/jprichardson/node-fs-extra\n",
+      "start": 95558,
+      "end": 95633,
       "loc": {
         "start": {
           "line": 2332,
@@ -37478,9 +37446,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {fs-extra} https://github.com/jprichardson/node-fs-extra\n",
-      "start": 95641,
-      "end": 95716,
+      "value": "*\n* @external {glob} https://github.com/isaacs/node-glob#readme\n",
+      "start": 95634,
+      "end": 95702,
       "loc": {
         "start": {
           "line": 2335,
@@ -37494,9 +37462,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {glob} https://github.com/isaacs/node-glob#readme\n",
-      "start": 95717,
-      "end": 95785,
+      "value": "*\n* @external {minimist} https://github.com/substack/minimist\n",
+      "start": 95703,
+      "end": 95769,
       "loc": {
         "start": {
           "line": 2338,
@@ -37504,22 +37472,6 @@
         },
         "end": {
           "line": 2340,
-          "column": 2
-        }
-      }
-    },
-    {
-      "type": "CommentBlock",
-      "value": "*\n* @external {minimist} https://github.com/substack/minimist\n",
-      "start": 95786,
-      "end": 95852,
-      "loc": {
-        "start": {
-          "line": 2341,
-          "column": 0
-        },
-        "end": {
-          "line": 2343,
           "column": 2
         }
       }
@@ -37537,15 +37489,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 95853,
-      "end": 95853,
+      "start": 95770,
+      "end": 95770,
       "loc": {
         "start": {
-          "line": 2344,
+          "line": 2341,
           "column": 0
         },
         "end": {
-          "line": 2344,
+          "line": 2341,
           "column": 0
         }
       }

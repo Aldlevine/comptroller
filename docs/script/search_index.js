@@ -1698,12 +1698,6 @@ window.esdocSearchIndex = [
     "external"
   ],
   [
-    "src/.external-node.js~deep-equal",
-    "https://github.com/substack/node-deep-equal#readme",
-    "src/.external-node.js~deep-equal",
-    "external"
-  ],
-  [
     "src/.external-node.js~deprecated_apis~cryptostream",
     "https://nodejs.org/api/deprecated_apis.html#deprecated_apis_class_cryptostream",
     "src/.external-node.js~deprecated_apis~CryptoStream",
@@ -1867,13 +1861,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~dgram~socket#bind",
-    "https://nodejs.org/api/dgram.html#dgram_socket_bind_port_address_callback",
+    "https://nodejs.org/api/dgram.html#dgram_socket_bind_options_callback",
     "src/.external-node.js~dgram~Socket#bind",
     "external"
   ],
   [
     "src/.external-node.js~dgram~socket#bind",
-    "https://nodejs.org/api/dgram.html#dgram_socket_bind_options_callback",
+    "https://nodejs.org/api/dgram.html#dgram_socket_bind_port_address_callback",
     "src/.external-node.js~dgram~Socket#bind",
     "external"
   ],
@@ -2143,13 +2137,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~events~eventemitter#listenercount",
-    "https://nodejs.org/api/events.html#events_emitter_listenercount_eventname",
+    "https://nodejs.org/api/events.html#events_eventemitter_listenercount_emitter_eventname",
     "src/.external-node.js~events~EventEmitter#listenerCount",
     "external"
   ],
   [
     "src/.external-node.js~events~eventemitter#listenercount",
-    "https://nodejs.org/api/events.html#events_eventemitter_listenercount_emitter_eventname",
+    "https://nodejs.org/api/events.html#events_emitter_listenercount_eventname",
     "src/.external-node.js~events~EventEmitter#listenerCount",
     "external"
   ],
@@ -2671,13 +2665,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~fs~write",
-    "https://nodejs.org/api/fs.html#fs_fs_write_fd_string_position_encoding_callback",
+    "https://nodejs.org/api/fs.html#fs_fs_write_fd_buffer_offset_length_position_callback",
     "src/.external-node.js~fs~write",
     "external"
   ],
   [
     "src/.external-node.js~fs~write",
-    "https://nodejs.org/api/fs.html#fs_fs_write_fd_buffer_offset_length_position_callback",
+    "https://nodejs.org/api/fs.html#fs_fs_write_fd_string_position_encoding_callback",
     "src/.external-node.js~fs~write",
     "external"
   ],
@@ -4579,13 +4573,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~tls~connect",
-    "https://nodejs.org/api/tls.html#tls_tls_connect_path_options_callback",
+    "https://nodejs.org/api/tls.html#tls_tls_connect_options_callback",
     "src/.external-node.js~tls~connect",
     "external"
   ],
   [
     "src/.external-node.js~tls~connect",
-    "https://nodejs.org/api/tls.html#tls_tls_connect_options_callback",
+    "https://nodejs.org/api/tls.html#tls_tls_connect_path_options_callback",
     "src/.external-node.js~tls~connect",
     "external"
   ],
