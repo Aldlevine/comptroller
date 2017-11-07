@@ -1,6 +1,6 @@
 {
   "name": "comptroller",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A simple and lightweight tool to manage your monorepo.",
   "main": "src/comptroller.js",
   "directories": {
