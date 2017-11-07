@@ -99,7 +99,7 @@ module.exports = class Comptroller extends Package
           const source = child ? 'local' : 'remote';
           const value = child ?
             child.packageJson.version :
-            this.packageJson.dependencies[patch.name];
+            this.dependencies[patch.name];
 
           newPatches.push(new Patch(patch.type, {
             ...patch,
@@ -151,7 +151,7 @@ module.exports = class Comptroller extends Package
         break;
 
       case Patch.UPDATE:
-        const oldVersion = child.packageJson.dependencies[patch.name];
+        const oldVersion = child.dependencies[patch.name];
         if (oldVersion !== patch.value) {
           logger.log(`${disabled}Updating ${patch.source} package '${patch.name}' from ${oldVersion} to ${patch.value} in package '${childName}'`);
         }
