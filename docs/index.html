@@ -42,8 +42,7 @@
 <a href="https://coveralls.io/github/Aldlevine/comptroller?branch=master"><img src="https://coveralls.io/repos/github/Aldlevine/comptroller/badge.svg?branch=master" alt="Coverage Status"></a>
 <a href="https://aldlevine.github.io/comptroller/source.html"><img src="https://aldlevine.github.io/comptroller/badge.svg" alt="Docs Status"></a></p>
 <p>A simple and lightweight tool to manage your monorepo.</p>
-<p><em>Warning: This automatically updates your local package&apos;s package.json
-dependencies. Use at your own risk!</em></p>
+<p><em>Warning: This automatically updates your local package&apos;s package.json</em></p>
 <h2 id="install">Install</h2><pre><code><code class="source-code prettyprint">npm i comptroller</code>
 </code></pre><h2 id="usage">Usage</h2><pre><code><code class="source-code prettyprint">comp &lt;command&gt; [options]
 
@@ -56,7 +55,7 @@ version                   Print Comptroller version
 
 Options:
 --------
---prune -p                 Remove unused dependencies from subpackges&apos; package.json</code>
+--prune -p                Remove unused dependencies from subpackges&apos; package.json</code>
 </code></pre><h2 id="how-it-works">How it works</h2><h3 id="commands">Commands</h3><p><strong>update</strong></p>
 <p>Comptroller&apos;s <code>update</code> command analyzes the packages in a given directory and
 identifies static <code>require</code> calls. Using this, it is able to update each
@@ -73,14 +72,149 @@ package, Comptroller locates the specified package&apos;s <code>package.json</co
 the issuing package&apos;s <code>package.json</code> dependencies with the version information
 of the specified package.</p>
 <p><strong>link</strong></p>
-<p>Comptroller&apos;s <code>link</code> command creates a symlinked <code>node_modules</code> directory in the
-specified <code>packages</code> directory. This directory points to the <code>packages</code>
-directory itself and enables <code>require</code> calls to local packages without the need
-for relative paths or to <code>npm install</code> or <code>npm link</code> them.</p>
+<p>Comptroller&apos;s <code>link</code> command creates symlinks in the root <code>node_modules</code>
+directory to each child package. These symlinks are stuctured to match the names
+provided in each package&apos;s package.json replicating the same structure that an
+npm install would create. This enables <code>require</code> calls to local packages without
+the need for to specify relative paths or to <code>npm install</code> or <code>npm link</code> them.</p>
 <h3 id="options">Options</h3><p><strong>prune</strong></p>
 <p>Comptroller&apos;s <code>prune</code> option takes all those extraneous dependencies found by
 the <code>update</code> command and delivers them to the void.</p>
-<h2 id="the-nitty-gritty">The nitty gritty</h2><p><em>TODO: describe how to use the thing in detail</em></p>
+<h2 id="the-nitty-gritty">The nitty gritty</h2><p>Comptroller&apos;s power is it&apos;s simplicity and flexibility.</p>
+<h3 id="configuration">Configuration</h3><p>Comptroller has a cascading configuration scheme. This means that your root
+package&apos;s configuration will cascade through to its child packages, as long as
+they don&apos;t override the configuration themselves. If all of your packages share
+the same configuration, you only need to declare your configuration in the root
+package, but if any of your subpackages deviate from the norm just specify its
+own custom configuration within it&apos;s package.json and it&apos;ll be right as rain!
+The subpackage&apos;s configration will seamlessly override the root configuration.</p>
+<p>Currently the only place to specify your config is in a package.json, but this
+is likely to expand to accomodate a variety of workflows.</p>
+<pre><code class="lang-json"><code class="source-code prettyprint">{
+  &quot;name&quot;: &quot;my-fancy-package&quot;,
+  &quot;version&quot;: &quot;0.4.2&quot;,
+  &quot;author&quot;: &quot;Some Body&quot;,
+  &quot;homepage&quot;: &quot;https://somewhere.org&quot;,
+  &quot;comptroller&quot;: {
+    &quot;source&quot;: &quot;**/*.js&quot;,
+    &quot;ignore&quot;: &quot;**/node_modules/**&quot;,
+    &quot;exclude&quot;: [
+      &quot;not-the-droid-youre-looking-for&quot;
+    ],
+    &quot;inherits&quot;: [
+      &quot;version&quot;,
+      &quot;author&quot;,
+      &quot;homepage&quot;
+    ],
+    &quot;detective&quot;: {
+      &quot;parse&quot;: {
+        &quot;plugins&quot;: [&quot;objectRestSpread&quot;]
+      }
+    }
+  },
+  &quot;dependencies&quot;: {
+    &quot;need-this&quot;: &quot;1.0.0&quot;,
+    &quot;and-this&quot;: &quot;1.2.0&quot;
+  }
+}</code>
+</code></pre>
+<h4 id="inheritance">Inheritance</h4><p>Inheritance is the tool that saves you from the mundane maintainence of a
+multitude of package.json files throughout the life of your project. This is
+like the swiss army knife version of <a href="https://github.com/lerna/lerna#fixedlocked-mode-default">Lerna&apos;s &apos;fixed/locked&apos;
+mode</a>. While it&apos;s
+perfect for keeping your package versions in sync, it can be used for any field
+in your package.json (including dependencies, but we&apos;d recommend against that.
+Comptroller has bigger plans for your dependencies). It also has the added
+benefit of being able to opt in/out of any field inheritance globally or locally
+per each subpackage.</p>
+<p>Do you wan&apos;t to keep all package versions in sync? Simply inherit the <code>version</code>
+field. Do all of your packages share the same homepage? Do the same with the
+<code>homepage</code> field. Did one of your packages mature and deserves its own homepage?
+Simply stop inheriting the <code>homepage</code> key for that package and provide it with
+its with its own. The possibilities are endless!</p>
+<h4 id="dependency-management">Dependency management</h4><p>Comptroller&apos;s dependency management allows you to manage your dependencies at
+the top level only. Comptroller will intelligently analyze the invoked
+dependencies in your packages&apos; source files and add (and remove, with the <code>prune</code>
+option) them from each package.json as needed. This will ensure that all of your
+packages&apos; dependencies stay in sync and helps you avoid heavy downloads by
+pruning out any unused dependencies hiding in the corner. With Comptroller,
+keeping all of your packages&apos; dependencies perfectly managed is only 14
+keystrokes away! <code>comp update -p</code>.</p>
+<p>But we know the world isn&apos;t perfect (if it was there&apos;d be no use for a tool like
+this), which is why Comptroller allows you to opt out of dependency management
+for specific named dependencies. If one of your packages relies on a different
+version of a specific dependency, exlude that dependency in the package&apos;s
+configuration and Comptroller will look the other way when it sees it.</p>
+<h3 id="updating-your-packages">Updating your packages</h3><p>Let&apos;s say the package.json above belongs to the root package. Now if you have a
+child package with the below package.json:</p>
+<pre><code class="lang-json"><code class="source-code prettyprint">{
+  &quot;name&quot;: &quot;@my-fancy-package/my-fancy-module&quot;,
+  &quot;version&quot;: &quot;0.4.1&quot;,
+  &quot;dependencies&quot;: {
+    &quot;need-this&quot;: &quot;0.1.0&quot;,
+    &quot;dont-need-this&quot;: &quot;1.2.3&quot;
+  }
+}</code>
+</code></pre>
+<p>And the below index.js:</p>
+<pre><code class="lang-javascript"><code class="source-code prettyprint">require(&apos;need-this&apos;);
+require(&apos;and-this&apos;);</code>
+</code></pre>
+<p>A call to <code>comp update</code> will log this in your terminal:</p>
+<pre><code><code class="source-code prettyprint">Updating remote package &apos;need-this&apos; from 0.1.0 to 1.0.0 in package &apos;@my-fancy-package/my-fancy-module&apos;
+Adding remote package &apos;and-this@^1.2.0&apos; to package &apos;@my-fancy-package/my-fancy-module&apos;
+DISABLED: Removing package &apos;dont-need-this&apos; from &apos;@my-fancy-package/my-fancy-module&apos;
+Updating field version from &quot;0.4.1&quot; to &quot;0.4.2&quot; in package &apos;@my-fancy-package/my-fancy-module&apos;
+Adding field homepage as &quot;https://somewhere.org&quot; to package &apos;@my-fancy-package/my-fancy-module&apos;
+Adding field author as &quot;Some Body&quot; to package &apos;@my-fancy-package/my-fancy-module&apos;</code>
+</code></pre><p>And update the package.json like so:</p>
+<pre><code class="lang-json"><code class="source-code prettyprint">{
+  &quot;name&quot;: &quot;@my-fancy-package/my-fancy-module&quot;,
+  &quot;version&quot;: &quot;0.4.2&quot;,
+  &quot;author&quot;: &quot;Some Body&quot;,
+  &quot;homepage&quot;: &quot;https://somewhere.org&quot;,
+  &quot;dependencies&quot;: {
+    &quot;need-this&quot;: &quot;1.0.0&quot;,
+    &quot;and-this&quot;: &quot;1.2.0&quot;,
+    &quot;dont-need-this&quot;: &quot;1.2.3&quot;
+  }
+}</code>
+</code></pre>
+<p>Oops! We have a dependency in our package.json that appears to be unused!
+Comptroller won&apos;t just go deleting your dependencies williy nilly, it must be
+given the right to do so by issuing the command with the <code>--prune</code> or <code>-p</code>
+option.</p>
+<p><code>comp update -p</code></p>
+<pre><code><code class="source-code prettyprint">Removing package &apos;dont-need-this&apos; from &apos;@my-fancy-package/my-fancy-module&apos;</code>
+</code></pre><pre><code class="lang-json"><code class="source-code prettyprint">{
+  ...
+  &quot;dependencies&quot;: {
+    &quot;need-this&quot;: &quot;1.0.0&quot;,
+    &quot;and-this&quot;: &quot;1.2.0&quot;,
+  }
+}</code>
+</code></pre>
+<p>Whew! That&apos;s better :wink:. Now we&apos;re free to just develop our project and not
+worry about managing our dependencies and metadata.</p>
+<p><em>Note that this works just as well with sibling package dependencies, it just
+seemed unweildy to add an example for this here.</em></p>
+<h3 id="link--39-s-awakening">Link&apos;s Awakening</h3><p>The link command is like a super simplified version of <a href="https://github.com/lerna/lerna#bootstrap">Lerna&apos;s bootstrap
+command</a> (step #2). It doesn&apos;t take a
+very aggressive approach, but it gets the job done well. It&apos;s kind of like if
+<code>npm link</code> worked on all subpackages at once and only impacted the project scope
+rather than the global scope.</p>
+<p>Let&apos;s pretend you have a project with three subpackages named
+<code>@my-fancy-package/my-fancy-module</code>, <code>@my-fancy-package/my-other-fancy-module</code>,
+and <code>my-not-so-fancy-module</code>. A call to <code>comp link</code> will ensure that the top
+level <code>node_modules</code> includes:</p>
+<pre><code><code class="source-code prettyprint">node_modules
+&#x251C;&#x2500;&#x2500; @my-fancy-package
+&#x2502;   &#x251C;&#x2500;&#x2500; my-fancy-module
+&#x2502;   &#x2514;&#x2500;&#x2500; my-other-fancy-module
+&#x2514;&#x2500;&#x2500; my-not-so-fancy-module</code>
+</code></pre><p>Now you can have no fear that your interdependent packages will function exactly
+as they will in the wild (and you&apos;ll have only burned ~0.017 calories in the
+process)!</p>
 </div>
 </div>
 
