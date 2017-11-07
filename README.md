@@ -1,4 +1,4 @@
-# Comptroller
+# ![Comptroller](assets/logo.svg?raw=true "Comptroller")
 
 [![npm (scoped)](https://img.shields.io/npm/v/comptroller.svg)](https://www.npmjs.com/package/comptroller)
 [![Greenkeeper badge](https://badges.greenkeeper.io/Aldlevine/comptroller.svg)](https://greenkeeper.io/)
