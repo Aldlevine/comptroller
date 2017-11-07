@@ -195,7 +195,7 @@ describe('Comptroller', function () {
       });
       const child = new Package({root: path.join(this.packageDir, 'packages', 'package-1')});
       this.comptroller.logPatch(child, patch);
-      expect(this.logger.log.calledWith(`Updating field version from '0.0.0' to '1.0.0' in package '@test/package-1'`)).to.be.true;
+      expect(this.logger.log.calledWith(`Updating field version from "0.0.0" to "1.0.0" in package '@test/package-1'`)).to.be.true;
     });
 
     it('should log inherit add patch', function () {
@@ -205,7 +205,7 @@ describe('Comptroller', function () {
       });
       const child = new Package({root: path.join(this.packageDir, 'packages', 'package-1')});
       this.comptroller.logPatch(child, patch);
-      expect(this.logger.log.calledWith(`Adding field author as 'Some Body' to package '@test/package-1'`)).to.be.true;
+      expect(this.logger.log.calledWith(`Adding field author as "Some Body" to package '@test/package-1'`)).to.be.true;
     });
 
     it('should not log inherit patch with same value', function () {

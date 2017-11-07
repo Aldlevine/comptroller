@@ -201,13 +201,14 @@ module.exports = class Comptroller extends Package
         break;
 
       case Patch.INHERIT:
-        const oldValue = child.packageJson[patch.name];
-        if (oldValue !== patch.value) {
+        const oldValue = JSON.stringify(child.packageJson[patch.name]);
+        const newValue = JSON.stringify(patch.value);
+        if (oldValue !== newValue) {
           if (oldValue) {
-            logger.log(`${disabled}Updating field ${patch.name} from &apos;${oldValue}&apos; to &apos;${patch.value}&apos; in package &apos;${childName}&apos;`);
+            logger.log(`${disabled}Updating field ${patch.name} from ${oldValue} to ${newValue} in package &apos;${childName}&apos;`);
           }
           else {
-            logger.log(`${disabled}Adding field ${patch.name} as &apos;${patch.value}&apos; to package &apos;${childName}&apos;`);
+            logger.log(`${disabled}Adding field ${patch.name} as ${newValue} to package &apos;${childName}&apos;`);
           }
         }
     }
