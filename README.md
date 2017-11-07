@@ -1,4 +1,4 @@
-# <img alt="Comptroller" src="//aldlevine.github.io/comptroller/docs/image/logo.png" style="box-shadow:none;"/>
+# <img alt="Comptroller" src="http://aldlevine.github.io/comptroller/image/logo.png" style="box-shadow:none;"/>
 
 [![npm (scoped)](https://img.shields.io/npm/v/comptroller.svg)](https://www.npmjs.com/package/comptroller)
 [![Greenkeeper badge](https://badges.greenkeeper.io/Aldlevine/comptroller.svg)](https://greenkeeper.io/)
