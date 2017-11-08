@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require('../src/path');
 const {expect} = require('chai');
 const {makepkg, rempkg, fileStructure} = require('./makepkg');
 const fs = require('../src/fs');
@@ -52,6 +52,7 @@ describe('Package', function () {
       expect(analyzed).to.have.all.keys('dependency-1', 'dependency-2', 'http', 'not-a-package', 'doesnt-exist', 'events', '@test/package-1');
 
       expect(analyzed['dependency-1']).to.have.key('files');
+      console.log(analyzed['dependency-1']);
       expect(analyzed['dependency-1']['files']).to.include('index.js', 'packages/package-1/index.js', 'packages/package-2/index.js');
 
       expect(analyzed['dependency-2']).to.have.key('files');

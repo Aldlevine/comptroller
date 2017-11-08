@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require('./path');
 const glob = require('./glob');
 const minimatch = require('minimatch');
 const fs = require('./fs');
@@ -216,12 +216,11 @@ module.exports = class Package
   {
     const patches = [];
     const usedDeps = {};
-    const usedDev = {};
+    // const usedDev = {};
 
     for (let dep in dependencies)
     {
       let {files} = dependencies[dep];
-      let depField;
       let dev = true;
 
       for (let file of files) {
@@ -231,12 +230,7 @@ module.exports = class Package
         }
       }
 
-      if (dev) {
-        usedDev[dep] = true;
-      }
-      else {
-        usedDeps[dep] = true;
-      }
+      usedDeps[dep] = true;
 
       if (dev && !(dep in this.devDependencies) && !(dep in this.dependencies)) {
         patches.push(new Patch(Patch.ADD, {name: dep, dev, files}));
@@ -255,7 +249,7 @@ module.exports = class Package
     }
 
     for (let dep in this.dependencies) {
-      if (!usedDeps[dep] && !usedDev[dep] && this.exclude.indexOf(dep) < 0) {
+      if (!usedDeps[dep] && this.exclude.indexOf(dep) < 0) {
         patches.push(new Patch(Patch.REMOVE, {name: dep}))
       }
     }

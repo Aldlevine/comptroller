@@ -37,7 +37,7 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/comptroller.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">const path = require(&apos;path&apos;);
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">const path = require(&apos;./path&apos;);
 const fs = require(&apos;./fs&apos;);
 const glob = require(&apos;./glob&apos;);
 const logger = require(&apos;./logger&apos;);
@@ -185,7 +185,12 @@ module.exports = class Comptroller extends Package
     const dev = patch.dev ? &apos; dev &apos; : &apos; &apos;;
 
     if ((patch.type == Patch.ADD || patch.type == Patch.UPDATE) &amp;&amp; !patch.value) {
-      logger.warn(`WARNING: &apos;${patch.name}&apos; required by ${childName} (${patch.files}) not found in package.json or local packages.`);
+      if (patch.name in child.devDependencies) {
+        logger.warn(`WARNING: &apos;${patch.name}&apos; required by ${childName} in non-dev source (${patch.files}) was found in package.json devDependencies.`);
+      }
+      else {
+        logger.warn(`WARNING: &apos;${patch.name}&apos; required by ${childName} (${patch.files}) not found in package.json or local packages.`);
+      }
       return;
     }
 
@@ -203,7 +208,7 @@ module.exports = class Comptroller extends Package
         break;
 
       case Patch.REMOVE:
-        logger.log(`${disabled}Removing package${dev}&apos;${patch.name}&apos; from &apos;${childName}&apos;`);
+        logger.log(`${disabled}Removing${dev}package &apos;${patch.name}&apos; from &apos;${childName}&apos;`);
         break;
 
       case Patch.INHERIT:

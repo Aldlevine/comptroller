@@ -1,7 +1,7 @@
 {
   "coverage": "100%",
-  "expectCount": 66,
-  "actualCount": 66,
+  "expectCount": 67,
+  "actualCount": 67,
   "files": {
     "src/cli.js": {
       "expectCount": 6,
@@ -21,6 +21,11 @@
     "src/patch.js": {
       "expectCount": 17,
       "actualCount": 17,
+      "undocumentLines": []
+    },
+    "src/path.js": {
+      "expectCount": 1,
+      "actualCount": 1,
       "undocumentLines": []
     }
   }

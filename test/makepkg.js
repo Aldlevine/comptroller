@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require('../src/path');
 const dedent = require('dedent');
 const fs = require('../src/fs');
 

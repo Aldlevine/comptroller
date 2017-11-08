@@ -1,6 +1,6 @@
 require('mocha-sinon');
 const proxyquire = require('proxyquire');
-const path = require('path');
+const path = require('../src/path');
 const {expect} = require('chai');
 const {makepkg, rempkg, fileStructure} = require('./makepkg');
 const fs = require('../src/fs');

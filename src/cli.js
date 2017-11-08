@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const {version} = require('../package.json');
-const path = require('path');
+const path = require('./path');
 const minimist = require('minimist');
 const dedent = require('dedent');
 const fs = require('./fs');

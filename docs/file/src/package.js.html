@@ -37,7 +37,7 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/package.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">const path = require(&apos;path&apos;);
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">const path = require(&apos;./path&apos;);
 const glob = require(&apos;./glob&apos;);
 const minimatch = require(&apos;minimatch&apos;);
 const fs = require(&apos;./fs&apos;);
@@ -254,12 +254,11 @@ module.exports = class Package
   {
     const patches = [];
     const usedDeps = {};
-    const usedDev = {};
+    // const usedDev = {};
 
     for (let dep in dependencies)
     {
       let {files} = dependencies[dep];
-      let depField;
       let dev = true;
 
       for (let file of files) {
@@ -269,12 +268,7 @@ module.exports = class Package
         }
       }
 
-      if (dev) {
-        usedDev[dep] = true;
-      }
-      else {
-        usedDeps[dep] = true;
-      }
+      usedDeps[dep] = true;
 
       if (dev &amp;&amp; !(dep in this.devDependencies) &amp;&amp; !(dep in this.dependencies)) {
         patches.push(new Patch(Patch.ADD, {name: dep, dev, files}));
@@ -293,7 +287,7 @@ module.exports = class Package
     }
 
     for (let dep in this.dependencies) {
-      if (!usedDeps[dep] &amp;&amp; !usedDev[dep] &amp;&amp; this.exclude.indexOf(dep) &lt; 0) {
+      if (!usedDeps[dep] &amp;&amp; this.exclude.indexOf(dep) &lt; 0) {
         patches.push(new Patch(Patch.REMOVE, {name: dep}))
       }
     }

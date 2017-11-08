@@ -2701,13 +2701,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~fs~writesync",
-    "https://nodejs.org/api/fs.html#fs_fs_writesync_fd_buffer_offset_length_position",
+    "https://nodejs.org/api/fs.html#fs_fs_writesync_fd_string_position_encoding",
     "src/.external-node.js~fs~writeSync",
     "external"
   ],
   [
     "src/.external-node.js~fs~writesync",
-    "https://nodejs.org/api/fs.html#fs_fs_writesync_fd_string_position_encoding",
+    "https://nodejs.org/api/fs.html#fs_fs_writesync_fd_buffer_offset_length_position",
     "src/.external-node.js~fs~writeSync",
     "external"
   ],
@@ -5296,5 +5296,11 @@ window.esdocSearchIndex = [
     "class/src/patch.js~Patch.html#static-get-UPDATE",
     "src/patch.js~Patch.UPDATE",
     "member"
+  ],
+  [
+    "src/path.js",
+    "file/src/path.js.html",
+    "src/path.js",
+    "file"
   ]
 ]

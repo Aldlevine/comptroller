@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require('./path');
 const fs = require('./fs');
 const glob = require('./glob');
 const logger = require('./logger');
@@ -146,7 +146,12 @@ module.exports = class Comptroller extends Package
     const dev = patch.dev ? ' dev ' : ' ';
 
     if ((patch.type == Patch.ADD || patch.type == Patch.UPDATE) && !patch.value) {
-      logger.warn(`WARNING: '${patch.name}' required by ${childName} (${patch.files}) not found in package.json or local packages.`);
+      if (patch.name in child.devDependencies) {
+        logger.warn(`WARNING: '${patch.name}' required by ${childName} in non-dev source (${patch.files}) was found in package.json devDependencies.`);
+      }
+      else {
+        logger.warn(`WARNING: '${patch.name}' required by ${childName} (${patch.files}) not found in package.json or local packages.`);
+      }
       return;
     }
 
@@ -164,7 +169,7 @@ module.exports = class Comptroller extends Package
         break;
 
       case Patch.REMOVE:
-        logger.log(`${disabled}Removing package${dev}'${patch.name}' from '${childName}'`);
+        logger.log(`${disabled}Removing${dev}package '${patch.name}' from '${childName}'`);
         break;
 
       case Patch.INHERIT:
