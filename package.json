@@ -3,9 +3,6 @@
   "version": "0.2.4",
   "description": "A simple and lightweight tool to manage your monorepo.",
   "main": "src/comptroller.js",
-  "directories": {
-    "doc": "docs"
-  },
   "homepage": "https://aldlevine.github.io/comptroller",
   "bugs": {
     "url": "https://github.com/Aldlevine/comptroller/issues"
