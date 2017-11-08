@@ -6,16 +6,37 @@
   "directories": {
     "doc": "docs"
   },
+  "homepage": "https://aldlevine.github.io/comptroller",
+  "bugs": {
+    "url": "https://github.com/Aldlevine/comptroller/issues"
+  },
+  "license": "MIT",
+  "author": "Aaron Levine <ald.levine@gmail.com>",
+  "main": "src/comptroller.js",
+  "bin": {
+    "comp": "./src/cli.js"
+  },
+  "directories": {
+    "doc": "docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Aldlevine/comptroller.git"
+  },
+  "scripts": {
+    "test": "nyc mocha"
+  },
   "dependencies": {
     "@zdychacek/detective": "^5.0.2",
     "babel-traverse": "^6.26.0",
     "babylon": "^6.18.0",
     "builtin-modules": "^1.1.1",
     "dedent": "^0.7.0",
-    "format-package": "^4.0.2",
     "fs-extra": "^4.0.2",
     "glob": "^7.1.2",
-    "minimist": "^1.2.0"
+    "minimatch": "^3.0.4",
+    "minimist": "^1.2.0",
+    "sort-package-json": "^1.7.1"
   },
   "devDependencies": {
     "chai": "^4.1.2",
@@ -29,34 +50,22 @@
     "proxyquire": "^1.8.0",
     "sinon": "^4.1.1"
   },
-  "bin": {
-    "comp": "./src/cli.js"
-  },
-  "scripts": {
-    "test": "nyc mocha"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Aldlevine/comptroller.git"
-  },
-  "keywords": [
-    "mono",
-    "repo",
-    "monorepo"
-  ],
-  "author": "Aaron Levine <ald.levine@gmail.com>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Aldlevine/comptroller/issues"
-  },
-  "homepage": "https://aldlevine.github.io/comptroller",
   "comptroller": {
+    "source": "src/**/*.js",
+    "dev": "{test/**.*.js,utils/**/*.js}",
     "detective": {
       "parse": {
         "plugins": [
           "objectRestSpread"
         ]
       }
-    }
+    },
+    "exclude": [
+      {
+        "group": "builtins"
+      },
+      "babel-traverse",
+      "babylon"
+    ]
   }
 }
