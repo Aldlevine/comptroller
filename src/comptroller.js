@@ -97,9 +97,13 @@ module.exports = class Comptroller extends Package
         case Patch.UPDATE:
           const child = this.getChildByName(patch.name);
           const source = child ? 'local' : 'remote';
-          const value = child ?
+          let value = child ?
             child.packageJson.version :
             this.dependencies[patch.name];
+
+          if (!value && patch.dev) {
+            value = this.devDependencies[patch.name];
+          }
 
           newPatches.push(new Patch(patch.type, {
             ...patch,
@@ -139,6 +143,7 @@ module.exports = class Comptroller extends Package
   {
     const childName = child.packageJson.name;
     const disabled = patch.disabled ? 'DISABLED: ' : '';
+    const dev = patch.dev ? ' dev ' : ' ';
 
     if ((patch.type == Patch.ADD || patch.type == Patch.UPDATE) && !patch.value) {
       logger.warn(`WARNING: '${patch.name}' required by ${childName} (${patch.files}) not found in package.json or local packages.`);
@@ -147,18 +152,19 @@ module.exports = class Comptroller extends Package
 
     switch (patch.type) {
       case Patch.ADD:
-        logger.log(`${disabled}Adding package ${patch.source} package '${patch.name}@${patch.value}' to package '${childName}'`);
+        logger.log(`${disabled}Adding ${patch.source}${dev}package '${patch.name}@${patch.value}' to package '${childName}'`);
         break;
 
       case Patch.UPDATE:
-        const oldVersion = child.dependencies[patch.name];
+        const depField = patch.dev ? 'devDependencies' : 'dependencies';
+        const oldVersion = child[depField][patch.name];
         if (oldVersion !== patch.value) {
-          logger.log(`${disabled}Updating ${patch.source} package '${patch.name}' from ${oldVersion} to ${patch.value} in package '${childName}'`);
+          logger.log(`${disabled}Updating ${patch.source}${dev}package '${patch.name}' from ${oldVersion} to ${patch.value} in package '${childName}'`);
         }
         break;
 
       case Patch.REMOVE:
-        logger.log(`${disabled}Removing package '${patch.name}' from '${childName}'`);
+        logger.log(`${disabled}Removing package${dev}'${patch.name}' from '${childName}'`);
         break;
 
       case Patch.INHERIT:
@@ -192,6 +198,24 @@ module.exports = class Comptroller extends Package
         this.logPatch(child, patch);
         child.applyPatch(patch);
       }
+    }
+  }
+
+  /**
+   * Analyzes the dependencies of the root package and applies the respective
+   * patches.
+   */
+  async updateSelf ()
+  {
+    let deps = await this.analyzeSourceDependencies();
+    for (let child of this.children) {
+      deps = deps.concat(await child.analyzeSourceDependencies());
+    }
+    let patches = this.generateDependencyPatches(deps);
+    patches = this.updatePatches(patches);
+    for (let patch of patches) {
+      this.logPatch(this, patch);
+      this.applyPatch(patch);
     }
   }
 

@@ -154,7 +154,7 @@ describe('Comptroller', function () {
       });
       const child = new Package({root: path.join(this.packageDir, 'packages', 'package-1')});
       this.comptroller.logPatch(child, patch);
-      expect(this.logger.log.calledWith(`Adding package local package 'dependency@1.0.0' to package '@test/package-1'`)).to.be.true;
+      expect(this.logger.log.calledWith(`Adding local package 'dependency@1.0.0' to package '@test/package-1'`)).to.be.true;
     });
 
     it('should log update patch', function () {

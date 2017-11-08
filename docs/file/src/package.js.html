@@ -39,6 +39,7 @@
 <div class="content" data-ice="content"><h1 data-ice="title">src/package.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">const path = require(&apos;path&apos;);
 const glob = require(&apos;./glob&apos;);
+const minimatch = require(&apos;minimatch&apos;);
 const fs = require(&apos;./fs&apos;);
 const builtins = require(&apos;builtin-modules&apos;);
 const detective = require(&apos;@zdychacek/detective&apos;);
@@ -64,10 +65,12 @@ module.exports = class Package
    * Comptroller configurations options.
    * @param {glob} [opts.config.source = &apos;&#x26B9;&#x26B9;/&#x26B9;.js&apos;] - A glob that selects
    * the packages source files.
+   * @param {glob} [opts.config.dev = &apos;&#x26B9;&#x26B9;/test/&#x26B9;&#x26B9;/&#x26B9;.js&apos;] - A glob that selects
+   * the packages that should also include devDependencies
    * @param {glob[]} [opts.config.ignore = [&apos;&#x26B9;&#x26B9;/node_modules/&#x26B9;&#x26B9;&apos;]] - An array
    * of globs to pass into {@link glob}&apos;s `ignore` option when searching for
    * source files.
-   * @param {string[]} [opts.config.exclude = builtins] - An array of package
+   * @param {Array&lt;string|object&gt;} [opts.config.exclude = builtins] - An array of package
    * names to ignore in all operations. Defaults to {@link builtin-modules}.
    * @param {string[]} [opts.config.inherits = []] - An array of field names to
    * inherit from the parent package.json. This is useful for values that
@@ -83,6 +86,7 @@ module.exports = class Package
     config = {},
     _config = packageJson.comptroller || {},
     source = _config.source || config.source || &apos;**/*.js&apos;,
+    dev = _config.dev || config.dev || &apos;**/test/*.js&apos;,
     ignore = _config.ignore || config.ignore || [&apos;**/node_modules/**&apos;],
     exclude = _config.exclude || config.exclude || builtins,
     inherits = _config.inherits || config.inherits || [],
@@ -99,11 +103,14 @@ module.exports = class Package
     /** @type {glob} */
     this._source = source;
 
+    /** @type {glob} */
+    this._dev = dev;
+
     /** @type {glob[]} */
     this._ignore = ignore;
 
     /** @type {string[]} */
-    this._exclude = exclude;
+    this._exclude = Package.generateExcludes(exclude);
 
     /** @type {string[]} */
     this._inherits = inherits;
@@ -134,10 +141,22 @@ module.exports = class Package
   get dependencies () {return this.packageJson.dependencies || (this.packageJson.dependencies = {})}
 
   /**
+   * An object representing the package&apos;s devDependencies.
+   * @type {object}
+   */
+  get devDependencies () {return this.packageJson.devDependencies || (this.packageJson.devDependencies = {})}
+
+  /**
    * A glob that matches the package&apos;s source files
    * @type {glob}
    */
   get source () {return this._source}
+
+  /**
+   * A glob that matches the package&apos;s dev files
+   * @type {minimatch}
+   */
+  get dev () {return this._dev}
 
   /**
    * An array of globs that match files not to be included with the package&apos;s
@@ -235,21 +254,46 @@ module.exports = class Package
   {
     const patches = [];
     const usedDeps = {};
+    const usedDev = {};
 
     for (let dep in dependencies)
     {
       let {files} = dependencies[dep];
-      usedDeps[dep] = true;
-      if (!(dep in this.dependencies)) {
+      let depField;
+      let dev = true;
+
+      for (let file of files) {
+        if (!minimatch(file, this.dev)) {
+          dev = false;
+          break;
+        }
+      }
+
+      if (dev) {
+        usedDev[dep] = true;
+      }
+      else {
+        usedDeps[dep] = true;
+      }
+
+      if (dev &amp;&amp; !(dep in this.devDependencies) &amp;&amp; !(dep in this.dependencies)) {
+        patches.push(new Patch(Patch.ADD, {name: dep, dev, files}));
+      }
+      else if (!dev &amp;&amp; !(dep in this.dependencies)) {
         patches.push(new Patch(Patch.ADD, {name: dep, files}));
       }
       else {
-        patches.push(new Patch(Patch.UPDATE, {name: dep, files}));
+        if (dep in this.devDependencies) {
+          patches.push(new Patch(Patch.UPDATE, {name: dep, dev: true, files}));
+        }
+        else if (dep in this.dependencies) {
+          patches.push(new Patch(Patch.UPDATE, {name: dep, files}));
+        }
       }
     }
 
     for (let dep in this.dependencies) {
-      if (!usedDeps[dep]) {
+      if (!usedDeps[dep] &amp;&amp; !usedDev[dep] &amp;&amp; this.exclude.indexOf(dep) &lt; 0) {
         patches.push(new Patch(Patch.REMOVE, {name: dep}))
       }
     }
@@ -274,15 +318,17 @@ module.exports = class Package
   {
     if (patch.disabled) return;
 
+    let depField = patch.dev ? &apos;devDependencies&apos; : &apos;dependencies&apos;;
+
     switch (patch.type) {
       case Patch.ADD:
       case Patch.UPDATE:
         if (typeof patch.value !== &apos;undefined&apos;) {
-          this.dependencies[patch.name] = patch.value;
+          this[depField][patch.name] = patch.value;
         }
         break;
       case Patch.REMOVE:
-        delete this.dependencies[patch.name];
+        delete this[depField][patch.name];
         break;
       case Patch.INHERIT:
         if (typeof patch.value !== &apos;undefined&apos;) {
@@ -291,6 +337,29 @@ module.exports = class Package
       default:
         break;
     }
+  }
+
+  /**
+   * Generates an exclude array
+   * @param {Array&lt;string|object&gt;} excludes - The excludes array to use as a base.
+   */
+  static generateExcludes (excludes)
+  {
+    const result = [];
+
+    for (let exclude of excludes) {
+      if (typeof exclude === &apos;string&apos;) {
+        result.push(exclude);
+        continue;
+      }
+      if (exclude &amp;&amp; typeof exclude === &apos;object&apos;) {
+        if (exclude.group === &apos;builtins&apos;) {
+          result.push(...builtins);
+        }
+      }
+    }
+
+    return result;
   }
 }
 </code></pre>

@@ -1,28 +1,28 @@
 {
   "type": "File",
   "start": 0,
-  "end": 95770,
+  "end": 95921,
   "loc": {
     "start": {
       "line": 1,
       "column": 0
     },
     "end": {
-      "line": 2341,
+      "line": 2347,
       "column": 0
     }
   },
   "program": {
     "type": "Program",
     "start": 0,
-    "end": 95770,
+    "end": 95921,
     "loc": {
       "start": {
         "line": 1,
         "column": 0
       },
       "end": {
-        "line": 2341,
+        "line": 2347,
         "column": 0
       }
     },
@@ -12241,9 +12241,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n* @external {zlib~Zlib#flush} https://nodejs.org/api/zlib.html#zlib_zlib_flush_kind_callback\n",
+        "value": "*\n* @external {zlib~Zlib#close} https://nodejs.org/api/zlib.html#zlib_zlib_close_callback\n",
         "start": 94196,
-        "end": 94295,
+        "end": 94290,
         "loc": {
           "start": {
             "line": 2290,
@@ -12257,9 +12257,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n* @external {zlib~Zlib#params} https://nodejs.org/api/zlib.html#zlib_zlib_params_level_strategy_callback\n",
-        "start": 94296,
-        "end": 94407,
+        "value": "*\n* @external {zlib~Zlib#flush} https://nodejs.org/api/zlib.html#zlib_zlib_flush_kind_callback\n",
+        "start": 94291,
+        "end": 94390,
         "loc": {
           "start": {
             "line": 2293,
@@ -12273,9 +12273,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n* @external {zlib~Zlib#reset} https://nodejs.org/api/zlib.html#zlib_zlib_reset\n",
-        "start": 94408,
-        "end": 94493,
+        "value": "*\n* @external {zlib~Zlib#params} https://nodejs.org/api/zlib.html#zlib_zlib_params_level_strategy_callback\n",
+        "start": 94391,
+        "end": 94502,
         "loc": {
           "start": {
             "line": 2296,
@@ -12289,9 +12289,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n* @external {zlib~createDeflate} https://nodejs.org/api/zlib.html#zlib_zlib_createdeflate_options\n",
-        "start": 94494,
-        "end": 94598,
+        "value": "*\n* @external {zlib~Zlib#reset} https://nodejs.org/api/zlib.html#zlib_zlib_reset\n",
+        "start": 94503,
+        "end": 94588,
         "loc": {
           "start": {
             "line": 2299,
@@ -12305,9 +12305,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n* @external {zlib~createDeflateRaw} https://nodejs.org/api/zlib.html#zlib_zlib_createdeflateraw_options\n",
-        "start": 94599,
-        "end": 94709,
+        "value": "*\n* @external {zlib~createDeflate} https://nodejs.org/api/zlib.html#zlib_zlib_createdeflate_options\n",
+        "start": 94589,
+        "end": 94693,
         "loc": {
           "start": {
             "line": 2302,
@@ -12321,9 +12321,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n* @external {zlib~createGunzip} https://nodejs.org/api/zlib.html#zlib_zlib_creategunzip_options\n",
-        "start": 94710,
-        "end": 94812,
+        "value": "*\n* @external {zlib~createDeflateRaw} https://nodejs.org/api/zlib.html#zlib_zlib_createdeflateraw_options\n",
+        "start": 94694,
+        "end": 94804,
         "loc": {
           "start": {
             "line": 2305,
@@ -12337,9 +12337,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n* @external {zlib~createGzip} https://nodejs.org/api/zlib.html#zlib_zlib_creategzip_options\n",
-        "start": 94813,
-        "end": 94911,
+        "value": "*\n* @external {zlib~createGunzip} https://nodejs.org/api/zlib.html#zlib_zlib_creategunzip_options\n",
+        "start": 94805,
+        "end": 94907,
         "loc": {
           "start": {
             "line": 2308,
@@ -12353,9 +12353,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n* @external {zlib~createInflate} https://nodejs.org/api/zlib.html#zlib_zlib_createinflate_options\n",
-        "start": 94912,
-        "end": 95016,
+        "value": "*\n* @external {zlib~createGzip} https://nodejs.org/api/zlib.html#zlib_zlib_creategzip_options\n",
+        "start": 94908,
+        "end": 95006,
         "loc": {
           "start": {
             "line": 2311,
@@ -12369,9 +12369,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n* @external {zlib~createInflateRaw} https://nodejs.org/api/zlib.html#zlib_zlib_createinflateraw_options\n",
-        "start": 95017,
-        "end": 95127,
+        "value": "*\n* @external {zlib~createInflate} https://nodejs.org/api/zlib.html#zlib_zlib_createinflate_options\n",
+        "start": 95007,
+        "end": 95111,
         "loc": {
           "start": {
             "line": 2314,
@@ -12385,9 +12385,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n* @external {zlib~createUnzip} https://nodejs.org/api/zlib.html#zlib_zlib_createunzip_options\n",
-        "start": 95128,
-        "end": 95228,
+        "value": "*\n* @external {zlib~createInflateRaw} https://nodejs.org/api/zlib.html#zlib_zlib_createinflateraw_options\n",
+        "start": 95112,
+        "end": 95222,
         "loc": {
           "start": {
             "line": 2317,
@@ -12401,9 +12401,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n* @external {@zdychacek/detective} https://github.com/zdychacek/node-detective#readme\n",
-        "start": 95229,
-        "end": 95321,
+        "value": "*\n* @external {zlib~createUnzip} https://nodejs.org/api/zlib.html#zlib_zlib_createunzip_options\n",
+        "start": 95223,
+        "end": 95323,
         "loc": {
           "start": {
             "line": 2320,
@@ -12417,9 +12417,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n* @external {builtin-modules} https://github.com/sindresorhus/builtin-modules#readme\n",
-        "start": 95322,
-        "end": 95413,
+        "value": "*\n* @external {@zdychacek/detective} https://github.com/zdychacek/node-detective#readme\n",
+        "start": 95324,
+        "end": 95416,
         "loc": {
           "start": {
             "line": 2323,
@@ -12433,8 +12433,8 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n* @external {dedent} https://github.com/dmnd/dedent\n",
-        "start": 95414,
+        "value": "*\n* @external {babel-traverse} https://babeljs.io/\n",
+        "start": 95417,
         "end": 95472,
         "loc": {
           "start": {
@@ -12449,9 +12449,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n* @external {format-package} https://github.com/camacho/format-package#readme\n",
+        "value": "*\n* @external {builtin-modules} https://github.com/sindresorhus/builtin-modules#readme\n",
         "start": 95473,
-        "end": 95557,
+        "end": 95564,
         "loc": {
           "start": {
             "line": 2329,
@@ -12465,9 +12465,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n* @external {fs-extra} https://github.com/jprichardson/node-fs-extra\n",
-        "start": 95558,
-        "end": 95633,
+        "value": "*\n* @external {dedent} https://github.com/dmnd/dedent\n",
+        "start": 95565,
+        "end": 95623,
         "loc": {
           "start": {
             "line": 2332,
@@ -12481,9 +12481,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n* @external {glob} https://github.com/isaacs/node-glob#readme\n",
-        "start": 95634,
-        "end": 95702,
+        "value": "*\n* @external {format-package} https://github.com/camacho/format-package#readme\n",
+        "start": 95624,
+        "end": 95708,
         "loc": {
           "start": {
             "line": 2335,
@@ -12497,9 +12497,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n* @external {minimist} https://github.com/substack/minimist\n",
-        "start": 95703,
-        "end": 95769,
+        "value": "*\n* @external {fs-extra} https://github.com/jprichardson/node-fs-extra\n",
+        "start": 95709,
+        "end": 95784,
         "loc": {
           "start": {
             "line": 2338,
@@ -12507,6 +12507,38 @@
           },
           "end": {
             "line": 2340,
+            "column": 2
+          }
+        }
+      },
+      {
+        "type": "CommentBlock",
+        "value": "*\n* @external {glob} https://github.com/isaacs/node-glob#readme\n",
+        "start": 95785,
+        "end": 95853,
+        "loc": {
+          "start": {
+            "line": 2341,
+            "column": 0
+          },
+          "end": {
+            "line": 2343,
+            "column": 2
+          }
+        }
+      },
+      {
+        "type": "CommentBlock",
+        "value": "*\n* @external {minimist} https://github.com/substack/minimist\n",
+        "start": 95854,
+        "end": 95920,
+        "loc": {
+          "start": {
+            "line": 2344,
+            "column": 0
+          },
+          "end": {
+            "line": 2346,
             "column": 2
           }
         }
@@ -24724,9 +24756,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {zlib~Zlib#flush} https://nodejs.org/api/zlib.html#zlib_zlib_flush_kind_callback\n",
+      "value": "*\n* @external {zlib~Zlib#close} https://nodejs.org/api/zlib.html#zlib_zlib_close_callback\n",
       "start": 94196,
-      "end": 94295,
+      "end": 94290,
       "loc": {
         "start": {
           "line": 2290,
@@ -24740,9 +24772,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {zlib~Zlib#params} https://nodejs.org/api/zlib.html#zlib_zlib_params_level_strategy_callback\n",
-      "start": 94296,
-      "end": 94407,
+      "value": "*\n* @external {zlib~Zlib#flush} https://nodejs.org/api/zlib.html#zlib_zlib_flush_kind_callback\n",
+      "start": 94291,
+      "end": 94390,
       "loc": {
         "start": {
           "line": 2293,
@@ -24756,9 +24788,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {zlib~Zlib#reset} https://nodejs.org/api/zlib.html#zlib_zlib_reset\n",
-      "start": 94408,
-      "end": 94493,
+      "value": "*\n* @external {zlib~Zlib#params} https://nodejs.org/api/zlib.html#zlib_zlib_params_level_strategy_callback\n",
+      "start": 94391,
+      "end": 94502,
       "loc": {
         "start": {
           "line": 2296,
@@ -24772,9 +24804,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {zlib~createDeflate} https://nodejs.org/api/zlib.html#zlib_zlib_createdeflate_options\n",
-      "start": 94494,
-      "end": 94598,
+      "value": "*\n* @external {zlib~Zlib#reset} https://nodejs.org/api/zlib.html#zlib_zlib_reset\n",
+      "start": 94503,
+      "end": 94588,
       "loc": {
         "start": {
           "line": 2299,
@@ -24788,9 +24820,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {zlib~createDeflateRaw} https://nodejs.org/api/zlib.html#zlib_zlib_createdeflateraw_options\n",
-      "start": 94599,
-      "end": 94709,
+      "value": "*\n* @external {zlib~createDeflate} https://nodejs.org/api/zlib.html#zlib_zlib_createdeflate_options\n",
+      "start": 94589,
+      "end": 94693,
       "loc": {
         "start": {
           "line": 2302,
@@ -24804,9 +24836,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {zlib~createGunzip} https://nodejs.org/api/zlib.html#zlib_zlib_creategunzip_options\n",
-      "start": 94710,
-      "end": 94812,
+      "value": "*\n* @external {zlib~createDeflateRaw} https://nodejs.org/api/zlib.html#zlib_zlib_createdeflateraw_options\n",
+      "start": 94694,
+      "end": 94804,
       "loc": {
         "start": {
           "line": 2305,
@@ -24820,9 +24852,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {zlib~createGzip} https://nodejs.org/api/zlib.html#zlib_zlib_creategzip_options\n",
-      "start": 94813,
-      "end": 94911,
+      "value": "*\n* @external {zlib~createGunzip} https://nodejs.org/api/zlib.html#zlib_zlib_creategunzip_options\n",
+      "start": 94805,
+      "end": 94907,
       "loc": {
         "start": {
           "line": 2308,
@@ -24836,9 +24868,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {zlib~createInflate} https://nodejs.org/api/zlib.html#zlib_zlib_createinflate_options\n",
-      "start": 94912,
-      "end": 95016,
+      "value": "*\n* @external {zlib~createGzip} https://nodejs.org/api/zlib.html#zlib_zlib_creategzip_options\n",
+      "start": 94908,
+      "end": 95006,
       "loc": {
         "start": {
           "line": 2311,
@@ -24852,9 +24884,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {zlib~createInflateRaw} https://nodejs.org/api/zlib.html#zlib_zlib_createinflateraw_options\n",
-      "start": 95017,
-      "end": 95127,
+      "value": "*\n* @external {zlib~createInflate} https://nodejs.org/api/zlib.html#zlib_zlib_createinflate_options\n",
+      "start": 95007,
+      "end": 95111,
       "loc": {
         "start": {
           "line": 2314,
@@ -24868,9 +24900,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {zlib~createUnzip} https://nodejs.org/api/zlib.html#zlib_zlib_createunzip_options\n",
-      "start": 95128,
-      "end": 95228,
+      "value": "*\n* @external {zlib~createInflateRaw} https://nodejs.org/api/zlib.html#zlib_zlib_createinflateraw_options\n",
+      "start": 95112,
+      "end": 95222,
       "loc": {
         "start": {
           "line": 2317,
@@ -24884,9 +24916,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {@zdychacek/detective} https://github.com/zdychacek/node-detective#readme\n",
-      "start": 95229,
-      "end": 95321,
+      "value": "*\n* @external {zlib~createUnzip} https://nodejs.org/api/zlib.html#zlib_zlib_createunzip_options\n",
+      "start": 95223,
+      "end": 95323,
       "loc": {
         "start": {
           "line": 2320,
@@ -24900,9 +24932,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {builtin-modules} https://github.com/sindresorhus/builtin-modules#readme\n",
-      "start": 95322,
-      "end": 95413,
+      "value": "*\n* @external {@zdychacek/detective} https://github.com/zdychacek/node-detective#readme\n",
+      "start": 95324,
+      "end": 95416,
       "loc": {
         "start": {
           "line": 2323,
@@ -24916,8 +24948,8 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {dedent} https://github.com/dmnd/dedent\n",
-      "start": 95414,
+      "value": "*\n* @external {babel-traverse} https://babeljs.io/\n",
+      "start": 95417,
       "end": 95472,
       "loc": {
         "start": {
@@ -24932,9 +24964,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {format-package} https://github.com/camacho/format-package#readme\n",
+      "value": "*\n* @external {builtin-modules} https://github.com/sindresorhus/builtin-modules#readme\n",
       "start": 95473,
-      "end": 95557,
+      "end": 95564,
       "loc": {
         "start": {
           "line": 2329,
@@ -24948,9 +24980,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {fs-extra} https://github.com/jprichardson/node-fs-extra\n",
-      "start": 95558,
-      "end": 95633,
+      "value": "*\n* @external {dedent} https://github.com/dmnd/dedent\n",
+      "start": 95565,
+      "end": 95623,
       "loc": {
         "start": {
           "line": 2332,
@@ -24964,9 +24996,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {glob} https://github.com/isaacs/node-glob#readme\n",
-      "start": 95634,
-      "end": 95702,
+      "value": "*\n* @external {format-package} https://github.com/camacho/format-package#readme\n",
+      "start": 95624,
+      "end": 95708,
       "loc": {
         "start": {
           "line": 2335,
@@ -24980,9 +25012,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {minimist} https://github.com/substack/minimist\n",
-      "start": 95703,
-      "end": 95769,
+      "value": "*\n* @external {fs-extra} https://github.com/jprichardson/node-fs-extra\n",
+      "start": 95709,
+      "end": 95784,
       "loc": {
         "start": {
           "line": 2338,
@@ -24990,6 +25022,38 @@
         },
         "end": {
           "line": 2340,
+          "column": 2
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n* @external {glob} https://github.com/isaacs/node-glob#readme\n",
+      "start": 95785,
+      "end": 95853,
+      "loc": {
+        "start": {
+          "line": 2341,
+          "column": 0
+        },
+        "end": {
+          "line": 2343,
+          "column": 2
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n* @external {minimist} https://github.com/substack/minimist\n",
+      "start": 95854,
+      "end": 95920,
+      "loc": {
+        "start": {
+          "line": 2344,
+          "column": 0
+        },
+        "end": {
+          "line": 2346,
           "column": 2
         }
       }
@@ -37206,9 +37270,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {zlib~Zlib#flush} https://nodejs.org/api/zlib.html#zlib_zlib_flush_kind_callback\n",
+      "value": "*\n* @external {zlib~Zlib#close} https://nodejs.org/api/zlib.html#zlib_zlib_close_callback\n",
       "start": 94196,
-      "end": 94295,
+      "end": 94290,
       "loc": {
         "start": {
           "line": 2290,
@@ -37222,9 +37286,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {zlib~Zlib#params} https://nodejs.org/api/zlib.html#zlib_zlib_params_level_strategy_callback\n",
-      "start": 94296,
-      "end": 94407,
+      "value": "*\n* @external {zlib~Zlib#flush} https://nodejs.org/api/zlib.html#zlib_zlib_flush_kind_callback\n",
+      "start": 94291,
+      "end": 94390,
       "loc": {
         "start": {
           "line": 2293,
@@ -37238,9 +37302,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {zlib~Zlib#reset} https://nodejs.org/api/zlib.html#zlib_zlib_reset\n",
-      "start": 94408,
-      "end": 94493,
+      "value": "*\n* @external {zlib~Zlib#params} https://nodejs.org/api/zlib.html#zlib_zlib_params_level_strategy_callback\n",
+      "start": 94391,
+      "end": 94502,
       "loc": {
         "start": {
           "line": 2296,
@@ -37254,9 +37318,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {zlib~createDeflate} https://nodejs.org/api/zlib.html#zlib_zlib_createdeflate_options\n",
-      "start": 94494,
-      "end": 94598,
+      "value": "*\n* @external {zlib~Zlib#reset} https://nodejs.org/api/zlib.html#zlib_zlib_reset\n",
+      "start": 94503,
+      "end": 94588,
       "loc": {
         "start": {
           "line": 2299,
@@ -37270,9 +37334,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {zlib~createDeflateRaw} https://nodejs.org/api/zlib.html#zlib_zlib_createdeflateraw_options\n",
-      "start": 94599,
-      "end": 94709,
+      "value": "*\n* @external {zlib~createDeflate} https://nodejs.org/api/zlib.html#zlib_zlib_createdeflate_options\n",
+      "start": 94589,
+      "end": 94693,
       "loc": {
         "start": {
           "line": 2302,
@@ -37286,9 +37350,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {zlib~createGunzip} https://nodejs.org/api/zlib.html#zlib_zlib_creategunzip_options\n",
-      "start": 94710,
-      "end": 94812,
+      "value": "*\n* @external {zlib~createDeflateRaw} https://nodejs.org/api/zlib.html#zlib_zlib_createdeflateraw_options\n",
+      "start": 94694,
+      "end": 94804,
       "loc": {
         "start": {
           "line": 2305,
@@ -37302,9 +37366,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {zlib~createGzip} https://nodejs.org/api/zlib.html#zlib_zlib_creategzip_options\n",
-      "start": 94813,
-      "end": 94911,
+      "value": "*\n* @external {zlib~createGunzip} https://nodejs.org/api/zlib.html#zlib_zlib_creategunzip_options\n",
+      "start": 94805,
+      "end": 94907,
       "loc": {
         "start": {
           "line": 2308,
@@ -37318,9 +37382,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {zlib~createInflate} https://nodejs.org/api/zlib.html#zlib_zlib_createinflate_options\n",
-      "start": 94912,
-      "end": 95016,
+      "value": "*\n* @external {zlib~createGzip} https://nodejs.org/api/zlib.html#zlib_zlib_creategzip_options\n",
+      "start": 94908,
+      "end": 95006,
       "loc": {
         "start": {
           "line": 2311,
@@ -37334,9 +37398,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {zlib~createInflateRaw} https://nodejs.org/api/zlib.html#zlib_zlib_createinflateraw_options\n",
-      "start": 95017,
-      "end": 95127,
+      "value": "*\n* @external {zlib~createInflate} https://nodejs.org/api/zlib.html#zlib_zlib_createinflate_options\n",
+      "start": 95007,
+      "end": 95111,
       "loc": {
         "start": {
           "line": 2314,
@@ -37350,9 +37414,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {zlib~createUnzip} https://nodejs.org/api/zlib.html#zlib_zlib_createunzip_options\n",
-      "start": 95128,
-      "end": 95228,
+      "value": "*\n* @external {zlib~createInflateRaw} https://nodejs.org/api/zlib.html#zlib_zlib_createinflateraw_options\n",
+      "start": 95112,
+      "end": 95222,
       "loc": {
         "start": {
           "line": 2317,
@@ -37366,9 +37430,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {@zdychacek/detective} https://github.com/zdychacek/node-detective#readme\n",
-      "start": 95229,
-      "end": 95321,
+      "value": "*\n* @external {zlib~createUnzip} https://nodejs.org/api/zlib.html#zlib_zlib_createunzip_options\n",
+      "start": 95223,
+      "end": 95323,
       "loc": {
         "start": {
           "line": 2320,
@@ -37382,9 +37446,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {builtin-modules} https://github.com/sindresorhus/builtin-modules#readme\n",
-      "start": 95322,
-      "end": 95413,
+      "value": "*\n* @external {@zdychacek/detective} https://github.com/zdychacek/node-detective#readme\n",
+      "start": 95324,
+      "end": 95416,
       "loc": {
         "start": {
           "line": 2323,
@@ -37398,8 +37462,8 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {dedent} https://github.com/dmnd/dedent\n",
-      "start": 95414,
+      "value": "*\n* @external {babel-traverse} https://babeljs.io/\n",
+      "start": 95417,
       "end": 95472,
       "loc": {
         "start": {
@@ -37414,9 +37478,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {format-package} https://github.com/camacho/format-package#readme\n",
+      "value": "*\n* @external {builtin-modules} https://github.com/sindresorhus/builtin-modules#readme\n",
       "start": 95473,
-      "end": 95557,
+      "end": 95564,
       "loc": {
         "start": {
           "line": 2329,
@@ -37430,9 +37494,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {fs-extra} https://github.com/jprichardson/node-fs-extra\n",
-      "start": 95558,
-      "end": 95633,
+      "value": "*\n* @external {dedent} https://github.com/dmnd/dedent\n",
+      "start": 95565,
+      "end": 95623,
       "loc": {
         "start": {
           "line": 2332,
@@ -37446,9 +37510,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {glob} https://github.com/isaacs/node-glob#readme\n",
-      "start": 95634,
-      "end": 95702,
+      "value": "*\n* @external {format-package} https://github.com/camacho/format-package#readme\n",
+      "start": 95624,
+      "end": 95708,
       "loc": {
         "start": {
           "line": 2335,
@@ -37462,9 +37526,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {minimist} https://github.com/substack/minimist\n",
-      "start": 95703,
-      "end": 95769,
+      "value": "*\n* @external {fs-extra} https://github.com/jprichardson/node-fs-extra\n",
+      "start": 95709,
+      "end": 95784,
       "loc": {
         "start": {
           "line": 2338,
@@ -37472,6 +37536,38 @@
         },
         "end": {
           "line": 2340,
+          "column": 2
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n* @external {glob} https://github.com/isaacs/node-glob#readme\n",
+      "start": 95785,
+      "end": 95853,
+      "loc": {
+        "start": {
+          "line": 2341,
+          "column": 0
+        },
+        "end": {
+          "line": 2343,
+          "column": 2
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n* @external {minimist} https://github.com/substack/minimist\n",
+      "start": 95854,
+      "end": 95920,
+      "loc": {
+        "start": {
+          "line": 2344,
+          "column": 0
+        },
+        "end": {
+          "line": 2346,
           "column": 2
         }
       }
@@ -37489,15 +37585,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 95770,
-      "end": 95770,
+      "start": 95921,
+      "end": 95921,
       "loc": {
         "start": {
-          "line": 2341,
+          "line": 2347,
           "column": 0
         },
         "end": {
-          "line": 2341,
+          "line": 2347,
           "column": 0
         }
       }
