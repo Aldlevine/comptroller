@@ -248,11 +248,19 @@ module.exports = class Comptroller extends Package
   {
     let deps = await this.analyzeSourceDependencies();
     for (let child of this.children) {
-      deps = deps.concat(await child.analyzeSourceDependencies());
+      deps = {...deps, ...(await child.analyzeSourceDependencies())};
     }
     let patches = this.generateDependencyPatches(deps);
     patches = this.updatePatches(patches);
     for (let patch of patches) {
+      // Ignore local package patches for self update
+      if (patch.type in {
+        [Patch.ADD]: 1,
+        [Patch.UPDATE]: 1,
+        [Patch.REMOVE]: 1
+      } &amp;&amp; patch.source == &apos;local&apos;) {
+        continue;
+      }
       this.logPatch(this, patch);
       this.applyPatch(patch);
     }
