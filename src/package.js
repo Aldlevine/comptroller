@@ -3,7 +3,7 @@ const glob = require('./glob');
 const fs = require('./fs');
 const builtins = require('builtin-modules');
 const detective = require('@zdychacek/detective');
-const formatPackageJson = require('format-package');
+const sortPackageJson = require('sort-package-json');
 const Patch = require('./patch');
 
 /**
@@ -137,7 +137,8 @@ module.exports = class Package
    */
   async writePackageJson ()
   {
-    const json = await formatPackageJson(this.packageJson, {});
+    const packageJson = sortPackageJson(this.packageJson);
+    const json = JSON.stringify(packageJson, null, 2);
     await fs.writeFilePlease(path.resolve(this.root, 'package.json'), json);
   }
 
