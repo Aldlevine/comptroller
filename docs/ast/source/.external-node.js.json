@@ -1,28 +1,28 @@
 {
   "type": "File",
   "start": 0,
-  "end": 95921,
+  "end": 96044,
   "loc": {
     "start": {
       "line": 1,
       "column": 0
     },
     "end": {
-      "line": 2347,
+      "line": 2353,
       "column": 0
     }
   },
   "program": {
     "type": "Program",
     "start": 0,
-    "end": 95921,
+    "end": 96044,
     "loc": {
       "start": {
         "line": 1,
         "column": 0
       },
       "end": {
-        "line": 2347,
+        "line": 2353,
         "column": 0
       }
     },
@@ -12449,9 +12449,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n* @external {builtin-modules} https://github.com/sindresorhus/builtin-modules#readme\n",
+        "value": "*\n* @external {babylon} https://babeljs.io/\n",
         "start": 95473,
-        "end": 95564,
+        "end": 95521,
         "loc": {
           "start": {
             "line": 2329,
@@ -12465,9 +12465,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n* @external {dedent} https://github.com/dmnd/dedent\n",
-        "start": 95565,
-        "end": 95623,
+        "value": "*\n* @external {builtin-modules} https://github.com/sindresorhus/builtin-modules#readme\n",
+        "start": 95522,
+        "end": 95613,
         "loc": {
           "start": {
             "line": 2332,
@@ -12481,9 +12481,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n* @external {format-package} https://github.com/camacho/format-package#readme\n",
-        "start": 95624,
-        "end": 95708,
+        "value": "*\n* @external {dedent} https://github.com/dmnd/dedent\n",
+        "start": 95614,
+        "end": 95672,
         "loc": {
           "start": {
             "line": 2335,
@@ -12497,9 +12497,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n* @external {fs-extra} https://github.com/jprichardson/node-fs-extra\n",
-        "start": 95709,
-        "end": 95784,
+        "value": "*\n* @external {format-package} https://github.com/camacho/format-package#readme\n",
+        "start": 95673,
+        "end": 95757,
         "loc": {
           "start": {
             "line": 2338,
@@ -12513,9 +12513,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n* @external {glob} https://github.com/isaacs/node-glob#readme\n",
-        "start": 95785,
-        "end": 95853,
+        "value": "*\n* @external {fs-extra} https://github.com/jprichardson/node-fs-extra\n",
+        "start": 95758,
+        "end": 95833,
         "loc": {
           "start": {
             "line": 2341,
@@ -12529,9 +12529,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n* @external {minimist} https://github.com/substack/minimist\n",
-        "start": 95854,
-        "end": 95920,
+        "value": "*\n* @external {glob} https://github.com/isaacs/node-glob#readme\n",
+        "start": 95834,
+        "end": 95902,
         "loc": {
           "start": {
             "line": 2344,
@@ -12539,6 +12539,38 @@
           },
           "end": {
             "line": 2346,
+            "column": 2
+          }
+        }
+      },
+      {
+        "type": "CommentBlock",
+        "value": "*\n* @external {minimatch} https://github.com/isaacs/minimatch#readme\n",
+        "start": 95903,
+        "end": 95976,
+        "loc": {
+          "start": {
+            "line": 2347,
+            "column": 0
+          },
+          "end": {
+            "line": 2349,
+            "column": 2
+          }
+        }
+      },
+      {
+        "type": "CommentBlock",
+        "value": "*\n* @external {minimist} https://github.com/substack/minimist\n",
+        "start": 95977,
+        "end": 96043,
+        "loc": {
+          "start": {
+            "line": 2350,
+            "column": 0
+          },
+          "end": {
+            "line": 2352,
             "column": 2
           }
         }
@@ -24964,9 +24996,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {builtin-modules} https://github.com/sindresorhus/builtin-modules#readme\n",
+      "value": "*\n* @external {babylon} https://babeljs.io/\n",
       "start": 95473,
-      "end": 95564,
+      "end": 95521,
       "loc": {
         "start": {
           "line": 2329,
@@ -24980,9 +25012,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {dedent} https://github.com/dmnd/dedent\n",
-      "start": 95565,
-      "end": 95623,
+      "value": "*\n* @external {builtin-modules} https://github.com/sindresorhus/builtin-modules#readme\n",
+      "start": 95522,
+      "end": 95613,
       "loc": {
         "start": {
           "line": 2332,
@@ -24996,9 +25028,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {format-package} https://github.com/camacho/format-package#readme\n",
-      "start": 95624,
-      "end": 95708,
+      "value": "*\n* @external {dedent} https://github.com/dmnd/dedent\n",
+      "start": 95614,
+      "end": 95672,
       "loc": {
         "start": {
           "line": 2335,
@@ -25012,9 +25044,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {fs-extra} https://github.com/jprichardson/node-fs-extra\n",
-      "start": 95709,
-      "end": 95784,
+      "value": "*\n* @external {format-package} https://github.com/camacho/format-package#readme\n",
+      "start": 95673,
+      "end": 95757,
       "loc": {
         "start": {
           "line": 2338,
@@ -25028,9 +25060,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {glob} https://github.com/isaacs/node-glob#readme\n",
-      "start": 95785,
-      "end": 95853,
+      "value": "*\n* @external {fs-extra} https://github.com/jprichardson/node-fs-extra\n",
+      "start": 95758,
+      "end": 95833,
       "loc": {
         "start": {
           "line": 2341,
@@ -25044,9 +25076,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {minimist} https://github.com/substack/minimist\n",
-      "start": 95854,
-      "end": 95920,
+      "value": "*\n* @external {glob} https://github.com/isaacs/node-glob#readme\n",
+      "start": 95834,
+      "end": 95902,
       "loc": {
         "start": {
           "line": 2344,
@@ -25054,6 +25086,38 @@
         },
         "end": {
           "line": 2346,
+          "column": 2
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n* @external {minimatch} https://github.com/isaacs/minimatch#readme\n",
+      "start": 95903,
+      "end": 95976,
+      "loc": {
+        "start": {
+          "line": 2347,
+          "column": 0
+        },
+        "end": {
+          "line": 2349,
+          "column": 2
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n* @external {minimist} https://github.com/substack/minimist\n",
+      "start": 95977,
+      "end": 96043,
+      "loc": {
+        "start": {
+          "line": 2350,
+          "column": 0
+        },
+        "end": {
+          "line": 2352,
           "column": 2
         }
       }
@@ -37478,9 +37542,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {builtin-modules} https://github.com/sindresorhus/builtin-modules#readme\n",
+      "value": "*\n* @external {babylon} https://babeljs.io/\n",
       "start": 95473,
-      "end": 95564,
+      "end": 95521,
       "loc": {
         "start": {
           "line": 2329,
@@ -37494,9 +37558,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {dedent} https://github.com/dmnd/dedent\n",
-      "start": 95565,
-      "end": 95623,
+      "value": "*\n* @external {builtin-modules} https://github.com/sindresorhus/builtin-modules#readme\n",
+      "start": 95522,
+      "end": 95613,
       "loc": {
         "start": {
           "line": 2332,
@@ -37510,9 +37574,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {format-package} https://github.com/camacho/format-package#readme\n",
-      "start": 95624,
-      "end": 95708,
+      "value": "*\n* @external {dedent} https://github.com/dmnd/dedent\n",
+      "start": 95614,
+      "end": 95672,
       "loc": {
         "start": {
           "line": 2335,
@@ -37526,9 +37590,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {fs-extra} https://github.com/jprichardson/node-fs-extra\n",
-      "start": 95709,
-      "end": 95784,
+      "value": "*\n* @external {format-package} https://github.com/camacho/format-package#readme\n",
+      "start": 95673,
+      "end": 95757,
       "loc": {
         "start": {
           "line": 2338,
@@ -37542,9 +37606,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {glob} https://github.com/isaacs/node-glob#readme\n",
-      "start": 95785,
-      "end": 95853,
+      "value": "*\n* @external {fs-extra} https://github.com/jprichardson/node-fs-extra\n",
+      "start": 95758,
+      "end": 95833,
       "loc": {
         "start": {
           "line": 2341,
@@ -37558,9 +37622,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {minimist} https://github.com/substack/minimist\n",
-      "start": 95854,
-      "end": 95920,
+      "value": "*\n* @external {glob} https://github.com/isaacs/node-glob#readme\n",
+      "start": 95834,
+      "end": 95902,
       "loc": {
         "start": {
           "line": 2344,
@@ -37568,6 +37632,38 @@
         },
         "end": {
           "line": 2346,
+          "column": 2
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n* @external {minimatch} https://github.com/isaacs/minimatch#readme\n",
+      "start": 95903,
+      "end": 95976,
+      "loc": {
+        "start": {
+          "line": 2347,
+          "column": 0
+        },
+        "end": {
+          "line": 2349,
+          "column": 2
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n* @external {minimist} https://github.com/substack/minimist\n",
+      "start": 95977,
+      "end": 96043,
+      "loc": {
+        "start": {
+          "line": 2350,
+          "column": 0
+        },
+        "end": {
+          "line": 2352,
           "column": 2
         }
       }
@@ -37585,15 +37681,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 95921,
-      "end": 95921,
+      "start": 96044,
+      "end": 96044,
       "loc": {
         "start": {
-          "line": 2347,
+          "line": 2353,
           "column": 0
         },
         "end": {
-          "line": 2347,
+          "line": 2353,
           "column": 0
         }
       }

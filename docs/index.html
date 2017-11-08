@@ -55,7 +55,8 @@ version                   Print Comptroller version
 
 Options:
 --------
---prune -p                Remove unused dependencies from subpackges&apos; package.json</code>
+--prune -p                Remove unused dependencies from subpackges&apos; package.json
+--self -s                 If set, only the root package will be updated</code>
 </code></pre><h2 id="how-it-works">How it works</h2><h3 id="commands">Commands</h3><p><strong>update</strong></p>
 <p>Comptroller&apos;s <code>update</code> command analyzes the packages in a given directory and
 identifies static <code>require</code> calls. Using this, it is able to update each
@@ -80,6 +81,9 @@ the need for to specify relative paths or to <code>npm install</code> or <code>n
 <h3 id="options">Options</h3><p><strong>prune</strong></p>
 <p>Comptroller&apos;s <code>prune</code> option takes all those extraneous dependencies found by
 the <code>update</code> command and delivers them to the void.</p>
+<p><strong>self</strong></p>
+<p>Comptroller&apos;s <code>self</code> option switches from managing subpackage dependencies and
+inherits to only managing the top level dependencies.</p>
 <h2 id="the-nitty-gritty">The nitty gritty</h2><p>Comptroller&apos;s power is it&apos;s simplicity and flexibility.</p>
 <h3 id="configuration">Configuration</h3><p>Comptroller has a cascading configuration scheme. This means that your root
 package&apos;s configuration will cascade through to its child packages, as long as

@@ -475,13 +475,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~`dgram`_module_functions~createsocket",
-    "https://nodejs.org/api/`dgram`_module_functions.html#`dgram`_module_functions_dgram_createsocket_type_callback",
+    "https://nodejs.org/api/`dgram`_module_functions.html#`dgram`_module_functions_dgram_createsocket_options_callback",
     "src/.external-node.js~`dgram`_module_functions~createSocket",
     "external"
   ],
   [
     "src/.external-node.js~`dgram`_module_functions~createsocket",
-    "https://nodejs.org/api/`dgram`_module_functions.html#`dgram`_module_functions_dgram_createsocket_options_callback",
+    "https://nodejs.org/api/`dgram`_module_functions.html#`dgram`_module_functions_dgram_createsocket_type_callback",
     "src/.external-node.js~`dgram`_module_functions~createSocket",
     "external"
   ],
@@ -517,13 +517,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~assert~fail",
-    "https://nodejs.org/api/assert.html#assert_assert_fail_message",
+    "https://nodejs.org/api/assert.html#assert_assert_fail_actual_expected_message_operator_stackstartfunction",
     "src/.external-node.js~assert~fail",
     "external"
   ],
   [
     "src/.external-node.js~assert~fail",
-    "https://nodejs.org/api/assert.html#assert_assert_fail_actual_expected_message_operator_stackstartfunction",
+    "https://nodejs.org/api/assert.html#assert_assert_fail_message",
     "src/.external-node.js~assert~fail",
     "external"
   ],
@@ -603,6 +603,12 @@ window.esdocSearchIndex = [
     "src/.external-node.js~babel-traverse",
     "https://babeljs.io/",
     "src/.external-node.js~babel-traverse",
+    "external"
+  ],
+  [
+    "src/.external-node.js~babylon",
+    "https://babeljs.io/",
+    "src/.external-node.js~babylon",
     "external"
   ],
   [
@@ -2143,13 +2149,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~events~eventemitter#listenercount",
-    "https://nodejs.org/api/events.html#events_eventemitter_listenercount_emitter_eventname",
+    "https://nodejs.org/api/events.html#events_emitter_listenercount_eventname",
     "src/.external-node.js~events~EventEmitter#listenerCount",
     "external"
   ],
   [
     "src/.external-node.js~events~eventemitter#listenercount",
-    "https://nodejs.org/api/events.html#events_emitter_listenercount_eventname",
+    "https://nodejs.org/api/events.html#events_eventemitter_listenercount_emitter_eventname",
     "src/.external-node.js~events~EventEmitter#listenerCount",
     "external"
   ],
@@ -2695,13 +2701,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~fs~writesync",
-    "https://nodejs.org/api/fs.html#fs_fs_writesync_fd_string_position_encoding",
+    "https://nodejs.org/api/fs.html#fs_fs_writesync_fd_buffer_offset_length_position",
     "src/.external-node.js~fs~writeSync",
     "external"
   ],
   [
     "src/.external-node.js~fs~writesync",
-    "https://nodejs.org/api/fs.html#fs_fs_writesync_fd_buffer_offset_length_position",
+    "https://nodejs.org/api/fs.html#fs_fs_writesync_fd_string_position_encoding",
     "src/.external-node.js~fs~writeSync",
     "external"
   ],
@@ -3309,6 +3315,12 @@ window.esdocSearchIndex = [
     "src/.external-node.js~list_of_deprecated_apis~turnoffeditormode",
     "https://nodejs.org/api/list_of_deprecated_apis.html#list_of_deprecated_apis_dep0078:replserver_turnoffeditormode",
     "src/.external-node.js~list_of_deprecated_apis~turnOffEditorMode",
+    "external"
+  ],
+  [
+    "src/.external-node.js~minimatch",
+    "https://github.com/isaacs/minimatch#readme",
+    "src/.external-node.js~minimatch",
     "external"
   ],
   [
@@ -4195,13 +4207,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~stream~writable",
-    "https://nodejs.org/api/stream.html#stream_class_stream_writable",
+    "https://nodejs.org/api/stream.html#stream_constructor:newstream_writable_options",
     "src/.external-node.js~stream~Writable",
     "external"
   ],
   [
     "src/.external-node.js~stream~writable",
-    "https://nodejs.org/api/stream.html#stream_constructor:newstream_writable_options",
+    "https://nodejs.org/api/stream.html#stream_class_stream_writable",
     "src/.external-node.js~stream~Writable",
     "external"
   ],
@@ -4243,13 +4255,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~stream~_destroy",
-    "https://nodejs.org/api/stream.html#stream_writable_destroy_err_callback",
+    "https://nodejs.org/api/stream.html#stream_readable_destroy_err_callback",
     "src/.external-node.js~stream~_destroy",
     "external"
   ],
   [
     "src/.external-node.js~stream~_destroy",
-    "https://nodejs.org/api/stream.html#stream_readable_destroy_err_callback",
+    "https://nodejs.org/api/stream.html#stream_writable_destroy_err_callback",
     "src/.external-node.js~stream~_destroy",
     "external"
   ],
@@ -4579,13 +4591,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~tls~connect",
-    "https://nodejs.org/api/tls.html#tls_tls_connect_port_host_options_callback",
+    "https://nodejs.org/api/tls.html#tls_tls_connect_path_options_callback",
     "src/.external-node.js~tls~connect",
     "external"
   ],
   [
     "src/.external-node.js~tls~connect",
-    "https://nodejs.org/api/tls.html#tls_tls_connect_path_options_callback",
+    "https://nodejs.org/api/tls.html#tls_tls_connect_port_host_options_callback",
     "src/.external-node.js~tls~connect",
     "external"
   ],
