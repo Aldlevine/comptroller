@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const {version} = require('../package.json');
-const path = require('path');
+const path = require('./path');
 const minimist = require('minimist');
 const dedent = require('dedent');
 const fs = require('./fs');
@@ -33,6 +33,12 @@ const root = argv._[1] || '.';
 const prune = argv.prune || argv.p;
 
 /**
+ * Whether or not Comptroller should update the root package.
+ * @type {boolean}
+ */
+const self = argv.self || argv.s;
+
+/**
  * A function map for all cli commands
  * @type {Map<string, function>}
  */
@@ -58,7 +64,8 @@ const cli = {
 
       Options:
       --------
-      --prune -p                 Remove unused dependencies from subpackges' package.json
+      --prune -p                Remove unused dependencies from subpackges' package.json
+      --self -s                 If set, only the root package will be updated
     `);
   },
 
@@ -68,8 +75,15 @@ const cli = {
   async update ()
   {
     const comp = new Comptroller({root, prune});
-    await comp.updatePackages();
-    await comp.writePackages();
+
+    if (self) {
+      await comp.updateSelf();
+      await comp.writePackageJson();
+    }
+    else {
+      await comp.updatePackages();
+      await comp.writePackages();
+    }
   },
 
   /**

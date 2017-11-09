@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require('../src/path');
 const {expect} = require('chai');
 const {makepkg, rempkg, fileStructure} = require('./makepkg');
 const fs = require('../src/fs');
@@ -46,10 +46,12 @@ describe('Package', function () {
         'not-a-package': {files: ['index.js']},
         'doesnt-exist': {files: ['packages/package-1/index.js']},
         'events': {files: ['packages/package-1/index.js']},
-        '@test/package-1': {files: ['packages/package-2/index.js']}
+        '@test/package-1': {files: ['packages/package-2/index.js']},
+        'dev-dependency-1': {files: ['index.js', 'test.js']},
       };
       const analyzed = await this.package.analyzeSourceDependencies();
-      expect(analyzed).to.have.all.keys('dependency-1', 'dependency-2', 'http', 'not-a-package', 'doesnt-exist', 'events', '@test/package-1');
+      expect(analyzed).to.have.all.keys('dependency-1', 'dependency-2', 'http', 'not-a-package', 'doesnt-exist',
+                                        'events', '@test/package-1', 'dev-dependency-1', 'dev-dependency-3');
 
       expect(analyzed['dependency-1']).to.have.key('files');
       expect(analyzed['dependency-1']['files']).to.include('index.js', 'packages/package-1/index.js', 'packages/package-2/index.js');
@@ -80,7 +82,7 @@ describe('Package', function () {
       const patches = this.package.generateDependencyPatches(newDeps);
 
       expect(patches).to.be.an('array');
-      expect(patches.length).to.equal(2);
+      expect(patches.length).to.equal(3);
 
       expect(patches[0]).to.be.an.instanceof(Patch);
       expect(patches[0].type).to.equal(Patch.UPDATE);
@@ -93,11 +95,29 @@ describe('Package', function () {
       expect(patches[1].files).to.deep.equal(['file-2.js']);
     });
 
+    it('should generate update patches for used devDependences', function () {
+      const newDeps = {'dev-dependency-1': {files: ['test.js']}, 'dev-dependency-2': {files: ['test.js']}};
+      const patches = this.package.generateDependencyPatches(newDeps);
+
+      expect(patches).to.be.an('array');
+      expect(patches.length).to.equal(5);
+
+      expect(patches[0]).to.be.an.instanceof(Patch);
+      expect(patches[0].type).to.equal(Patch.UPDATE);
+      expect(patches[0].name).to.equal('dev-dependency-1');
+      expect(patches[0].files).to.deep.equal(['test.js']);
+
+      expect(patches[1]).to.be.an.instanceof(Patch);
+      expect(patches[1].type).to.equal(Patch.UPDATE);
+      expect(patches[1].name).to.equal('dev-dependency-2');
+      expect(patches[1].files).to.deep.equal(['test.js']);
+    });
+
     it('should generate add patches for new dependencies', function () {
       const newDeps = {'dependency-1': {files: ['file-1.js']}, 'dependency-2': {files: ['file-2.js']}, 'dependency-3': {files: ['file-3.js']}};
       const patches = this.package.generateDependencyPatches(newDeps);
       expect(patches).to.be.an('array');
-      expect(patches.length).to.equal(3);
+      expect(patches.length).to.equal(4);
 
       expect(patches[2]).to.be.an.instanceof(Patch);
       expect(patches[2].type).to.equal(Patch.ADD);
@@ -105,11 +125,23 @@ describe('Package', function () {
       expect(patches[2].files).to.deep.equal(['file-3.js']);
     });
 
+    it('should generate add patches for new devDependencies', function () {
+      const newDeps = {'dev-dependency-3': {files: ['test.js']}};
+      const patches = this.package.generateDependencyPatches(newDeps);
+      expect(patches).to.be.an('array');
+      expect(patches.length).to.equal(4);
+
+      expect(patches[0]).to.be.an.instanceof(Patch);
+      expect(patches[0].type).to.equal(Patch.ADD);
+      expect(patches[0].name).to.equal('dev-dependency-3');
+      expect(patches[0].files).to.deep.equal(['test.js']);
+    });
+
     it('should generate remove patches for unused dependencies', function () {
       const newDeps = {};
       const patches = this.package.generateDependencyPatches(newDeps);
       expect(patches).to.be.an('array');
-      expect(patches.length).to.equal(2);
+      expect(patches.length).to.equal(3);
 
       expect(patches[0]).to.be.an.instanceof(Patch);
       expect(patches[0].type).to.equal(Patch.REMOVE);
@@ -150,6 +182,21 @@ describe('Package', function () {
         'dependency-1': '0.0.0',
         'dependency-2': '0.0.1',
         'dependency-3': '0.0.2',
+        'unused-dependency': '0.0.0'
+      });
+    });
+
+    it('should correctly apply dev add patch', function () {
+      const patch = new Patch(Patch.ADD, {
+        name: 'dev-dependency-3',
+        value: '7.7.7',
+        dev: true,
+      });
+      this.package.applyPatch(patch);
+      expect(this.package.packageJson.devDependencies).to.deep.equal({
+        'dev-dependency-1': '9.9.9',
+        'dev-dependency-2': '8.8.8',
+        'dev-dependency-3': '7.7.7',
       });
     });
 
@@ -163,6 +210,20 @@ describe('Package', function () {
         'dependency-1': '0.0.0',
         'dependency-2': '0.0.1',
         'dependency-3': '0.0.2',
+        'unused-dependency': '0.0.0',
+      });
+    });
+
+    it('should correctly apply dev update patch', function () {
+      const patch = new Patch(Patch.ADD, {
+        name: 'dev-dependency-1',
+        value: '10.10.10',
+        dev: true,
+      });
+      this.package.applyPatch(patch);
+      expect(this.package.packageJson.devDependencies).to.deep.equal({
+        'dev-dependency-1': '10.10.10',
+        'dev-dependency-2': '8.8.8',
       });
     });
 
@@ -173,6 +234,7 @@ describe('Package', function () {
       this.package.applyPatch(patch);
       expect(this.package.packageJson.dependencies).to.deep.equal({
         'dependency-1': '0.0.0',
+        'unused-dependency': '0.0.0',
       });
     });
 

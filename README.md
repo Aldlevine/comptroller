@@ -31,6 +31,7 @@ version                   Print Comptroller version
 Options:
 --------
 --prune -p                Remove unused dependencies from subpackges' package.json
+--self -s                 If set, only the root package will be updated
 ```
 
 ## How it works
@@ -68,6 +69,11 @@ __prune__
 
 Comptroller's `prune` option takes all those extraneous dependencies found by
 the `update` command and delivers them to the void.
+
+__self__
+
+Comptroller's `self` option switches from managing subpackage dependencies and
+inherits to only managing the top level dependencies.
 
 ## The nitty gritty
 

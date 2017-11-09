@@ -1,6 +1,6 @@
 require('mocha-sinon');
 const proxyquire = require('proxyquire');
-const path = require('path');
+const path = require('../src/path');
 const {expect} = require('chai');
 const {makepkg, rempkg, fileStructure} = require('./makepkg');
 const fs = require('../src/fs');
@@ -136,6 +136,26 @@ describe('Comptroller', function () {
       expect(this.logger.warn.calledWith(`WARNING: 'dependency' required by @test/package-1 (index.js,other.js) not found in package.json or local packages.`)).to.be.true;
     });
 
+    it('should warn when non-dev add patch has is defined in devDependencies', function () {
+      const patch = new Patch(Patch.ADD, {
+        name: 'dev-dependency-1',
+        files: ['test.js'],
+      });
+      const child = this.comptroller;
+      this.comptroller.logPatch(child, patch);
+      expect(this.logger.warn.calledWith(`WARNING: 'dev-dependency-1' required by test-package in non-dev source (test.js) was found in package.json devDependencies.`)).to.be.true;
+    });
+
+    it('should warn when non-dev update patch has is defined in devDependencies', function () {
+      const patch = new Patch(Patch.UPDATE, {
+        name: 'dev-dependency-1',
+        files: ['test.js'],
+      });
+      const child = this.comptroller;
+      this.comptroller.logPatch(child, patch);
+      expect(this.logger.warn.calledWith(`WARNING: 'dev-dependency-1' required by test-package in non-dev source (test.js) was found in package.json devDependencies.`)).to.be.true;
+    });
+
     it('should warn when update patch has no value', function () {
       const patch = new Patch(Patch.UPDATE, {
         name: 'dependency',
@@ -154,7 +174,7 @@ describe('Comptroller', function () {
       });
       const child = new Package({root: path.join(this.packageDir, 'packages', 'package-1')});
       this.comptroller.logPatch(child, patch);
-      expect(this.logger.log.calledWith(`Adding package local package 'dependency@1.0.0' to package '@test/package-1'`)).to.be.true;
+      expect(this.logger.log.calledWith(`Adding local package 'dependency@1.0.0' to package '@test/package-1'`)).to.be.true;
     });
 
     it('should log update patch', function () {
@@ -273,6 +293,34 @@ describe('Comptroller', function () {
         '@test/package-1': '0.0.1',
         'dependency-1': '0.0.0',
         'dependency-2': '0.0.1'
+      });
+    });
+  });
+
+  describe('#updateSelf()', function () {
+    it('should properly update dependencies without prune option', async function () {
+      await this.comptroller.updateSelf();
+      expect(this.comptroller.packageJson.dependencies).to.deep.equal({
+        'dependency-1': '0.0.0',
+        'dependency-2': '0.0.1',
+        'unused-dependency': '0.0.0',
+      });
+      expect(this.comptroller.packageJson.devDependencies).to.deep.equal({
+        'dev-dependency-1': '9.9.9',
+        'dev-dependency-2': '8.8.8',
+      });
+    });
+
+    it('should properly update dependencies with prune option', async function () {
+      this.comptroller._prune = true;
+      await this.comptroller.updateSelf();
+      expect(this.comptroller.packageJson.dependencies).to.deep.equal({
+        'dependency-1': '0.0.0',
+        'dependency-2': '0.0.1',
+      });
+      expect(this.comptroller.packageJson.devDependencies).to.deep.equal({
+        'dev-dependency-1': '9.9.9',
+        'dev-dependency-2': '8.8.8',
       });
     });
   });
