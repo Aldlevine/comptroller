@@ -1,6 +1,6 @@
 {
   "name": "comptroller",
-  "version": "0.2.4",
+  "version": "0.3.0-0",
   "description": "A simple and lightweight tool to manage your monorepo.",
   "keywords": [
     "dependency-analysis",
