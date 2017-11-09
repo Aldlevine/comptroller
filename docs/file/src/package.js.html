@@ -43,7 +43,7 @@ const minimatch = require(&apos;minimatch&apos;);
 const fs = require(&apos;./fs&apos;);
 const builtins = require(&apos;builtin-modules&apos;);
 const detective = require(&apos;@zdychacek/detective&apos;);
-const formatPackageJson = require(&apos;format-package&apos;);
+const sortPackageJson = require(&apos;sort-package-json&apos;);
 const Patch = require(&apos;./patch&apos;);
 
 /**
@@ -195,7 +195,8 @@ module.exports = class Package
    */
   async writePackageJson ()
   {
-    const json = await formatPackageJson(this.packageJson, {});
+    const packageJson = sortPackageJson(this.packageJson);
+    const json = JSON.stringify(packageJson, null, 2);
     await fs.writeFilePlease(path.resolve(this.root, &apos;package.json&apos;), json);
   }
 

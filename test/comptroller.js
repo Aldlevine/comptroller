@@ -136,6 +136,26 @@ describe('Comptroller', function () {
       expect(this.logger.warn.calledWith(`WARNING: 'dependency' required by @test/package-1 (index.js,other.js) not found in package.json or local packages.`)).to.be.true;
     });
 
+    it('should warn when non-dev add patch has is defined in devDependencies', function () {
+      const patch = new Patch(Patch.ADD, {
+        name: 'dev-dependency-1',
+        files: ['test.js'],
+      });
+      const child = this.comptroller;
+      this.comptroller.logPatch(child, patch);
+      expect(this.logger.warn.calledWith(`WARNING: 'dev-dependency-1' required by test-package in non-dev source (test.js) was found in package.json devDependencies.`)).to.be.true;
+    });
+
+    it('should warn when non-dev update patch has is defined in devDependencies', function () {
+      const patch = new Patch(Patch.UPDATE, {
+        name: 'dev-dependency-1',
+        files: ['test.js'],
+      });
+      const child = this.comptroller;
+      this.comptroller.logPatch(child, patch);
+      expect(this.logger.warn.calledWith(`WARNING: 'dev-dependency-1' required by test-package in non-dev source (test.js) was found in package.json devDependencies.`)).to.be.true;
+    });
+
     it('should warn when update patch has no value', function () {
       const patch = new Patch(Patch.UPDATE, {
         name: 'dependency',
@@ -273,6 +293,34 @@ describe('Comptroller', function () {
         '@test/package-1': '0.0.1',
         'dependency-1': '0.0.0',
         'dependency-2': '0.0.1'
+      });
+    });
+  });
+
+  describe('#updateSelf()', function () {
+    it('should properly update dependencies without prune option', async function () {
+      await this.comptroller.updateSelf();
+      expect(this.comptroller.packageJson.dependencies).to.deep.equal({
+        'dependency-1': '0.0.0',
+        'dependency-2': '0.0.1',
+        'unused-dependency': '0.0.0',
+      });
+      expect(this.comptroller.packageJson.devDependencies).to.deep.equal({
+        'dev-dependency-1': '9.9.9',
+        'dev-dependency-2': '8.8.8',
+      });
+    });
+
+    it('should properly update dependencies with prune option', async function () {
+      this.comptroller._prune = true;
+      await this.comptroller.updateSelf();
+      expect(this.comptroller.packageJson.dependencies).to.deep.equal({
+        'dependency-1': '0.0.0',
+        'dependency-2': '0.0.1',
+      });
+      expect(this.comptroller.packageJson.devDependencies).to.deep.equal({
+        'dev-dependency-1': '9.9.9',
+        'dev-dependency-2': '8.8.8',
       });
     });
   });
