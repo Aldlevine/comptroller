@@ -2,6 +2,12 @@
   "name": "comptroller",
   "version": "0.2.4",
   "description": "A simple and lightweight tool to manage your monorepo.",
+  "keywords": [
+    "dependency-analysis",
+    "dependency-manager",
+    "monorepo",
+    "repository-management"
+  ],
   "homepage": "https://aldlevine.github.io/comptroller",
   "bugs": {
     "url": "https://github.com/Aldlevine/comptroller/issues"
