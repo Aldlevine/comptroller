@@ -5,6 +5,7 @@ const fs = require('./fs');
 const builtins = require('builtin-modules');
 const detective = require('@zdychacek/detective');
 const sortPackageJson = require('sort-package-json');
+const beautify = require('json-beautify');
 const Patch = require('./patch');
 
 /**
@@ -40,6 +41,8 @@ module.exports = class Package
    * to <a href="https://npmjs.com/package/@zdychacek/detective">detective</a>.
    * @param {boolean} [opts.config.prune = false] - Whether or not unused
    * dependencies should be pruned from the package.json.
+   * @param {boolean|number} [opts.config.pretty = false] - The "maximum fixed
+   * character width" parameter to pass to json-beautify.
    */
   constructor ({
     root,
@@ -53,6 +56,7 @@ module.exports = class Package
     inherits = _config.inherits || config.inherits || [],
     detective = _config.detective || config.detective || {},
     prune = _config.prune || config.prune || false,
+    pretty = _config.pretty || config.pretty || false,
   })
   {
     /** @type {string} */
@@ -81,6 +85,9 @@ module.exports = class Package
 
     /** @type {boolean} */
     this._prune = prune;
+
+    /** @type {boolean|number} */
+    this._pretty = pretty;
   }
 
   /**
@@ -152,12 +159,18 @@ module.exports = class Package
   get prune () {return this._prune}
 
   /**
+   * The "maximum fixed character width" parameter to pass to json-beautify.
+   * @type {boolean|number}
+   */
+  get pretty () {return this._pretty}
+
+  /**
    * Writes {@link Package#packageJson} to it's respective package.json file.
    */
   async writePackageJson ()
   {
     const packageJson = sortPackageJson(this.packageJson);
-    const json = JSON.stringify(packageJson, null, 2);
+    const json = beautify(packageJson, null, 2, this.pretty);
     await fs.writeFilePlease(path.resolve(this.root, 'package.json'), json);
   }
 

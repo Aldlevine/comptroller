@@ -15,19 +15,13 @@
   "license": "MIT",
   "author": "Aaron Levine <ald.levine@gmail.com>",
   "main": "src/comptroller.js",
-  "bin": {
-    "comp": "./src/cli.js"
-  },
-  "directories": {
-    "doc": "docs"
-  },
+  "bin": { "comp": "./src/cli.js" },
+  "directories": { "doc": "docs" },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Aldlevine/comptroller.git"
   },
-  "scripts": {
-    "test": "nyc mocha"
-  },
+  "scripts": { "test": "nyc mocha" },
   "dependencies": {
     "@zdychacek/detective": "^5.0.2",
     "babel-traverse": "^6.26.0",
@@ -36,6 +30,7 @@
     "dedent": "^0.7.0",
     "fs-extra": "^4.0.2",
     "glob": "^7.1.2",
+    "json-beautify": "^1.0.1",
     "minimatch": "^3.0.4",
     "minimist": "^1.2.0",
     "sort-package-json": "^1.7.1"
@@ -55,17 +50,14 @@
   "comptroller": {
     "source": "src/**/*.js",
     "dev": "{test/**.*.js,utils/**/*.js}",
+    "pretty": 40,
     "detective": {
       "parse": {
-        "plugins": [
-          "objectRestSpread"
-        ]
+        "plugins": [ "objectRestSpread" ]
       }
     },
     "exclude": [
-      {
-        "group": "builtins"
-      },
+      { "group": "builtins" },
       "babel-traverse",
       "babylon"
     ]
