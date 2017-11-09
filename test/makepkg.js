@@ -1,4 +1,4 @@
-const path = require('path');
+const path = require('../src/path');
 const dedent = require('dedent');
 const fs = require('../src/fs');
 
@@ -10,9 +10,16 @@ exports.fileStructure = {
       "author": "Some Body",
       "dependencies": {
         "dependency-1": "0.0.0",
-        "dependency-2": "0.0.1"
+        "dependency-2": "0.0.1",
+        "unused-dependency": "0.0.0"
+      },
+      "devDependencies": {
+        "dev-dependency-1": "9.9.9",
+        "dev-dependency-2": "8.8.8"
       },
       "comptroller": {
+        "srource": "index.js",
+        "dev": "test.js",
         "inherits": ["version", "author"],
         "exclude": ["excluded-dependency"]
       }
@@ -24,6 +31,10 @@ exports.fileStructure = {
     require('excluded-dependency');
     require('http');
     require('not-a-package');
+  `,
+  'test.js': dedent`
+    require("dev-dependency-1");
+    require("dev-dependency-3");
   `,
   'packages': {
     'package-1': {

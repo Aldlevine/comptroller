@@ -19,6 +19,7 @@ module.exports = class Patch
    * @param {string} config.name - The name of the item being patched.
    * @param {object} config.value - The value of the item being patched.
    * @param {string?} config.source - The dependency type being patched.
+   * @param {boolean} [config.dev = false] - Whether or not this is a devDependency.
    * @param {boolean} [config.disabled = false] - Whether or not the patch is disabled.
    * @param {string[]} [config.files = []] - The files that necessitate the patch.
    */
@@ -26,6 +27,7 @@ module.exports = class Patch
     name,
     value,
     source,
+    dev = false,
     disabled = false,
     files = [],
   }={})
@@ -53,6 +55,12 @@ module.exports = class Patch
      * @type {string}
      */
     this.source = source;
+
+    /**
+     * Whether or not this is a devDependency
+     * @type {boolean}
+     */
+    this.dev = dev;
 
     /**
      * Whether or not the patch is disabled

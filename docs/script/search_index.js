@@ -475,13 +475,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~`dgram`_module_functions~createsocket",
-    "https://nodejs.org/api/`dgram`_module_functions.html#`dgram`_module_functions_dgram_createsocket_type_callback",
+    "https://nodejs.org/api/`dgram`_module_functions.html#`dgram`_module_functions_dgram_createsocket_options_callback",
     "src/.external-node.js~`dgram`_module_functions~createSocket",
     "external"
   ],
   [
     "src/.external-node.js~`dgram`_module_functions~createsocket",
-    "https://nodejs.org/api/`dgram`_module_functions.html#`dgram`_module_functions_dgram_createsocket_options_callback",
+    "https://nodejs.org/api/`dgram`_module_functions.html#`dgram`_module_functions_dgram_createsocket_type_callback",
     "src/.external-node.js~`dgram`_module_functions~createSocket",
     "external"
   ],
@@ -517,13 +517,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~assert~fail",
-    "https://nodejs.org/api/assert.html#assert_assert_fail_message",
+    "https://nodejs.org/api/assert.html#assert_assert_fail_actual_expected_message_operator_stackstartfunction",
     "src/.external-node.js~assert~fail",
     "external"
   ],
   [
     "src/.external-node.js~assert~fail",
-    "https://nodejs.org/api/assert.html#assert_assert_fail_actual_expected_message_operator_stackstartfunction",
+    "https://nodejs.org/api/assert.html#assert_assert_fail_message",
     "src/.external-node.js~assert~fail",
     "external"
   ],
@@ -597,6 +597,18 @@ window.esdocSearchIndex = [
     "src/.external-node.js~asynchronous_process_creation~spawn",
     "https://nodejs.org/api/asynchronous_process_creation.html#asynchronous_process_creation_child_process_spawn_command_args_options",
     "src/.external-node.js~asynchronous_process_creation~spawn",
+    "external"
+  ],
+  [
+    "src/.external-node.js~babel-traverse",
+    "https://babeljs.io/",
+    "src/.external-node.js~babel-traverse",
+    "external"
+  ],
+  [
+    "src/.external-node.js~babylon",
+    "https://babeljs.io/",
+    "src/.external-node.js~babylon",
     "external"
   ],
   [
@@ -2137,13 +2149,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~events~eventemitter#listenercount",
-    "https://nodejs.org/api/events.html#events_eventemitter_listenercount_emitter_eventname",
+    "https://nodejs.org/api/events.html#events_emitter_listenercount_eventname",
     "src/.external-node.js~events~EventEmitter#listenerCount",
     "external"
   ],
   [
     "src/.external-node.js~events~eventemitter#listenercount",
-    "https://nodejs.org/api/events.html#events_emitter_listenercount_eventname",
+    "https://nodejs.org/api/events.html#events_eventemitter_listenercount_emitter_eventname",
     "src/.external-node.js~events~EventEmitter#listenerCount",
     "external"
   ],
@@ -3306,6 +3318,12 @@ window.esdocSearchIndex = [
     "external"
   ],
   [
+    "src/.external-node.js~minimatch",
+    "https://github.com/isaacs/minimatch#readme",
+    "src/.external-node.js~minimatch",
+    "external"
+  ],
+  [
     "src/.external-node.js~minimist",
     "https://github.com/substack/minimist",
     "src/.external-node.js~minimist",
@@ -4189,13 +4207,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~stream~writable",
-    "https://nodejs.org/api/stream.html#stream_class_stream_writable",
+    "https://nodejs.org/api/stream.html#stream_constructor:newstream_writable_options",
     "src/.external-node.js~stream~Writable",
     "external"
   ],
   [
     "src/.external-node.js~stream~writable",
-    "https://nodejs.org/api/stream.html#stream_constructor:newstream_writable_options",
+    "https://nodejs.org/api/stream.html#stream_class_stream_writable",
     "src/.external-node.js~stream~Writable",
     "external"
   ],
@@ -4573,12 +4591,6 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~tls~connect",
-    "https://nodejs.org/api/tls.html#tls_tls_connect_options_callback",
-    "src/.external-node.js~tls~connect",
-    "external"
-  ],
-  [
-    "src/.external-node.js~tls~connect",
     "https://nodejs.org/api/tls.html#tls_tls_connect_path_options_callback",
     "src/.external-node.js~tls~connect",
     "external"
@@ -4586,6 +4598,12 @@ window.esdocSearchIndex = [
   [
     "src/.external-node.js~tls~connect",
     "https://nodejs.org/api/tls.html#tls_tls_connect_port_host_options_callback",
+    "src/.external-node.js~tls~connect",
+    "external"
+  ],
+  [
+    "src/.external-node.js~tls~connect",
+    "https://nodejs.org/api/tls.html#tls_tls_connect_options_callback",
     "src/.external-node.js~tls~connect",
     "external"
   ],
@@ -4836,6 +4854,12 @@ window.esdocSearchIndex = [
     "external"
   ],
   [
+    "src/.external-node.js~zlib~zlib#close",
+    "https://nodejs.org/api/zlib.html#zlib_zlib_close_callback",
+    "src/.external-node.js~zlib~Zlib#close",
+    "external"
+  ],
+  [
     "src/.external-node.js~zlib~zlib#flush",
     "https://nodejs.org/api/zlib.html#zlib_zlib_flush_kind_callback",
     "src/.external-node.js~zlib~Zlib#flush",
@@ -5046,6 +5070,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/comptroller.js~comptroller#updateself",
+    "class/src/comptroller.js~Comptroller.html#instance-method-updateSelf",
+    "src/comptroller.js~Comptroller#updateSelf",
+    "method"
+  ],
+  [
     "src/comptroller.js~comptroller#writepackages",
     "class/src/comptroller.js~Comptroller.html#instance-method-writePackages",
     "src/comptroller.js~Comptroller#writePackages",
@@ -5103,6 +5133,18 @@ window.esdocSearchIndex = [
     "src/package.js~package#detective",
     "class/src/package.js~Package.html#instance-get-detective",
     "src/package.js~Package#detective",
+    "member"
+  ],
+  [
+    "src/package.js~package#dev",
+    "class/src/package.js~Package.html#instance-get-dev",
+    "src/package.js~Package#dev",
+    "member"
+  ],
+  [
+    "src/package.js~package#devdependencies",
+    "class/src/package.js~Package.html#instance-get-devDependencies",
+    "src/package.js~Package#devDependencies",
     "member"
   ],
   [
@@ -5172,6 +5214,12 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/package.js~package.generateexcludes",
+    "class/src/package.js~Package.html#static-method-generateExcludes",
+    "src/package.js~Package.generateExcludes",
+    "method"
+  ],
+  [
     "src/patch.js",
     "file/src/patch.js.html",
     "src/patch.js",
@@ -5182,6 +5230,12 @@ window.esdocSearchIndex = [
     "class/src/patch.js~Patch.html#instance-constructor-constructor",
     "src/patch.js~Patch#constructor",
     "method"
+  ],
+  [
+    "src/patch.js~patch#dev",
+    "class/src/patch.js~Patch.html#instance-member-dev",
+    "src/patch.js~Patch#dev",
+    "member"
   ],
   [
     "src/patch.js~patch#disabled",
@@ -5242,5 +5296,11 @@ window.esdocSearchIndex = [
     "class/src/patch.js~Patch.html#static-get-UPDATE",
     "src/patch.js~Patch.UPDATE",
     "member"
+  ],
+  [
+    "src/path.js",
+    "file/src/path.js.html",
+    "src/path.js",
+    "file"
   ]
 ]
