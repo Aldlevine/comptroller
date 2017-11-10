@@ -59,3 +59,6 @@ typings/
 
 # local testing stuff
 scratch
+
+# siggis
+.siggis

@@ -2208,12 +2208,6 @@ window.esdocSearchIndex = [
     "external"
   ],
   [
-    "src/.external-node.js~format-package",
-    "https://github.com/camacho/format-package#readme",
-    "src/.external-node.js~format-package",
-    "external"
-  ],
-  [
     "src/.external-node.js~fs-extra",
     "https://github.com/jprichardson/node-fs-extra",
     "src/.external-node.js~fs-extra",
@@ -2677,13 +2671,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~fs~write",
-    "https://nodejs.org/api/fs.html#fs_fs_write_fd_buffer_offset_length_position_callback",
+    "https://nodejs.org/api/fs.html#fs_fs_write_fd_string_position_encoding_callback",
     "src/.external-node.js~fs~write",
     "external"
   ],
   [
     "src/.external-node.js~fs~write",
-    "https://nodejs.org/api/fs.html#fs_fs_write_fd_string_position_encoding_callback",
+    "https://nodejs.org/api/fs.html#fs_fs_write_fd_buffer_offset_length_position_callback",
     "src/.external-node.js~fs~write",
     "external"
   ],
@@ -4116,6 +4110,12 @@ window.esdocSearchIndex = [
     "external"
   ],
   [
+    "src/.external-node.js~sort-package-json",
+    "https://github.com/keithamus/sort-package-json#readme",
+    "src/.external-node.js~sort-package-json",
+    "external"
+  ],
+  [
     "src/.external-node.js~stream~duplex",
     "https://nodejs.org/api/stream.html#stream_class_stream_duplex",
     "src/.external-node.js~stream~Duplex",
@@ -4255,13 +4255,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~stream~_destroy",
-    "https://nodejs.org/api/stream.html#stream_readable_destroy_err_callback",
+    "https://nodejs.org/api/stream.html#stream_writable_destroy_err_callback",
     "src/.external-node.js~stream~_destroy",
     "external"
   ],
   [
     "src/.external-node.js~stream~_destroy",
-    "https://nodejs.org/api/stream.html#stream_writable_destroy_err_callback",
+    "https://nodejs.org/api/stream.html#stream_readable_destroy_err_callback",
     "src/.external-node.js~stream~_destroy",
     "external"
   ],
@@ -4597,13 +4597,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~tls~connect",
-    "https://nodejs.org/api/tls.html#tls_tls_connect_port_host_options_callback",
+    "https://nodejs.org/api/tls.html#tls_tls_connect_options_callback",
     "src/.external-node.js~tls~connect",
     "external"
   ],
   [
     "src/.external-node.js~tls~connect",
-    "https://nodejs.org/api/tls.html#tls_tls_connect_options_callback",
+    "https://nodejs.org/api/tls.html#tls_tls_connect_port_host_options_callback",
     "src/.external-node.js~tls~connect",
     "external"
   ],
@@ -5181,6 +5181,12 @@ window.esdocSearchIndex = [
     "src/package.js~package#packagejson",
     "class/src/package.js~Package.html#instance-get-packageJson",
     "src/package.js~Package#packageJson",
+    "member"
+  ],
+  [
+    "src/package.js~package#pretty",
+    "class/src/package.js~Package.html#instance-get-pretty",
+    "src/package.js~Package#pretty",
     "member"
   ],
   [
