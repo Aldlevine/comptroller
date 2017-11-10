@@ -9914,18 +9914,6 @@
   {
     "__docId__": 828,
     "kind": "external",
-    "name": "format-package",
-    "externalLink": "https://github.com/camacho/format-package#readme",
-    "memberof": "src/.external-node.js",
-    "static": true,
-    "longname": "src/.external-node.js~format-package",
-    "access": "public",
-    "description": "",
-    "builtinExternal": true
-  },
-  {
-    "__docId__": 829,
-    "kind": "external",
     "name": "fs-extra",
     "externalLink": "https://github.com/jprichardson/node-fs-extra",
     "memberof": "src/.external-node.js",
@@ -9936,7 +9924,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 830,
+    "__docId__": 829,
     "kind": "external",
     "name": "glob",
     "externalLink": "https://github.com/isaacs/node-glob#readme",
@@ -9948,7 +9936,7 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 831,
+    "__docId__": 830,
     "kind": "external",
     "name": "minimatch",
     "externalLink": "https://github.com/isaacs/minimatch#readme",
@@ -9960,13 +9948,25 @@
     "builtinExternal": true
   },
   {
-    "__docId__": 832,
+    "__docId__": 831,
     "kind": "external",
     "name": "minimist",
     "externalLink": "https://github.com/substack/minimist",
     "memberof": "src/.external-node.js",
     "static": true,
     "longname": "src/.external-node.js~minimist",
+    "access": "public",
+    "description": "",
+    "builtinExternal": true
+  },
+  {
+    "__docId__": 832,
+    "kind": "external",
+    "name": "sort-package-json",
+    "externalLink": "https://github.com/keithamus/sort-package-json#readme",
+    "memberof": "src/.external-node.js",
+    "static": true,
+    "longname": "src/.external-node.js~sort-package-json",
     "access": "public",
     "description": "",
     "builtinExternal": true
@@ -10476,7 +10476,7 @@
     "__docId__": 858,
     "kind": "file",
     "name": "src/package.js",
-    "content": "const path = require('./path');\nconst glob = require('./glob');\nconst minimatch = require('minimatch');\nconst fs = require('./fs');\nconst builtins = require('builtin-modules');\nconst detective = require('@zdychacek/detective');\nconst sortPackageJson = require('sort-package-json');\nconst Patch = require('./patch');\n\n/**\n * This is the package class. It serves as encapsulation for individual\n * packages, as a means of querying for package info, and as an outlet for\n * changes to a package.\n */\nmodule.exports = class Package\n{\n  /**\n   * Creates a new package instance. It can accept it's configuration either\n   * through the package.json file or through the constructor arguments.\n   * @param {object} opts - The package options.\n   * @param {string} opts.root - The root directory of the package.\n   * @param {object} [opts.packageJson = fs.readJson('root package.json')] - The\n   * package's package.json. If not specified, it's read from the root\n   * directory.\n   * @param {object} [opts.config = opts.packageJson.comptroller || {}] - The\n   * Comptroller configurations options.\n   * @param {glob} [opts.config.source = '⚹⚹/⚹.js'] - A glob that selects\n   * the packages source files.\n   * @param {glob} [opts.config.dev = '⚹⚹/test/⚹⚹/⚹.js'] - A glob that selects\n   * the packages that should also include devDependencies\n   * @param {glob[]} [opts.config.ignore = ['⚹⚹/node_modules/⚹⚹']] - An array\n   * of globs to pass into {@link glob}'s `ignore` option when searching for\n   * source files.\n   * @param {Array<string|object>} [opts.config.exclude = builtins] - An array of package\n   * names to ignore in all operations. Defaults to {@link builtin-modules}.\n   * @param {string[]} [opts.config.inherits = []] - An array of field names to\n   * inherit from the parent package.json. This is useful for values that\n   * remain the same across all packages.\n   * @param {object} [opts.config.detective = {}] - The options to pass through\n   * to <a href=\"https://npmjs.com/package/@zdychacek/detective\">detective</a>.\n   * @param {boolean} [opts.config.prune = false] - Whether or not unused\n   * dependencies should be pruned from the package.json.\n   */\n  constructor ({\n    root,\n    packageJson = fs.readJsonSync(path.resolve(root, 'package.json')),\n    config = {},\n    _config = packageJson.comptroller || {},\n    source = _config.source || config.source || '**/*.js',\n    dev = _config.dev || config.dev || '**/test/*.js',\n    ignore = _config.ignore || config.ignore || ['**/node_modules/**'],\n    exclude = _config.exclude || config.exclude || builtins,\n    inherits = _config.inherits || config.inherits || [],\n    detective = _config.detective || config.detective || {},\n    prune = _config.prune || config.prune || false,\n  })\n  {\n    /** @type {string} */\n    this._root = root;\n\n    /** @type {object} */\n    this._packageJson = packageJson;\n\n    /** @type {glob} */\n    this._source = source;\n\n    /** @type {glob} */\n    this._dev = dev;\n\n    /** @type {glob[]} */\n    this._ignore = ignore;\n\n    /** @type {string[]} */\n    this._exclude = Package.generateExcludes(exclude);\n\n    /** @type {string[]} */\n    this._inherits = inherits;\n\n    /** @type {object} */\n    this._detective = detective;\n\n    /** @type {boolean} */\n    this._prune = prune;\n  }\n\n  /**\n   * The package's root directory.\n   * @type {string}\n   */\n  get root () {return this._root}\n\n  /**\n   * An object representing the package's package.json.\n   * @type {object}\n   */\n  get packageJson () {return this._packageJson}\n\n  /**\n   * An object representing the package's dependencies.\n   * @type {object}\n   */\n  get dependencies () {return this.packageJson.dependencies || (this.packageJson.dependencies = {})}\n\n  /**\n   * An object representing the package's devDependencies.\n   * @type {object}\n   */\n  get devDependencies () {return this.packageJson.devDependencies || (this.packageJson.devDependencies = {})}\n\n  /**\n   * A glob that matches the package's source files\n   * @type {glob}\n   */\n  get source () {return this._source}\n\n  /**\n   * A glob that matches the package's dev files\n   * @type {minimatch}\n   */\n  get dev () {return this._dev}\n\n  /**\n   * An array of globs that match files not to be included with the package's\n   * source files.\n   * @type {glob[]}\n   */\n  get ignore () {return this._ignore}\n\n  /**\n   * An array of package names to ignore in all operations.\n   * @type {string[]}\n   */\n  get exclude () {return this._exclude}\n\n  /**\n   * An array of field names the package should inherit from it's parent\n   * package.json.\n   * @type {string[]}\n   */\n  get inherits () {return this._inherits}\n\n  /**\n   * The options to pass through to <a href=\"https://npmjs.com/package/@zdychacek/detective\">detective</a>.\n   * @type {object}\n   */\n  get detective () {return this._detective}\n\n  /**\n   * Whether or not unused dependencies should be pruned from the package.json.\n   * @type {boolean}\n   */\n  get prune () {return this._prune}\n\n  /**\n   * Writes {@link Package#packageJson} to it's respective package.json file.\n   */\n  async writePackageJson ()\n  {\n    const packageJson = sortPackageJson(this.packageJson);\n    const json = JSON.stringify(packageJson, null, 2);\n    await fs.writeFilePlease(path.resolve(this.root, 'package.json'), json);\n  }\n\n  /**\n   * Takes a dependency name and resolves it to the actual dependency name,\n   * stripping any subdirectories from the dependency name (retaining @org\n   * style dependencies). It also excludes dependencies with relative paths (./\n   * or ../ style) and any dependencies listed in {@link Package#exclude}\n   * @param {string} dependency - The dependency to resolve\n   * @return {string | boolean} - The resolved dependency name, or false if the\n   * the dependency is excluded.\n   */\n  resolveDependency (dependency)\n  {\n    if (dependency.charAt(0) == '.') return false;\n    if (this.exclude.indexOf(dependency) >= 0) return false;\n    const split = dependency.split('/');\n    return split[0].charAt(0) == '@' ? split[0] + '/' + split[1] : split[0];\n  }\n\n  /**\n   * Analyzes the package's source files and returns all of the invoked\n   * dependencies mapped to the files invoking them.\n   * @return {Map<string, object>} - A map with the dependency names as keys\n   * and the dependency metadata as values.\n   */\n  async analyzeSourceDependencies ()\n  {\n    const files = await glob.please(path.resolve(this.root, this.source), {\n      ignore: this.ignore,\n      nodir: true,\n    });\n    const deps = {};\n    await Promise.all(files.map(async (file) => {\n      const src = await fs.readFilePlease(file);\n      const dependencies = detective(src, this.detective);\n      const relFile = path.relative(this.root, file);\n      for (let dep of dependencies) {\n        if (dep = this.resolveDependency(dep)) {\n          deps[dep] = deps[dep] || {files: []};\n          deps[dep].files.push(relFile);\n        }\n      }\n    }));\n    return deps;\n  }\n\n  /**\n   * Compares a dependency object (as returned from {@link Package#analyzeSourceDependencies})\n   * with the dependencies listed in {@link Package@packageJson} and returns an\n   * array of patches.\n   * @param {object} dependencies - The dependencies to generate a patch for.\n   * @return {Patch[]} - The patches that will make {@link Package#packageJson} match the inputted dependencies\n   */\n  generateDependencyPatches (dependencies)\n  {\n    const patches = [];\n    const usedDeps = {};\n    // const usedDev = {};\n\n    for (let dep in dependencies)\n    {\n      let {files} = dependencies[dep];\n      let dev = true;\n\n      for (let file of files) {\n        if (!minimatch(file, this.dev)) {\n          dev = false;\n          break;\n        }\n      }\n\n      usedDeps[dep] = true;\n\n      if (dev && !(dep in this.devDependencies) && !(dep in this.dependencies)) {\n        patches.push(new Patch(Patch.ADD, {name: dep, dev, files}));\n      }\n      else if (!dev && !(dep in this.dependencies)) {\n        patches.push(new Patch(Patch.ADD, {name: dep, files}));\n      }\n      else {\n        if (dep in this.devDependencies) {\n          patches.push(new Patch(Patch.UPDATE, {name: dep, dev: true, files}));\n        }\n        else if (dep in this.dependencies) {\n          patches.push(new Patch(Patch.UPDATE, {name: dep, files}));\n        }\n      }\n    }\n\n    for (let dep in this.dependencies) {\n      if (!usedDeps[dep] && this.exclude.indexOf(dep) < 0) {\n        patches.push(new Patch(Patch.REMOVE, {name: dep}))\n      }\n    }\n\n    return patches;\n  }\n\n  /**\n   * Generates the patches that will satisfy {@link Package#inherits}\n   * @return {Patch[]} - The patches that will update {@link Package#packageJson} with the inherited fields.\n   */\n  generateInheritPatches ()\n  {\n    return this.inherits.map((name) => new Patch(Patch.INHERIT, {name}));\n  }\n\n  /**\n   * Applies a given patch to {@link Package#packageJson}.\n   * @param {Patch} patch - The patch to apply,\n   */\n  applyPatch (patch)\n  {\n    if (patch.disabled) return;\n\n    let depField = patch.dev ? 'devDependencies' : 'dependencies';\n\n    switch (patch.type) {\n      case Patch.ADD:\n      case Patch.UPDATE:\n        if (typeof patch.value !== 'undefined') {\n          this[depField][patch.name] = patch.value;\n        }\n        break;\n      case Patch.REMOVE:\n        delete this[depField][patch.name];\n        break;\n      case Patch.INHERIT:\n        if (typeof patch.value !== 'undefined') {\n          this.packageJson[patch.name] = patch.value;\n        }\n      default:\n        break;\n    }\n  }\n\n  /**\n   * Generates an exclude array\n   * @param {Array<string|object>} excludes - The excludes array to use as a base.\n   */\n  static generateExcludes (excludes)\n  {\n    const result = [];\n\n    for (let exclude of excludes) {\n      if (typeof exclude === 'string') {\n        result.push(exclude);\n        continue;\n      }\n      if (exclude && typeof exclude === 'object') {\n        if (exclude.group === 'builtins') {\n          result.push(...builtins);\n        }\n      }\n    }\n\n    return result;\n  }\n}\n",
+    "content": "const path = require('./path');\nconst glob = require('./glob');\nconst minimatch = require('minimatch');\nconst fs = require('./fs');\nconst builtins = require('builtin-modules');\nconst detective = require('@zdychacek/detective');\nconst sortPackageJson = require('sort-package-json');\nconst beautify = require('json-beautify');\nconst Patch = require('./patch');\n\n/**\n * This is the package class. It serves as encapsulation for individual\n * packages, as a means of querying for package info, and as an outlet for\n * changes to a package.\n */\nmodule.exports = class Package\n{\n  /**\n   * Creates a new package instance. It can accept it's configuration either\n   * through the package.json file or through the constructor arguments.\n   * @param {object} opts - The package options.\n   * @param {string} opts.root - The root directory of the package.\n   * @param {object} [opts.packageJson = fs.readJson('root package.json')] - The\n   * package's package.json. If not specified, it's read from the root\n   * directory.\n   * @param {object} [opts.config = opts.packageJson.comptroller || {}] - The\n   * Comptroller configurations options.\n   * @param {glob} [opts.config.source = '⚹⚹/⚹.js'] - A glob that selects\n   * the packages source files.\n   * @param {glob} [opts.config.dev = '⚹⚹/test/⚹⚹/⚹.js'] - A glob that selects\n   * the packages that should also include devDependencies\n   * @param {glob[]} [opts.config.ignore = ['⚹⚹/node_modules/⚹⚹']] - An array\n   * of globs to pass into {@link glob}'s `ignore` option when searching for\n   * source files.\n   * @param {Array<string|object>} [opts.config.exclude = builtins] - An array of package\n   * names to ignore in all operations. Defaults to {@link builtin-modules}.\n   * @param {string[]} [opts.config.inherits = []] - An array of field names to\n   * inherit from the parent package.json. This is useful for values that\n   * remain the same across all packages.\n   * @param {object} [opts.config.detective = {}] - The options to pass through\n   * to <a href=\"https://npmjs.com/package/@zdychacek/detective\">detective</a>.\n   * @param {boolean} [opts.config.prune = false] - Whether or not unused\n   * dependencies should be pruned from the package.json.\n   * @param {boolean|number} [opts.config.pretty = false] - The \"maximum fixed\n   * character width\" parameter to pass to json-beautify.\n   */\n  constructor ({\n    root,\n    packageJson = fs.readJsonSync(path.resolve(root, 'package.json')),\n    config = {},\n    _config = packageJson.comptroller || {},\n    source = _config.source || config.source || '**/*.js',\n    dev = _config.dev || config.dev || '**/test/*.js',\n    ignore = _config.ignore || config.ignore || ['**/node_modules/**'],\n    exclude = _config.exclude || config.exclude || builtins,\n    inherits = _config.inherits || config.inherits || [],\n    detective = _config.detective || config.detective || {},\n    prune = _config.prune || config.prune || false,\n    pretty = _config.pretty || config.pretty || false,\n  })\n  {\n    /** @type {string} */\n    this._root = root;\n\n    /** @type {object} */\n    this._packageJson = packageJson;\n\n    /** @type {glob} */\n    this._source = source;\n\n    /** @type {glob} */\n    this._dev = dev;\n\n    /** @type {glob[]} */\n    this._ignore = ignore;\n\n    /** @type {string[]} */\n    this._exclude = Package.generateExcludes(exclude);\n\n    /** @type {string[]} */\n    this._inherits = inherits;\n\n    /** @type {object} */\n    this._detective = detective;\n\n    /** @type {boolean} */\n    this._prune = prune;\n\n    /** @type {boolean|number} */\n    this._pretty = pretty;\n  }\n\n  /**\n   * The package's root directory.\n   * @type {string}\n   */\n  get root () {return this._root}\n\n  /**\n   * An object representing the package's package.json.\n   * @type {object}\n   */\n  get packageJson () {return this._packageJson}\n\n  /**\n   * An object representing the package's dependencies.\n   * @type {object}\n   */\n  get dependencies () {return this.packageJson.dependencies || (this.packageJson.dependencies = {})}\n\n  /**\n   * An object representing the package's devDependencies.\n   * @type {object}\n   */\n  get devDependencies () {return this.packageJson.devDependencies || (this.packageJson.devDependencies = {})}\n\n  /**\n   * A glob that matches the package's source files\n   * @type {glob}\n   */\n  get source () {return this._source}\n\n  /**\n   * A glob that matches the package's dev files\n   * @type {minimatch}\n   */\n  get dev () {return this._dev}\n\n  /**\n   * An array of globs that match files not to be included with the package's\n   * source files.\n   * @type {glob[]}\n   */\n  get ignore () {return this._ignore}\n\n  /**\n   * An array of package names to ignore in all operations.\n   * @type {string[]}\n   */\n  get exclude () {return this._exclude}\n\n  /**\n   * An array of field names the package should inherit from it's parent\n   * package.json.\n   * @type {string[]}\n   */\n  get inherits () {return this._inherits}\n\n  /**\n   * The options to pass through to <a href=\"https://npmjs.com/package/@zdychacek/detective\">detective</a>.\n   * @type {object}\n   */\n  get detective () {return this._detective}\n\n  /**\n   * Whether or not unused dependencies should be pruned from the package.json.\n   * @type {boolean}\n   */\n  get prune () {return this._prune}\n\n  /**\n   * The \"maximum fixed character width\" parameter to pass to json-beautify.\n   * @type {boolean|number}\n   */\n  get pretty () {return this._pretty}\n\n  /**\n   * Writes {@link Package#packageJson} to it's respective package.json file.\n   */\n  async writePackageJson ()\n  {\n    const packageJson = sortPackageJson(this.packageJson);\n    const json = beautify(packageJson, null, 2, this.pretty);\n    await fs.writeFilePlease(path.resolve(this.root, 'package.json'), json);\n  }\n\n  /**\n   * Takes a dependency name and resolves it to the actual dependency name,\n   * stripping any subdirectories from the dependency name (retaining @org\n   * style dependencies). It also excludes dependencies with relative paths (./\n   * or ../ style) and any dependencies listed in {@link Package#exclude}\n   * @param {string} dependency - The dependency to resolve\n   * @return {string | boolean} - The resolved dependency name, or false if the\n   * the dependency is excluded.\n   */\n  resolveDependency (dependency)\n  {\n    if (dependency.charAt(0) == '.') return false;\n    if (this.exclude.indexOf(dependency) >= 0) return false;\n    const split = dependency.split('/');\n    return split[0].charAt(0) == '@' ? split[0] + '/' + split[1] : split[0];\n  }\n\n  /**\n   * Analyzes the package's source files and returns all of the invoked\n   * dependencies mapped to the files invoking them.\n   * @return {Map<string, object>} - A map with the dependency names as keys\n   * and the dependency metadata as values.\n   */\n  async analyzeSourceDependencies ()\n  {\n    const files = await glob.please(path.resolve(this.root, this.source), {\n      ignore: this.ignore,\n      nodir: true,\n    });\n    const deps = {};\n    await Promise.all(files.map(async (file) => {\n      const src = await fs.readFilePlease(file);\n      const dependencies = detective(src, this.detective);\n      const relFile = path.relative(this.root, file);\n      for (let dep of dependencies) {\n        if (dep = this.resolveDependency(dep)) {\n          deps[dep] = deps[dep] || {files: []};\n          deps[dep].files.push(relFile);\n        }\n      }\n    }));\n    return deps;\n  }\n\n  /**\n   * Compares a dependency object (as returned from {@link Package#analyzeSourceDependencies})\n   * with the dependencies listed in {@link Package@packageJson} and returns an\n   * array of patches.\n   * @param {object} dependencies - The dependencies to generate a patch for.\n   * @return {Patch[]} - The patches that will make {@link Package#packageJson} match the inputted dependencies\n   */\n  generateDependencyPatches (dependencies)\n  {\n    const patches = [];\n    const usedDeps = {};\n    // const usedDev = {};\n\n    for (let dep in dependencies)\n    {\n      let {files} = dependencies[dep];\n      let dev = true;\n\n      for (let file of files) {\n        if (!minimatch(file, this.dev)) {\n          dev = false;\n          break;\n        }\n      }\n\n      usedDeps[dep] = true;\n\n      if (dev && !(dep in this.devDependencies) && !(dep in this.dependencies)) {\n        patches.push(new Patch(Patch.ADD, {name: dep, dev, files}));\n      }\n      else if (!dev && !(dep in this.dependencies)) {\n        patches.push(new Patch(Patch.ADD, {name: dep, files}));\n      }\n      else {\n        if (dep in this.devDependencies) {\n          patches.push(new Patch(Patch.UPDATE, {name: dep, dev: true, files}));\n        }\n        else if (dep in this.dependencies) {\n          patches.push(new Patch(Patch.UPDATE, {name: dep, files}));\n        }\n      }\n    }\n\n    for (let dep in this.dependencies) {\n      if (!usedDeps[dep] && this.exclude.indexOf(dep) < 0) {\n        patches.push(new Patch(Patch.REMOVE, {name: dep}))\n      }\n    }\n\n    return patches;\n  }\n\n  /**\n   * Generates the patches that will satisfy {@link Package#inherits}\n   * @return {Patch[]} - The patches that will update {@link Package#packageJson} with the inherited fields.\n   */\n  generateInheritPatches ()\n  {\n    return this.inherits.map((name) => new Patch(Patch.INHERIT, {name}));\n  }\n\n  /**\n   * Applies a given patch to {@link Package#packageJson}.\n   * @param {Patch} patch - The patch to apply,\n   */\n  applyPatch (patch)\n  {\n    if (patch.disabled) return;\n\n    let depField = patch.dev ? 'devDependencies' : 'dependencies';\n\n    switch (patch.type) {\n      case Patch.ADD:\n      case Patch.UPDATE:\n        if (typeof patch.value !== 'undefined') {\n          this[depField][patch.name] = patch.value;\n        }\n        break;\n      case Patch.REMOVE:\n        delete this[depField][patch.name];\n        break;\n      case Patch.INHERIT:\n        if (typeof patch.value !== 'undefined') {\n          this.packageJson[patch.name] = patch.value;\n        }\n      default:\n        break;\n    }\n  }\n\n  /**\n   * Generates an exclude array\n   * @param {Array<string|object>} excludes - The excludes array to use as a base.\n   */\n  static generateExcludes (excludes)\n  {\n    const result = [];\n\n    for (let exclude of excludes) {\n      if (typeof exclude === 'string') {\n        result.push(exclude);\n        continue;\n      }\n      if (exclude && typeof exclude === 'object') {\n        if (exclude.group === 'builtins') {\n          result.push(...builtins);\n        }\n      }\n    }\n\n    return result;\n  }\n}\n",
     "static": true,
     "longname": "/mnt/storage/Documents/Projects/comptroller/src/package.js",
     "access": "public",
@@ -10495,7 +10495,7 @@
     "importPath": "comptroller/src/package.js",
     "importStyle": "Package",
     "description": "This is the package class. It serves as encapsulation for individual\npackages, as a means of querying for package info, and as an outlet for\nchanges to a package.",
-    "lineNumber": 15,
+    "lineNumber": 16,
     "interface": false
   },
   {
@@ -10509,7 +10509,7 @@
     "longname": "src/package.js~Package#constructor",
     "access": "public",
     "description": "Creates a new package instance. It can accept it's configuration either\nthrough the package.json file or through the constructor arguments.",
-    "lineNumber": 44,
+    "lineNumber": 47,
     "params": [
       {
         "nullable": null,
@@ -10638,6 +10638,19 @@
         "defaultRaw": false,
         "name": "opts.config.prune",
         "description": "Whether or not unused\ndependencies should be pruned from the package.json."
+      },
+      {
+        "nullable": null,
+        "types": [
+          "boolean",
+          "number"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": " false",
+        "defaultRaw": false,
+        "name": "opts.config.pretty",
+        "description": "The \"maximum fixed\ncharacter width\" parameter to pass to json-beautify."
       }
     ]
   },
@@ -10650,7 +10663,7 @@
     "longname": "src/package.js~Package#_root",
     "access": "private",
     "description": null,
-    "lineNumber": 59,
+    "lineNumber": 63,
     "type": {
       "nullable": null,
       "types": [
@@ -10670,7 +10683,7 @@
     "longname": "src/package.js~Package#_packageJson",
     "access": "private",
     "description": null,
-    "lineNumber": 62,
+    "lineNumber": 66,
     "type": {
       "nullable": null,
       "types": [
@@ -10690,7 +10703,7 @@
     "longname": "src/package.js~Package#_source",
     "access": "private",
     "description": null,
-    "lineNumber": 65,
+    "lineNumber": 69,
     "type": {
       "nullable": null,
       "types": [
@@ -10710,7 +10723,7 @@
     "longname": "src/package.js~Package#_dev",
     "access": "private",
     "description": null,
-    "lineNumber": 68,
+    "lineNumber": 72,
     "type": {
       "nullable": null,
       "types": [
@@ -10730,7 +10743,7 @@
     "longname": "src/package.js~Package#_ignore",
     "access": "private",
     "description": null,
-    "lineNumber": 71,
+    "lineNumber": 75,
     "type": {
       "nullable": null,
       "types": [
@@ -10750,7 +10763,7 @@
     "longname": "src/package.js~Package#_exclude",
     "access": "private",
     "description": null,
-    "lineNumber": 74,
+    "lineNumber": 78,
     "type": {
       "nullable": null,
       "types": [
@@ -10770,7 +10783,7 @@
     "longname": "src/package.js~Package#_inherits",
     "access": "private",
     "description": null,
-    "lineNumber": 77,
+    "lineNumber": 81,
     "type": {
       "nullable": null,
       "types": [
@@ -10790,7 +10803,7 @@
     "longname": "src/package.js~Package#_detective",
     "access": "private",
     "description": null,
-    "lineNumber": 80,
+    "lineNumber": 84,
     "type": {
       "nullable": null,
       "types": [
@@ -10810,7 +10823,7 @@
     "longname": "src/package.js~Package#_prune",
     "access": "private",
     "description": null,
-    "lineNumber": 83,
+    "lineNumber": 87,
     "type": {
       "nullable": null,
       "types": [
@@ -10823,6 +10836,27 @@
   },
   {
     "__docId__": 870,
+    "kind": "member",
+    "name": "_pretty",
+    "memberof": "src/package.js~Package",
+    "static": false,
+    "longname": "src/package.js~Package#_pretty",
+    "access": "private",
+    "description": null,
+    "lineNumber": 90,
+    "type": {
+      "nullable": null,
+      "types": [
+        "boolean",
+        "number"
+      ],
+      "spread": false,
+      "description": null
+    },
+    "ignore": true
+  },
+  {
+    "__docId__": 871,
     "kind": "get",
     "name": "root",
     "memberof": "src/package.js~Package",
@@ -10832,7 +10866,7 @@
     "longname": "src/package.js~Package#root",
     "access": "public",
     "description": "The package's root directory.",
-    "lineNumber": 90,
+    "lineNumber": 97,
     "type": {
       "nullable": null,
       "types": [
@@ -10843,7 +10877,7 @@
     }
   },
   {
-    "__docId__": 871,
+    "__docId__": 872,
     "kind": "get",
     "name": "packageJson",
     "memberof": "src/package.js~Package",
@@ -10853,28 +10887,7 @@
     "longname": "src/package.js~Package#packageJson",
     "access": "public",
     "description": "An object representing the package's package.json.",
-    "lineNumber": 96,
-    "type": {
-      "nullable": null,
-      "types": [
-        "object"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 872,
-    "kind": "get",
-    "name": "dependencies",
-    "memberof": "src/package.js~Package",
-    "generator": false,
-    "async": false,
-    "static": false,
-    "longname": "src/package.js~Package#dependencies",
-    "access": "public",
-    "description": "An object representing the package's dependencies.",
-    "lineNumber": 102,
+    "lineNumber": 103,
     "type": {
       "nullable": null,
       "types": [
@@ -10887,15 +10900,15 @@
   {
     "__docId__": 873,
     "kind": "get",
-    "name": "devDependencies",
+    "name": "dependencies",
     "memberof": "src/package.js~Package",
     "generator": false,
     "async": false,
     "static": false,
-    "longname": "src/package.js~Package#devDependencies",
+    "longname": "src/package.js~Package#dependencies",
     "access": "public",
-    "description": "An object representing the package's devDependencies.",
-    "lineNumber": 108,
+    "description": "An object representing the package's dependencies.",
+    "lineNumber": 109,
     "type": {
       "nullable": null,
       "types": [
@@ -10908,6 +10921,27 @@
   {
     "__docId__": 874,
     "kind": "get",
+    "name": "devDependencies",
+    "memberof": "src/package.js~Package",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/package.js~Package#devDependencies",
+    "access": "public",
+    "description": "An object representing the package's devDependencies.",
+    "lineNumber": 115,
+    "type": {
+      "nullable": null,
+      "types": [
+        "object"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 875,
+    "kind": "get",
     "name": "source",
     "memberof": "src/package.js~Package",
     "generator": false,
@@ -10916,7 +10950,7 @@
     "longname": "src/package.js~Package#source",
     "access": "public",
     "description": "A glob that matches the package's source files",
-    "lineNumber": 114,
+    "lineNumber": 121,
     "type": {
       "nullable": null,
       "types": [
@@ -10927,7 +10961,7 @@
     }
   },
   {
-    "__docId__": 875,
+    "__docId__": 876,
     "kind": "get",
     "name": "dev",
     "memberof": "src/package.js~Package",
@@ -10937,7 +10971,7 @@
     "longname": "src/package.js~Package#dev",
     "access": "public",
     "description": "A glob that matches the package's dev files",
-    "lineNumber": 120,
+    "lineNumber": 127,
     "type": {
       "nullable": null,
       "types": [
@@ -10948,7 +10982,7 @@
     }
   },
   {
-    "__docId__": 876,
+    "__docId__": 877,
     "kind": "get",
     "name": "ignore",
     "memberof": "src/package.js~Package",
@@ -10958,7 +10992,7 @@
     "longname": "src/package.js~Package#ignore",
     "access": "public",
     "description": "An array of globs that match files not to be included with the package's\nsource files.",
-    "lineNumber": 127,
+    "lineNumber": 134,
     "type": {
       "nullable": null,
       "types": [
@@ -10969,7 +11003,7 @@
     }
   },
   {
-    "__docId__": 877,
+    "__docId__": 878,
     "kind": "get",
     "name": "exclude",
     "memberof": "src/package.js~Package",
@@ -10979,27 +11013,6 @@
     "longname": "src/package.js~Package#exclude",
     "access": "public",
     "description": "An array of package names to ignore in all operations.",
-    "lineNumber": 133,
-    "type": {
-      "nullable": null,
-      "types": [
-        "string[]"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 878,
-    "kind": "get",
-    "name": "inherits",
-    "memberof": "src/package.js~Package",
-    "generator": false,
-    "async": false,
-    "static": false,
-    "longname": "src/package.js~Package#inherits",
-    "access": "public",
-    "description": "An array of field names the package should inherit from it's parent\npackage.json.",
     "lineNumber": 140,
     "type": {
       "nullable": null,
@@ -11013,6 +11026,27 @@
   {
     "__docId__": 879,
     "kind": "get",
+    "name": "inherits",
+    "memberof": "src/package.js~Package",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/package.js~Package#inherits",
+    "access": "public",
+    "description": "An array of field names the package should inherit from it's parent\npackage.json.",
+    "lineNumber": 147,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string[]"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 880,
+    "kind": "get",
     "name": "detective",
     "memberof": "src/package.js~Package",
     "generator": false,
@@ -11021,7 +11055,7 @@
     "longname": "src/package.js~Package#detective",
     "access": "public",
     "description": "The options to pass through to <a href=\"https://npmjs.com/package/@zdychacek/detective\">detective</a>.",
-    "lineNumber": 146,
+    "lineNumber": 153,
     "type": {
       "nullable": null,
       "types": [
@@ -11032,7 +11066,7 @@
     }
   },
   {
-    "__docId__": 880,
+    "__docId__": 881,
     "kind": "get",
     "name": "prune",
     "memberof": "src/package.js~Package",
@@ -11042,7 +11076,7 @@
     "longname": "src/package.js~Package#prune",
     "access": "public",
     "description": "Whether or not unused dependencies should be pruned from the package.json.",
-    "lineNumber": 152,
+    "lineNumber": 159,
     "type": {
       "nullable": null,
       "types": [
@@ -11053,7 +11087,29 @@
     }
   },
   {
-    "__docId__": 881,
+    "__docId__": 882,
+    "kind": "get",
+    "name": "pretty",
+    "memberof": "src/package.js~Package",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/package.js~Package#pretty",
+    "access": "public",
+    "description": "The \"maximum fixed character width\" parameter to pass to json-beautify.",
+    "lineNumber": 165,
+    "type": {
+      "nullable": null,
+      "types": [
+        "boolean",
+        "number"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 883,
     "kind": "method",
     "name": "writePackageJson",
     "memberof": "src/package.js~Package",
@@ -11063,12 +11119,12 @@
     "longname": "src/package.js~Package#writePackageJson",
     "access": "public",
     "description": "Writes {@link Package#packageJson} to it's respective package.json file.",
-    "lineNumber": 157,
+    "lineNumber": 170,
     "params": [],
     "return": null
   },
   {
-    "__docId__": 882,
+    "__docId__": 884,
     "kind": "method",
     "name": "resolveDependency",
     "memberof": "src/package.js~Package",
@@ -11078,7 +11134,7 @@
     "longname": "src/package.js~Package#resolveDependency",
     "access": "public",
     "description": "Takes a dependency name and resolves it to the actual dependency name,\nstripping any subdirectories from the dependency name (retaining @org\nstyle dependencies). It also excludes dependencies with relative paths (./\nor ../ style) and any dependencies listed in {@link Package#exclude}",
-    "lineNumber": 173,
+    "lineNumber": 186,
     "params": [
       {
         "nullable": null,
@@ -11102,7 +11158,7 @@
     }
   },
   {
-    "__docId__": 883,
+    "__docId__": 885,
     "kind": "method",
     "name": "analyzeSourceDependencies",
     "memberof": "src/package.js~Package",
@@ -11112,7 +11168,7 @@
     "longname": "src/package.js~Package#analyzeSourceDependencies",
     "access": "public",
     "description": "Analyzes the package's source files and returns all of the invoked\ndependencies mapped to the files invoking them.",
-    "lineNumber": 187,
+    "lineNumber": 200,
     "return": {
       "nullable": null,
       "types": [
@@ -11124,7 +11180,7 @@
     "params": []
   },
   {
-    "__docId__": 884,
+    "__docId__": 886,
     "kind": "method",
     "name": "generateDependencyPatches",
     "memberof": "src/package.js~Package",
@@ -11134,7 +11190,7 @@
     "longname": "src/package.js~Package#generateDependencyPatches",
     "access": "public",
     "description": "Compares a dependency object (as returned from {@link Package#analyzeSourceDependencies})\nwith the dependencies listed in {@link Package@packageJson} and returns an\narray of patches.",
-    "lineNumber": 215,
+    "lineNumber": 228,
     "params": [
       {
         "nullable": null,
@@ -11157,7 +11213,7 @@
     }
   },
   {
-    "__docId__": 885,
+    "__docId__": 887,
     "kind": "method",
     "name": "generateInheritPatches",
     "memberof": "src/package.js~Package",
@@ -11167,7 +11223,7 @@
     "longname": "src/package.js~Package#generateInheritPatches",
     "access": "public",
     "description": "Generates the patches that will satisfy {@link Package#inherits}",
-    "lineNumber": 264,
+    "lineNumber": 277,
     "return": {
       "nullable": null,
       "types": [
@@ -11179,7 +11235,7 @@
     "params": []
   },
   {
-    "__docId__": 886,
+    "__docId__": 888,
     "kind": "method",
     "name": "applyPatch",
     "memberof": "src/package.js~Package",
@@ -11189,7 +11245,7 @@
     "longname": "src/package.js~Package#applyPatch",
     "access": "public",
     "description": "Applies a given patch to {@link Package#packageJson}.",
-    "lineNumber": 273,
+    "lineNumber": 286,
     "params": [
       {
         "nullable": null,
@@ -11205,7 +11261,7 @@
     "return": null
   },
   {
-    "__docId__": 887,
+    "__docId__": 889,
     "kind": "method",
     "name": "generateExcludes",
     "memberof": "src/package.js~Package",
@@ -11215,7 +11271,7 @@
     "longname": "src/package.js~Package.generateExcludes",
     "access": "public",
     "description": "Generates an exclude array",
-    "lineNumber": 302,
+    "lineNumber": 315,
     "params": [
       {
         "nullable": null,
@@ -11235,7 +11291,7 @@
     }
   },
   {
-    "__docId__": 888,
+    "__docId__": 890,
     "kind": "file",
     "name": "src/patch.js",
     "content": "/** @ignore */\nconst ADD = Symbol('ADD');\n/** @ignore */\nconst REMOVE = Symbol('REMOVE');\n/** @ignore */\nconst UPDATE = Symbol('UPDATE');\n/** @ignore */\nconst INHERIT = Symbol('INHERIT');\n\n/**\n * A class representing operations to apply to a package.\n */\nmodule.exports = class Patch\n{\n  /**\n   * Creates a new patch instance.\n   * @param {Symbol} type - The type of patch this is.\n   * @param {object} [config={}] - The configuration of the patch.\n   * @param {string} config.name - The name of the item being patched.\n   * @param {object} config.value - The value of the item being patched.\n   * @param {string?} config.source - The dependency type being patched.\n   * @param {boolean} [config.dev = false] - Whether or not this is a devDependency.\n   * @param {boolean} [config.disabled = false] - Whether or not the patch is disabled.\n   * @param {string[]} [config.files = []] - The files that necessitate the patch.\n   */\n  constructor (type, {\n    name,\n    value,\n    source,\n    dev = false,\n    disabled = false,\n    files = [],\n  }={})\n  {\n   /**\n    * The type of patch this is.\n    * @type {Symbol}\n    */\n    this.type = type;\n\n    /**\n     * The name of the item being patched.\n     * @type {string}\n     */\n    this.name = name;\n\n    /**\n     * The value of the item being patched.\n     * @type {object}\n     */\n    this.value = value;\n\n    /**\n     * The dependency type being patched.\n     * @type {string}\n     */\n    this.source = source;\n\n    /**\n     * Whether or not this is a devDependency\n     * @type {boolean}\n     */\n    this.dev = dev;\n\n    /**\n     * Whether or not the patch is disabled\n     * @type {boolean}\n     */\n    this.disabled = disabled;\n\n    /**\n     * The files that necessitate the patch.\n     * @type {string[]}\n     */\n    this.files = files;\n  }\n\n  /**\n  * A symbol representing the `ADD` operation.\n  * @type {Symbol}\n  */\n  static get ADD () {return ADD}\n\n  /**\n  * A symbol representing the `REMOVE` operation.\n  * @type {Symbol}\n  */\n  static get REMOVE () {return REMOVE}\n\n  /**\n  * A symbol representing the `UPDATE` operation.\n  * @type {Symbol}\n  */\n  static get UPDATE () {return UPDATE}\n\n  /**\n  * A symbol representing the `INHERIT` operation.\n  * @type {Symbol}\n  */\n  static get INHERIT () {return INHERIT}\n}\n",
@@ -11246,7 +11302,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 889,
+    "__docId__": 891,
     "kind": "variable",
     "name": "ADD",
     "memberof": "src/patch.js",
@@ -11266,7 +11322,7 @@
     }
   },
   {
-    "__docId__": 890,
+    "__docId__": 892,
     "kind": "variable",
     "name": "REMOVE",
     "memberof": "src/patch.js",
@@ -11286,7 +11342,7 @@
     }
   },
   {
-    "__docId__": 891,
+    "__docId__": 893,
     "kind": "variable",
     "name": "UPDATE",
     "memberof": "src/patch.js",
@@ -11306,7 +11362,7 @@
     }
   },
   {
-    "__docId__": 892,
+    "__docId__": 894,
     "kind": "variable",
     "name": "INHERIT",
     "memberof": "src/patch.js",
@@ -11326,7 +11382,7 @@
     }
   },
   {
-    "__docId__": 893,
+    "__docId__": 895,
     "kind": "class",
     "name": "Patch",
     "memberof": "src/patch.js",
@@ -11341,7 +11397,7 @@
     "interface": false
   },
   {
-    "__docId__": 894,
+    "__docId__": 896,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "src/patch.js~Patch",
@@ -11444,7 +11500,7 @@
     ]
   },
   {
-    "__docId__": 895,
+    "__docId__": 897,
     "kind": "member",
     "name": "type",
     "memberof": "src/patch.js~Patch",
@@ -11463,7 +11519,7 @@
     }
   },
   {
-    "__docId__": 896,
+    "__docId__": 898,
     "kind": "member",
     "name": "name",
     "memberof": "src/patch.js~Patch",
@@ -11482,7 +11538,7 @@
     }
   },
   {
-    "__docId__": 897,
+    "__docId__": 899,
     "kind": "member",
     "name": "value",
     "memberof": "src/patch.js~Patch",
@@ -11501,7 +11557,7 @@
     }
   },
   {
-    "__docId__": 898,
+    "__docId__": 900,
     "kind": "member",
     "name": "source",
     "memberof": "src/patch.js~Patch",
@@ -11520,7 +11576,7 @@
     }
   },
   {
-    "__docId__": 899,
+    "__docId__": 901,
     "kind": "member",
     "name": "dev",
     "memberof": "src/patch.js~Patch",
@@ -11539,7 +11595,7 @@
     }
   },
   {
-    "__docId__": 900,
+    "__docId__": 902,
     "kind": "member",
     "name": "disabled",
     "memberof": "src/patch.js~Patch",
@@ -11558,7 +11614,7 @@
     }
   },
   {
-    "__docId__": 901,
+    "__docId__": 903,
     "kind": "member",
     "name": "files",
     "memberof": "src/patch.js~Patch",
@@ -11577,7 +11633,7 @@
     }
   },
   {
-    "__docId__": 902,
+    "__docId__": 904,
     "kind": "get",
     "name": "ADD",
     "memberof": "src/patch.js~Patch",
@@ -11598,7 +11654,7 @@
     }
   },
   {
-    "__docId__": 903,
+    "__docId__": 905,
     "kind": "get",
     "name": "REMOVE",
     "memberof": "src/patch.js~Patch",
@@ -11619,7 +11675,7 @@
     }
   },
   {
-    "__docId__": 904,
+    "__docId__": 906,
     "kind": "get",
     "name": "UPDATE",
     "memberof": "src/patch.js~Patch",
@@ -11640,7 +11696,7 @@
     }
   },
   {
-    "__docId__": 905,
+    "__docId__": 907,
     "kind": "get",
     "name": "INHERIT",
     "memberof": "src/patch.js~Patch",
@@ -11661,7 +11717,7 @@
     }
   },
   {
-    "__docId__": 906,
+    "__docId__": 908,
     "kind": "file",
     "name": "src/path.js",
     "content": "const path = require('path');\n\n/**\n * The new path object. Attemts to Posixify all path string responses.  Can't\n * just use path.posix because it doesn't seem to work for absolute paths.\n * @type {object}\n */\nconst newPath = {};\n\nfor (let key of ['resolve', 'join', 'format', 'normalize', 'relative']) {\n  const origFn = path[key];\n  newPath[key] = function (...args) {\n    return path.posix.join(...path[key](...args).split(/\\\\|\\/\\//))\n  }\n}\n\nmodule.exports = ({...path, ...newPath});\n",
@@ -11672,7 +11728,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 907,
+    "__docId__": 909,
     "kind": "variable",
     "name": "newPath",
     "memberof": "src/path.js",
@@ -11704,7 +11760,7 @@
   },
   {
     "kind": "packageJSON",
-    "content": "{\n  \"name\": \"comptroller\",\n  \"version\": \"0.2.4\",\n  \"description\": \"A simple and lightweight tool to manage your monorepo.\",\n  \"homepage\": \"https://aldlevine.github.io/comptroller\",\n  \"bugs\": {\n    \"url\": \"https://github.com/Aldlevine/comptroller/issues\"\n  },\n  \"license\": \"MIT\",\n  \"author\": \"Aaron Levine <ald.levine@gmail.com>\",\n  \"main\": \"src/comptroller.js\",\n  \"bin\": {\n    \"comp\": \"./src/cli.js\"\n  },\n  \"directories\": {\n    \"doc\": \"docs\"\n  },\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"git+https://github.com/Aldlevine/comptroller.git\"\n  },\n  \"scripts\": {\n    \"test\": \"nyc mocha\"\n  },\n  \"dependencies\": {\n    \"@zdychacek/detective\": \"^5.0.2\",\n    \"babel-traverse\": \"^6.26.0\",\n    \"babylon\": \"^6.18.0\",\n    \"builtin-modules\": \"^1.1.1\",\n    \"dedent\": \"^0.7.0\",\n    \"fs-extra\": \"^4.0.2\",\n    \"glob\": \"^7.1.2\",\n    \"minimatch\": \"^3.0.4\",\n    \"minimist\": \"^1.2.0\",\n    \"sort-package-json\": \"^1.7.1\"\n  },\n  \"devDependencies\": {\n    \"chai\": \"^4.1.2\",\n    \"esdoc\": \"^1.0.3\",\n    \"esdoc-ecmascript-proposal-plugin\": \"^1.0.0\",\n    \"esdoc-node\": \"^1.0.2\",\n    \"esdoc-standard-plugin\": \"^1.0.0\",\n    \"mocha\": \"^4.0.1\",\n    \"mocha-sinon\": \"^2.0.0\",\n    \"nyc\": \"^11.3.0\",\n    \"proxyquire\": \"^1.8.0\",\n    \"sinon\": \"^4.1.1\"\n  },\n  \"comptroller\": {\n    \"source\": \"src/**/*.js\",\n    \"dev\": \"{test/**.*.js,utils/**/*.js}\",\n    \"detective\": {\n      \"parse\": {\n        \"plugins\": [\n          \"objectRestSpread\"\n        ]\n      }\n    },\n    \"exclude\": [\n      {\n        \"group\": \"builtins\"\n      },\n      \"babel-traverse\",\n      \"babylon\"\n    ]\n  }\n}\n",
+    "content": "{\n  \"name\": \"comptroller\",\n  \"version\": \"0.3.0-0\",\n  \"description\": \"A simple and lightweight tool to manage your monorepo.\",\n  \"keywords\": [\n    \"dependency-analysis\",\n    \"dependency-manager\",\n    \"monorepo\",\n    \"repository-management\"\n  ],\n  \"homepage\": \"https://aldlevine.github.io/comptroller\",\n  \"bugs\": {\n    \"url\": \"https://github.com/Aldlevine/comptroller/issues\"\n  },\n  \"license\": \"MIT\",\n  \"author\": \"Aaron Levine <ald.levine@gmail.com>\",\n  \"main\": \"src/comptroller.js\",\n  \"bin\": { \"comp\": \"./src/cli.js\" },\n  \"directories\": { \"doc\": \"docs\" },\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"git+https://github.com/Aldlevine/comptroller.git\"\n  },\n  \"scripts\": { \"test\": \"nyc mocha\" },\n  \"dependencies\": {\n    \"@zdychacek/detective\": \"^5.0.2\",\n    \"babel-traverse\": \"^6.26.0\",\n    \"babylon\": \"^6.18.0\",\n    \"builtin-modules\": \"^1.1.1\",\n    \"dedent\": \"^0.7.0\",\n    \"fs-extra\": \"^4.0.2\",\n    \"glob\": \"^7.1.2\",\n    \"json-beautify\": \"^1.0.1\",\n    \"minimatch\": \"^3.0.4\",\n    \"minimist\": \"^1.2.0\",\n    \"sort-package-json\": \"^1.7.1\"\n  },\n  \"devDependencies\": {\n    \"chai\": \"^4.1.2\",\n    \"esdoc\": \"^1.0.3\",\n    \"esdoc-ecmascript-proposal-plugin\": \"^1.0.0\",\n    \"esdoc-node\": \"^1.0.2\",\n    \"esdoc-standard-plugin\": \"^1.0.0\",\n    \"mocha\": \"^4.0.1\",\n    \"mocha-sinon\": \"^2.0.0\",\n    \"nyc\": \"^11.3.0\",\n    \"proxyquire\": \"^1.8.0\",\n    \"sinon\": \"^4.1.1\"\n  },\n  \"comptroller\": {\n    \"source\": \"src/**/*.js\",\n    \"dev\": \"{test/**.*.js,utils/**/*.js}\",\n    \"pretty\": 40,\n    \"detective\": {\n      \"parse\": {\n        \"plugins\": [ \"objectRestSpread\" ]\n      }\n    },\n    \"exclude\": [\n      { \"group\": \"builtins\" },\n      \"babel-traverse\",\n      \"babylon\"\n    ]\n  }\n}",
     "longname": "/mnt/storage/Documents/Projects/comptroller/package.json",
     "name": "package.json",
     "static": true,

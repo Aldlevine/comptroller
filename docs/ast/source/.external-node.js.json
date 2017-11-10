@@ -1,7 +1,7 @@
 {
   "type": "File",
   "start": 0,
-  "end": 96044,
+  "end": 96052,
   "loc": {
     "start": {
       "line": 1,
@@ -15,7 +15,7 @@
   "program": {
     "type": "Program",
     "start": 0,
-    "end": 96044,
+    "end": 96052,
     "loc": {
       "start": {
         "line": 1,
@@ -12497,9 +12497,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n* @external {format-package} https://github.com/camacho/format-package#readme\n",
+        "value": "*\n* @external {fs-extra} https://github.com/jprichardson/node-fs-extra\n",
         "start": 95673,
-        "end": 95757,
+        "end": 95748,
         "loc": {
           "start": {
             "line": 2338,
@@ -12513,9 +12513,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n* @external {fs-extra} https://github.com/jprichardson/node-fs-extra\n",
-        "start": 95758,
-        "end": 95833,
+        "value": "*\n* @external {glob} https://github.com/isaacs/node-glob#readme\n",
+        "start": 95749,
+        "end": 95817,
         "loc": {
           "start": {
             "line": 2341,
@@ -12529,9 +12529,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n* @external {glob} https://github.com/isaacs/node-glob#readme\n",
-        "start": 95834,
-        "end": 95902,
+        "value": "*\n* @external {minimatch} https://github.com/isaacs/minimatch#readme\n",
+        "start": 95818,
+        "end": 95891,
         "loc": {
           "start": {
             "line": 2344,
@@ -12545,9 +12545,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n* @external {minimatch} https://github.com/isaacs/minimatch#readme\n",
-        "start": 95903,
-        "end": 95976,
+        "value": "*\n* @external {minimist} https://github.com/substack/minimist\n",
+        "start": 95892,
+        "end": 95958,
         "loc": {
           "start": {
             "line": 2347,
@@ -12561,9 +12561,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n* @external {minimist} https://github.com/substack/minimist\n",
-        "start": 95977,
-        "end": 96043,
+        "value": "*\n* @external {sort-package-json} https://github.com/keithamus/sort-package-json#readme\n",
+        "start": 95959,
+        "end": 96051,
         "loc": {
           "start": {
             "line": 2350,
@@ -25044,9 +25044,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {format-package} https://github.com/camacho/format-package#readme\n",
+      "value": "*\n* @external {fs-extra} https://github.com/jprichardson/node-fs-extra\n",
       "start": 95673,
-      "end": 95757,
+      "end": 95748,
       "loc": {
         "start": {
           "line": 2338,
@@ -25060,9 +25060,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {fs-extra} https://github.com/jprichardson/node-fs-extra\n",
-      "start": 95758,
-      "end": 95833,
+      "value": "*\n* @external {glob} https://github.com/isaacs/node-glob#readme\n",
+      "start": 95749,
+      "end": 95817,
       "loc": {
         "start": {
           "line": 2341,
@@ -25076,9 +25076,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {glob} https://github.com/isaacs/node-glob#readme\n",
-      "start": 95834,
-      "end": 95902,
+      "value": "*\n* @external {minimatch} https://github.com/isaacs/minimatch#readme\n",
+      "start": 95818,
+      "end": 95891,
       "loc": {
         "start": {
           "line": 2344,
@@ -25092,9 +25092,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {minimatch} https://github.com/isaacs/minimatch#readme\n",
-      "start": 95903,
-      "end": 95976,
+      "value": "*\n* @external {minimist} https://github.com/substack/minimist\n",
+      "start": 95892,
+      "end": 95958,
       "loc": {
         "start": {
           "line": 2347,
@@ -25108,9 +25108,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {minimist} https://github.com/substack/minimist\n",
-      "start": 95977,
-      "end": 96043,
+      "value": "*\n* @external {sort-package-json} https://github.com/keithamus/sort-package-json#readme\n",
+      "start": 95959,
+      "end": 96051,
       "loc": {
         "start": {
           "line": 2350,
@@ -37590,9 +37590,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {format-package} https://github.com/camacho/format-package#readme\n",
+      "value": "*\n* @external {fs-extra} https://github.com/jprichardson/node-fs-extra\n",
       "start": 95673,
-      "end": 95757,
+      "end": 95748,
       "loc": {
         "start": {
           "line": 2338,
@@ -37606,9 +37606,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {fs-extra} https://github.com/jprichardson/node-fs-extra\n",
-      "start": 95758,
-      "end": 95833,
+      "value": "*\n* @external {glob} https://github.com/isaacs/node-glob#readme\n",
+      "start": 95749,
+      "end": 95817,
       "loc": {
         "start": {
           "line": 2341,
@@ -37622,9 +37622,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {glob} https://github.com/isaacs/node-glob#readme\n",
-      "start": 95834,
-      "end": 95902,
+      "value": "*\n* @external {minimatch} https://github.com/isaacs/minimatch#readme\n",
+      "start": 95818,
+      "end": 95891,
       "loc": {
         "start": {
           "line": 2344,
@@ -37638,9 +37638,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {minimatch} https://github.com/isaacs/minimatch#readme\n",
-      "start": 95903,
-      "end": 95976,
+      "value": "*\n* @external {minimist} https://github.com/substack/minimist\n",
+      "start": 95892,
+      "end": 95958,
       "loc": {
         "start": {
           "line": 2347,
@@ -37654,9 +37654,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {minimist} https://github.com/substack/minimist\n",
-      "start": 95977,
-      "end": 96043,
+      "value": "*\n* @external {sort-package-json} https://github.com/keithamus/sort-package-json#readme\n",
+      "start": 95959,
+      "end": 96051,
       "loc": {
         "start": {
           "line": 2350,
@@ -37681,8 +37681,8 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 96044,
-      "end": 96044,
+      "start": 96052,
+      "end": 96052,
       "loc": {
         "start": {
           "line": 2353,
