@@ -343,13 +343,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~`crypto`_module_methods_and_properties~creatediffiehellman",
-    "https://nodejs.org/api/`crypto`_module_methods_and_properties.html#`crypto`_module_methods_and_properties_crypto_creatediffiehellman_prime_primeencoding_generator_generatorencoding",
+    "https://nodejs.org/api/`crypto`_module_methods_and_properties.html#`crypto`_module_methods_and_properties_crypto_creatediffiehellman_primelength_generator",
     "src/.external-node.js~`crypto`_module_methods_and_properties~createDiffieHellman",
     "external"
   ],
   [
     "src/.external-node.js~`crypto`_module_methods_and_properties~creatediffiehellman",
-    "https://nodejs.org/api/`crypto`_module_methods_and_properties.html#`crypto`_module_methods_and_properties_crypto_creatediffiehellman_primelength_generator",
+    "https://nodejs.org/api/`crypto`_module_methods_and_properties.html#`crypto`_module_methods_and_properties_crypto_creatediffiehellman_prime_primeencoding_generator_generatorencoding",
     "src/.external-node.js~`crypto`_module_methods_and_properties~createDiffieHellman",
     "external"
   ],
@@ -1873,13 +1873,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~dgram~socket#bind",
-    "https://nodejs.org/api/dgram.html#dgram_socket_bind_options_callback",
+    "https://nodejs.org/api/dgram.html#dgram_socket_bind_port_address_callback",
     "src/.external-node.js~dgram~Socket#bind",
     "external"
   ],
   [
     "src/.external-node.js~dgram~socket#bind",
-    "https://nodejs.org/api/dgram.html#dgram_socket_bind_port_address_callback",
+    "https://nodejs.org/api/dgram.html#dgram_socket_bind_options_callback",
     "src/.external-node.js~dgram~Socket#bind",
     "external"
   ],
@@ -2671,13 +2671,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~fs~write",
-    "https://nodejs.org/api/fs.html#fs_fs_write_fd_string_position_encoding_callback",
+    "https://nodejs.org/api/fs.html#fs_fs_write_fd_buffer_offset_length_position_callback",
     "src/.external-node.js~fs~write",
     "external"
   ],
   [
     "src/.external-node.js~fs~write",
-    "https://nodejs.org/api/fs.html#fs_fs_write_fd_buffer_offset_length_position_callback",
+    "https://nodejs.org/api/fs.html#fs_fs_write_fd_string_position_encoding_callback",
     "src/.external-node.js~fs~write",
     "external"
   ],
@@ -2695,13 +2695,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~fs~writesync",
-    "https://nodejs.org/api/fs.html#fs_fs_writesync_fd_string_position_encoding",
+    "https://nodejs.org/api/fs.html#fs_fs_writesync_fd_buffer_offset_length_position",
     "src/.external-node.js~fs~writeSync",
     "external"
   ],
   [
     "src/.external-node.js~fs~writesync",
-    "https://nodejs.org/api/fs.html#fs_fs_writesync_fd_buffer_offset_length_position",
+    "https://nodejs.org/api/fs.html#fs_fs_writesync_fd_string_position_encoding",
     "src/.external-node.js~fs~writeSync",
     "external"
   ],
@@ -3033,6 +3033,12 @@ window.esdocSearchIndex = [
     "src/.external-node.js~inspector~open",
     "https://nodejs.org/api/inspector.html#inspector_inspector_open_port_host_wait",
     "src/.external-node.js~inspector~open",
+    "external"
+  ],
+  [
+    "src/.external-node.js~json-beautify",
+    "https://github.com/gre/json-beautify",
+    "src/.external-node.js~json-beautify",
     "external"
   ],
   [
@@ -4207,13 +4213,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~stream~writable",
-    "https://nodejs.org/api/stream.html#stream_constructor:newstream_writable_options",
+    "https://nodejs.org/api/stream.html#stream_class_stream_writable",
     "src/.external-node.js~stream~Writable",
     "external"
   ],
   [
     "src/.external-node.js~stream~writable",
-    "https://nodejs.org/api/stream.html#stream_class_stream_writable",
+    "https://nodejs.org/api/stream.html#stream_constructor:newstream_writable_options",
     "src/.external-node.js~stream~Writable",
     "external"
   ],
@@ -4591,12 +4597,6 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~tls~connect",
-    "https://nodejs.org/api/tls.html#tls_tls_connect_path_options_callback",
-    "src/.external-node.js~tls~connect",
-    "external"
-  ],
-  [
-    "src/.external-node.js~tls~connect",
     "https://nodejs.org/api/tls.html#tls_tls_connect_options_callback",
     "src/.external-node.js~tls~connect",
     "external"
@@ -4604,6 +4604,12 @@ window.esdocSearchIndex = [
   [
     "src/.external-node.js~tls~connect",
     "https://nodejs.org/api/tls.html#tls_tls_connect_port_host_options_callback",
+    "src/.external-node.js~tls~connect",
+    "external"
+  ],
+  [
+    "src/.external-node.js~tls~connect",
+    "https://nodejs.org/api/tls.html#tls_tls_connect_path_options_callback",
     "src/.external-node.js~tls~connect",
     "external"
   ],
@@ -5079,6 +5085,12 @@ window.esdocSearchIndex = [
     "src/comptroller.js~comptroller#writepackages",
     "class/src/comptroller.js~Comptroller.html#instance-method-writePackages",
     "src/comptroller.js~Comptroller#writePackages",
+    "method"
+  ],
+  [
+    "src/comptroller.js~comptroller.mergepatches",
+    "class/src/comptroller.js~Comptroller.html#static-method-mergePatches",
+    "src/comptroller.js~Comptroller.mergePatches",
     "method"
   ],
   [

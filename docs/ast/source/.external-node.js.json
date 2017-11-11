@@ -1,28 +1,28 @@
 {
   "type": "File",
   "start": 0,
-  "end": 96052,
+  "end": 96124,
   "loc": {
     "start": {
       "line": 1,
       "column": 0
     },
     "end": {
-      "line": 2353,
+      "line": 2356,
       "column": 0
     }
   },
   "program": {
     "type": "Program",
     "start": 0,
-    "end": 96052,
+    "end": 96124,
     "loc": {
       "start": {
         "line": 1,
         "column": 0
       },
       "end": {
-        "line": 2353,
+        "line": 2356,
         "column": 0
       }
     },
@@ -12529,9 +12529,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n* @external {minimatch} https://github.com/isaacs/minimatch#readme\n",
+        "value": "*\n* @external {json-beautify} https://github.com/gre/json-beautify\n",
         "start": 95818,
-        "end": 95891,
+        "end": 95889,
         "loc": {
           "start": {
             "line": 2344,
@@ -12545,9 +12545,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n* @external {minimist} https://github.com/substack/minimist\n",
-        "start": 95892,
-        "end": 95958,
+        "value": "*\n* @external {minimatch} https://github.com/isaacs/minimatch#readme\n",
+        "start": 95890,
+        "end": 95963,
         "loc": {
           "start": {
             "line": 2347,
@@ -12561,9 +12561,9 @@
       },
       {
         "type": "CommentBlock",
-        "value": "*\n* @external {sort-package-json} https://github.com/keithamus/sort-package-json#readme\n",
-        "start": 95959,
-        "end": 96051,
+        "value": "*\n* @external {minimist} https://github.com/substack/minimist\n",
+        "start": 95964,
+        "end": 96030,
         "loc": {
           "start": {
             "line": 2350,
@@ -12571,6 +12571,22 @@
           },
           "end": {
             "line": 2352,
+            "column": 2
+          }
+        }
+      },
+      {
+        "type": "CommentBlock",
+        "value": "*\n* @external {sort-package-json} https://github.com/keithamus/sort-package-json#readme\n",
+        "start": 96031,
+        "end": 96123,
+        "loc": {
+          "start": {
+            "line": 2353,
+            "column": 0
+          },
+          "end": {
+            "line": 2355,
             "column": 2
           }
         }
@@ -25076,9 +25092,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {minimatch} https://github.com/isaacs/minimatch#readme\n",
+      "value": "*\n* @external {json-beautify} https://github.com/gre/json-beautify\n",
       "start": 95818,
-      "end": 95891,
+      "end": 95889,
       "loc": {
         "start": {
           "line": 2344,
@@ -25092,9 +25108,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {minimist} https://github.com/substack/minimist\n",
-      "start": 95892,
-      "end": 95958,
+      "value": "*\n* @external {minimatch} https://github.com/isaacs/minimatch#readme\n",
+      "start": 95890,
+      "end": 95963,
       "loc": {
         "start": {
           "line": 2347,
@@ -25108,9 +25124,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {sort-package-json} https://github.com/keithamus/sort-package-json#readme\n",
-      "start": 95959,
-      "end": 96051,
+      "value": "*\n* @external {minimist} https://github.com/substack/minimist\n",
+      "start": 95964,
+      "end": 96030,
       "loc": {
         "start": {
           "line": 2350,
@@ -25118,6 +25134,22 @@
         },
         "end": {
           "line": 2352,
+          "column": 2
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n* @external {sort-package-json} https://github.com/keithamus/sort-package-json#readme\n",
+      "start": 96031,
+      "end": 96123,
+      "loc": {
+        "start": {
+          "line": 2353,
+          "column": 0
+        },
+        "end": {
+          "line": 2355,
           "column": 2
         }
       }
@@ -37622,9 +37654,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {minimatch} https://github.com/isaacs/minimatch#readme\n",
+      "value": "*\n* @external {json-beautify} https://github.com/gre/json-beautify\n",
       "start": 95818,
-      "end": 95891,
+      "end": 95889,
       "loc": {
         "start": {
           "line": 2344,
@@ -37638,9 +37670,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {minimist} https://github.com/substack/minimist\n",
-      "start": 95892,
-      "end": 95958,
+      "value": "*\n* @external {minimatch} https://github.com/isaacs/minimatch#readme\n",
+      "start": 95890,
+      "end": 95963,
       "loc": {
         "start": {
           "line": 2347,
@@ -37654,9 +37686,9 @@
     },
     {
       "type": "CommentBlock",
-      "value": "*\n* @external {sort-package-json} https://github.com/keithamus/sort-package-json#readme\n",
-      "start": 95959,
-      "end": 96051,
+      "value": "*\n* @external {minimist} https://github.com/substack/minimist\n",
+      "start": 95964,
+      "end": 96030,
       "loc": {
         "start": {
           "line": 2350,
@@ -37664,6 +37696,22 @@
         },
         "end": {
           "line": 2352,
+          "column": 2
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\n* @external {sort-package-json} https://github.com/keithamus/sort-package-json#readme\n",
+      "start": 96031,
+      "end": 96123,
+      "loc": {
+        "start": {
+          "line": 2353,
+          "column": 0
+        },
+        "end": {
+          "line": 2355,
           "column": 2
         }
       }
@@ -37681,15 +37729,15 @@
         "binop": null,
         "updateContext": null
       },
-      "start": 96052,
-      "end": 96052,
+      "start": 96124,
+      "end": 96124,
       "loc": {
         "start": {
-          "line": 2353,
+          "line": 2356,
           "column": 0
         },
         "end": {
-          "line": 2353,
+          "line": 2356,
           "column": 0
         }
       }
