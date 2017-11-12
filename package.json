@@ -15,18 +15,20 @@
   "license": "MIT",
   "author": "Aaron Levine <ald.levine@gmail.com>",
   "main": "src/comptroller.js",
-  "bin": {
-    "comp": "./src/cli.js"
-  },
-  "directories": {
-    "doc": "docs"
-  },
+  "bin": { "comp": "./src/cli.js" },
+  "directories": { "doc": "docs" },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Aldlevine/comptroller.git"
   },
   "scripts": {
-    "test": "nyc mocha"
+    "test": "nyc mocha",
+    "version": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   },
   "dependencies": {
     "@zdychacek/detective": "^5.0.2",
@@ -43,6 +45,8 @@
   },
   "devDependencies": {
     "chai": "^4.1.2",
+    "conventional-changelog-cli": "^1.3.4",
+    "cz-conventional-changelog": "^2.1.0",
     "esdoc": "^1.0.3",
     "esdoc-ecmascript-proposal-plugin": "^1.0.0",
     "esdoc-node": "^1.0.2",
@@ -59,15 +63,11 @@
     "pretty": 40,
     "detective": {
       "parse": {
-        "plugins": [
-          "objectRestSpread"
-        ]
+        "plugins": [ "objectRestSpread" ]
       }
     },
     "exclude": [
-      {
-        "group": "builtins"
-      },
+      { "group": "builtins" },
       "babel-traverse",
       "babylon"
     ]
