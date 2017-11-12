@@ -1,5 +1,5 @@
-<a name="0.3.0-1"></a>
-# [0.3.0-1](https://github.com/Aldlevine/comptroller/compare/v0.0.1...v0.3.0-1) (2017-11-12)
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/Aldlevine/comptroller/compare/v0.0.1...v0.3.0) (2017-11-12)
 
 
 ### Bug Fixes

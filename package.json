@@ -1,6 +1,6 @@
 {
   "name": "comptroller",
-  "version": "0.3.0-1",
+  "version": "0.3.0",
   "description": "A simple and lightweight tool to manage your monorepo.",
   "keywords": [
     "dependency-analysis",
@@ -15,8 +15,12 @@
   "license": "MIT",
   "author": "Aaron Levine <ald.levine@gmail.com>",
   "main": "src/comptroller.js",
-  "bin": { "comp": "./src/cli.js" },
-  "directories": { "doc": "docs" },
+  "bin": {
+    "comp": "./src/cli.js"
+  },
+  "directories": {
+    "doc": "docs"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Aldlevine/comptroller.git"
@@ -63,11 +67,15 @@
     "pretty": 40,
     "detective": {
       "parse": {
-        "plugins": [ "objectRestSpread" ]
+        "plugins": [
+          "objectRestSpread"
+        ]
       }
     },
     "exclude": [
-      { "group": "builtins" },
+      {
+        "group": "builtins"
+      },
       "babel-traverse",
       "babylon"
     ]
