@@ -23,9 +23,8 @@
   },
   "scripts": {
     "build": "npm test -s && node ./src/cli.js update -sp",
-    "build:add": "git add package.json",
-    "precommit": "git stash save --keep-index -q \"precommit stash\" && npm run build -s && npm run build:add -s && { git stash pop --index -q; } || { git stash pop --index -q; exit 1; }",
-    "commitmsg": "commitlint -e $GIT_PARAMS",
+    "precommit": "node scripts/precommit.js",
+    "commitmsg": "node scripts/commitmsg.js",
     "test": "nyc mocha",
     "version": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md"
   },
