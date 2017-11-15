@@ -1,3 +1,13 @@
+<a name="0.3.1-0"></a>
+## [0.3.1-0](https://github.com/Aldlevine/comptroller/compare/v0.3.0...v0.3.1-0) (2017-11-15)
+
+
+### Bug Fixes
+
+* **package:** update builtin-modules to version 2.0.0 ([6f969e0](https://github.com/Aldlevine/comptroller/commit/6f969e0))
+
+
+
 <a name="0.3.0"></a>
 # [0.3.0](https://github.com/Aldlevine/comptroller/compare/v0.3.0-1...v0.3.0) (2017-11-12)
 
