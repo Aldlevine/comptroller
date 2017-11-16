@@ -22,11 +22,12 @@
     "url": "git+https://github.com/Aldlevine/comptroller.git"
   },
   "scripts": {
-    "build": "npm test -s && node ./src/cli.js update -sp",
-    "precommit": "node scripts/precommit.js",
-    "commitmsg": "node scripts/commitmsg.js",
-    "test": "nyc mocha",
-    "version": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0 && git add CHANGELOG.md"
+    "build": "tease build",
+    "precommit": "tease precommit",
+    "commitmsg": "tease commitmsg",
+    "test": "tease test",
+    "update": "tease update",
+    "version": "tease version"
   },
   "config": {
     "commitizen": {
@@ -61,6 +62,7 @@
     "mocha-sinon": "^2.0.0",
     "nyc": "^11.3.0",
     "proxyquire": "^1.8.0",
+    "scripteasy": "github:Aldlevine/scripteasy",
     "sinon": "^4.1.1"
   },
   "comptroller": {
@@ -76,6 +78,24 @@
       { "group": "builtins" },
       "babel-traverse",
       "babylon"
+    ]
+  },
+  "scripteasy": {
+    "build": [ "test", "update" ],
+    "precommit": {
+      "try": [
+        "git stash save --keep-index -q \"precommit stash\"",
+        "build",
+        "git add package.json"
+      ],
+      "finally": "git stash pop -q"
+    },
+    "commitmsg": "commitlint -e $GIT_PARAMS",
+    "test": "nyc mocha",
+    "update": "node ./src/cli.js update -sp",
+    "version": [
+      "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
+      "git add CHANGELOG.md"
     ]
   }
 }
