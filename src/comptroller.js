@@ -70,6 +70,7 @@ module.exports = class Comptroller extends Package
   /**
    * A convenience method that locates a package in {@link Comptroller#children}
    * by it's name in {@link Package#packageJson}.
+   * @param {string} name - The name of the child package.
    * @return {Package | boolean} - The found package, or `false` if not found.
    */
   getChildByName (name)
