@@ -62,7 +62,7 @@
     "mocha-sinon": "^2.0.0",
     "nyc": "^11.3.0",
     "proxyquire": "^1.8.0",
-    "scripteasy": "0.0.2",
+    "scripteasy": "0.0.3",
     "sinon": "^4.1.1"
   },
   "comptroller": {
