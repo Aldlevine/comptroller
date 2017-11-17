@@ -22,13 +22,13 @@
     "url": "git+https://github.com/Aldlevine/comptroller.git"
   },
   "scripts": {
-    "build": "tease build",
-    "precommit": "tease precommit",
-    "commitmsg": "tease commitmsg",
-    "docs": "tease docs",
-    "test": "tease test",
-    "update": "tease update",
-    "version": "tease version"
+    "build": "ez build",
+    "precommit": "ez precommit",
+    "commitmsg": "ez commitmsg",
+    "docs": "ez docs",
+    "test": "ez test",
+    "update": "ez update",
+    "version": "ez version"
   },
   "config": {
     "commitizen": {
@@ -63,7 +63,7 @@
     "mocha-sinon": "^2.0.0",
     "nyc": "^11.3.0",
     "proxyquire": "^1.8.0",
-    "scripteasy": "0.0.2",
+    "scripteasy": "0.0.5",
     "sinon": "^4.1.1"
   },
   "comptroller": {
@@ -81,23 +81,5 @@
       "babylon"
     ]
   },
-  "scripteasy": {
-    "build": [ "test", "update", "docs" ],
-    "precommit": {
-      "try": [
-        "git stash save --keep-index -q \"precommit stash\"",
-        "build",
-        "git add docs package.json"
-      ],
-      "finally": "git stash pop -q"
-    },
-    "commitmsg": "commitlint -e $GIT_PARAMS",
-    "docs": "esdoc",
-    "test": "nyc mocha",
-    "update": "node ./src/cli.js update -sp",
-    "version": [
-      "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
-      "git add CHANGELOG.md"
-    ]
-  }
+  "scripteasy": "scripts.yml"
 }
