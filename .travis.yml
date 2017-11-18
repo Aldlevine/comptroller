@@ -5,6 +5,7 @@ node_js:
 before_install:
   - npm i -g greenkeeper-lockfile@1 coveralls mocha-lcov-reporter
 before_script:
+  - npm run update
   - greenkeeper-lockfile-update
 script:
   - npm run test && npx nyc report --reporter=text-lcov | coveralls
