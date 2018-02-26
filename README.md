@@ -371,12 +371,18 @@ Please help fix the tests to make them all pass :)
 - `test/es6` - test suite
 - `test/makepkg/fs-es6.js` - fake file structure
 
+`$ ES6="ON" nyc mocha test/es6/detective.js`
+
 ### TypeScript
 
 - `test/typescript` - test suite
 - `test/makepkg/fs-typescript.js` - fake file structure
 
+`$ TS="ON" nyc mocha test/typescript/detective.js`
+
 ### AMD
 
 - `test/amd` - test suite
 - `test/makepkg/fs-amd.js` - fake file structure
+
+`$ AMD="ON" nyc mocha test/amd/detective.js`
