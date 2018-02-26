@@ -1,5 +1,5 @@
-import from 'dependency-1';
-import from 'dependency-2';
+import * as a from 'dependency-1';
+import * as b from 'dependency-2';
 import { x as $x } from 'excluded-dependency';
 const x = 42;
 
@@ -13,5 +13,5 @@ class App extends Component {
   }
 };
 
-import from 'http';
-import * from 'not-a-package';
+import * as c from 'http';
+import * as d from 'not-a-package';

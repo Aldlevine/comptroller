@@ -3,7 +3,7 @@ const {
   readSrcFile
 } = require('.')
 
-const fileName = 'typescript.txt' // TODO: 'typescript.tsx.txt'
+const fileName = 'typescript.ts' // TODO: 'typescript.tsx'
 const srcFile = readSrcFile(fileName)
 
 module.exports = {
@@ -23,8 +23,8 @@ module.exports = {
       },
       "comptroller": {
         "log": true,
-        "source": "index.js",
-        "dev": "test.js",
+        "source": "index.ts",
+        "dev": "test.ts",
         "inherits": ["version", "author"],
         "exclude": ["excluded-dependency"]
       }
@@ -52,10 +52,10 @@ module.exports = {
         }
       `,
       'index.ts': dedent `
-        import * from 'dependency-1';
-        import * from 'dependency-2';
-        import * from 'doesnt-exist';
-        import * from 'events';
+        import * as a from 'dependency-1';
+        import * as b from 'dependency-2';
+        import * as c from 'doesnt-exist';
+        import * as d from 'events';
       `
     },
     'package-2': {
@@ -69,9 +69,9 @@ module.exports = {
         }
       `,
       'index.ts': dedent `
-        import * from 'dependency-1';
-        import * from 'dependency-2';
-        import * from '@test/package-1';
+      import * as a from 'dependency-1';
+      import * as b from 'dependency-2';
+      import * as c from '@test/package-1';
       `
     }
   }

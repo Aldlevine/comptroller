@@ -342,22 +342,35 @@ The tests are written using `mocha` and `chai` spiced up with some `sinon`,
 Currently only tests commonJS dependencies. Please add tests and file structures
 to cover testing for the other module formats supported.
 
+`scripts.yml` includes the following test scripts:
+
+```txt
+testcjs: CJS="ON" nyc mocha test/commonjs --recursive
+testts: TS="ON" nyc mocha test/typescript --recursive
+testamd: AMD="ON" nyc mocha test/amd --recursive
+testes6: ES6="ON" nyc mocha test/es6 --recursive
+```
+
+To enable logging while running a test suite, set `LOG="ON"`
+
+`$ LOG="ON" TS="ON" npm run test:typescript`
+
 ### CommonJS
 
-- `test/commonjs`
-- `test/makepkg/fs-common.js`
+- `test/commonjs` - test suite
+- `test/makepkg/fs-common.js` - fake file structure
 
 ### ES6
 
-- `test/es6`
-- `test/makepkg/fs-es6.js`
+- `test/es6` - test suite
+- `test/makepkg/fs-es6.js` - fake file structure
 
 ### TypeScript
 
-- `test/typescript`
-- `test/makepkg/fs-typescript.js`
+- `test/typescript` - test suite
+- `test/makepkg/fs-typescript.js` - fake file structure
 
 ### AMD
 
-- `test/amd`
-- `test/makepkg/fs-amd.js`
+- `test/amd` - test suite
+- `test/makepkg/fs-amd.js` - fake file structure

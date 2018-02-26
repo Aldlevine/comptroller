@@ -7,12 +7,19 @@ exports.readSrcFile = function (srcPath) {
   return fs.readFileSync(fullSrcPath, 'utf8')
 }
 
-exports.fileStructure = {
+const fileStructure = {
   commonjs: require('./fs-commonjs'),
   typescript: require('./fs-typescript'),
   es6: require('./fs-es6'),
   amd: require('./fs-amd')
 }
+
+// console.log({
+//   commonjs: fileStructure.commonjs
+//   es6: fileStructure.es6
+// })
+
+exports.fileStructure = fileStructure
 
 exports.makepkg = async function makepkg(location, structure) {
   await fs.ensureDirPlease(location);

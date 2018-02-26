@@ -10,7 +10,7 @@ const detective = {
   commonjs: nodeDetective,
   amd: require('detective-amd'),
   es6: require('detective-es6'),
-  ts: require('detective-typescript')
+  typescript: require('detective-typescript')
 }
 
 const sortPackageJson = require('sort-package-json');
@@ -68,14 +68,14 @@ module.exports = class Package {
     exclude = _config.exclude || config.exclude || builtins,
     inherits = _config.inherits || config.inherits || [],
     detective = _config.detective || config.detective || {},
-    prune = _config.prune || config.prune || false,
-    pretty = _config.pretty || config.pretty || false,
+    prune = !!(_config.prune || config.prune),
+    pretty = !!(_config.pretty || config.pretty),
 
-    commonjs = _config.commonjs || config.commonjs || true,
-    typescript = _config.typescript || config.typescript || false,
-    es6 = _config.es6 || config.es6 || false,
-    amd = _config.amd || config.amd || false,
-    logOn = _config.log || config.log || false,
+    commonjs = !!(_config.commonjs || config.commonjs || process.env.CJS),
+    typescript = !!(_config.typescript || config.typescript || process.env.TS),
+    es6 = !!(_config.es6 || config.es6 || process.env.ES6),
+    amd = !!(_config.amd || config.amd || process.env.AMD),
+    logOn = !!(_config.log || config.log || process.env.LOG),
   }) {
     /** @type {string} */
     this._root = root;
@@ -299,22 +299,47 @@ module.exports = class Package {
 
   log(msg, data) {
     if (!this.logOn) return
-    data ? console.log(msg, data) : console.log(msg, data)
+    data ? console.log(msg, data) : console.log(msg)
   }
 
+  error(msg, data) {
+    console.error(msg, data)
+    throw new Error(msg)
+  }
 
   depsFor(name, src, file) {
-    if (!this[name]) return []
+    if (!this[name]) {
+      // this.log('depsFor: skipped', name, {
+      //   file
+      // })
+      return []
+    }
     this.log('depsFor', {
       name,
       file
     })
     const opts = this.detectiveOpts(name) || {}
     const $detective = detective[name]
+
     if (!$detective) {
-      throw new Error(`detective not registered: ${name}`)
+      this.error(`detective not registered: ${name}`, {
+        $detective,
+        detective,
+        name
+      })
     }
-    return $detective(src, opts)
+    let deps
+    try {
+      deps = $detective(src, opts)
+    } catch (err) {
+      this.error(err)
+    }
+
+    this.log('depsFor: dependencies found', {
+      src,
+      deps
+    })
+    return deps
   }
 
   fileExtension(file) {
@@ -328,7 +353,12 @@ module.exports = class Package {
 
   matchExt(ext) {
     const regExp = this.checkExtMap[ext] || this.checkExtMap.default
-    return regExp.test(ext)
+    const match = regExp.test(ext)
+    this.log('matchExt', {
+      ext,
+      match
+    })
+    return match
   }
 
   resolve_ts(src, ext, file) {
@@ -362,10 +392,20 @@ module.exports = class Package {
   }) {
     names = names || ['js', 'es6', 'ts', 'default']
     return names.reduce((acc, name) => {
+      this.log('resolveByExt', name)
       // try to resolve using each extension until one returns dependencies
-      if (acc.length > 0) return acc
-      const fun = this[`resolve_${name}`].bind(this)
+      if (acc.length > 0) {
+        this.log('resolveByExt: found', acc)
+        return acc
+      }
+      const funName = `resolve_${name}`
+      const fun = this[funName].bind(this)
       const result = fun(src, ext, file)
+      this.log('resolveByExt', {
+        file,
+        funName,
+        result
+      })
       if (result) {
         acc = acc.concat(result)
       }
@@ -378,6 +418,7 @@ module.exports = class Package {
    * @param {*} src
    */
   findDependencies(src, file) {
+    console.log('findDependencies', file)
     const ext = this.fileExtension(file)
     return this.resolveByExt(src, ext, {
       file
@@ -391,13 +432,25 @@ module.exports = class Package {
    * and the dependency metadata as values.
    */
   async analyzeSourceDependencies() {
-    const files = await glob.please(path.resolve(this.root, this.source), {
+    const globPath = path.resolve(this.root, this.source)
+    const globOpts = {
       ignore: this.ignore,
       nodir: true,
-    });
+    }
+    const files = await glob.please(globPath, globOpts);
     const deps = {};
+    this.log('analyzeSourceDependencies', {
+      globPath,
+      globOpts,
+      files
+    })
+
     await Promise.all(files.map(async (file) => {
-      const src = await fs.readFilePlease(file);
+      const src = await fs.readFilePlease(file, 'utf8');
+      this.log('findDependencies', {
+        src,
+        file
+      })
       // const dependencies = nodeDetective(src, this.detective);
       const dependencies = this.findDependencies(src, file)
       const relFile = path.relative(this.root, file);

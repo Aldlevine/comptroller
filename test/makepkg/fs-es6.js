@@ -2,7 +2,7 @@ const dedent = require('dedent');
 const {
   readSrcFile
 } = require('.')
-const fileName = 'es6.txt' // TODO: 'es6.jsx.txt'
+const fileName = 'es6.js' // TODO: 'es6.jsx.txt'
 const srcFile = readSrcFile(fileName)
 
 module.exports = {
@@ -21,8 +21,8 @@ module.exports = {
         "dev-dependency-2": "8.8.8"
       },
       "comptroller": {
-        "source": "index.js",
-        "dev": "test.js",
+        "source": "index.mjs",
+        "dev": "test.mjs",
         "inherits": ["version", "author"],
         "exclude": ["excluded-dependency"]
       }
@@ -30,9 +30,9 @@ module.exports = {
   `,
   'index.mjs': dedent(srcFile),
   'test.mjs': dedent `
-    import * from "dev-dependency-1";
-    import * from "dev-dependency-3";
-  `,
+  import { z } from "dev-dependency-1";
+  import { a } from "dev-dependency-3";
+`,
   'packages': {
     'package-1': {
       'package.json': dedent `
@@ -50,11 +50,11 @@ module.exports = {
         }
       `,
       'index.mjs': dedent `
-        import * from 'dependency-1';
-        import * from 'dependency-2';
-        import * from 'doesnt-exist';
-        import * from 'events';
-      `
+      import * as a from 'dependency-1';
+      import * as b from 'dependency-2';
+      import * as c from 'doesnt-exist';
+      import * as d from 'events';
+    `
     },
     'package-2': {
       'package.json': dedent `
@@ -67,9 +67,9 @@ module.exports = {
         }
       `,
       'index.mjs': dedent `
-        import * from 'dependency-1';
-        import * from 'dependency-2';
-        import * from '@test/package-1';
+      import * as a from 'dependency-1';
+      import * as b from 'dependency-2';
+      import * as c from '@test/package-1';
       `
     }
   }
