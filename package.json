@@ -36,11 +36,14 @@
     }
   },
   "dependencies": {
-    "@zdychacek/detective": "^5.0.2",
     "babel-traverse": "^6.26.0",
     "babylon": "^6.18.0",
     "builtin-modules": "^2.0.0",
     "dedent": "^0.7.0",
+    "detective": "github:kristianmandrup/detective",
+    "detective-amd": "^2.4.0",
+    "detective-es6": "^1.2.0",
+    "detective-typescript": "^2.0.0",
     "fs-extra": "^4.0.2",
     "glob": "^7.1.2",
     "json-beautify": "^1.0.1",

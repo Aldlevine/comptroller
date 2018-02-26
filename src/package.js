@@ -3,7 +3,16 @@ const glob = require('./glob');
 const minimatch = require('minimatch');
 const fs = require('./fs');
 const builtins = require('builtin-modules');
-const detective = require('@zdychacek/detective');
+
+const nodeDetective = require('detective')
+
+const detective = {
+  commonjs: nodeDetective,
+  amd: require('detective-amd'),
+  es6: require('detective-es6'),
+  ts: require('detective-typescript')
+}
+
 const sortPackageJson = require('sort-package-json');
 const beautify = require('json-beautify');
 const Patch = require('./patch');
@@ -13,8 +22,7 @@ const Patch = require('./patch');
  * packages, as a means of querying for package info, and as an outlet for
  * changes to a package.
  */
-module.exports = class Package
-{
+module.exports = class Package {
   /**
    * Creates a new package instance. It can accept it's configuration either
    * through the package.json file or through the constructor arguments.
@@ -44,7 +52,7 @@ module.exports = class Package
    * @param {boolean|number} [opts.config.pretty = false] - The "maximum fixed
    * character width" parameter to pass to json-beautify.
    */
-  constructor ({
+  constructor({
     root,
     packageJson = fs.readJsonSync(path.resolve(root, 'package.json')),
     config = {},
@@ -57,8 +65,12 @@ module.exports = class Package
     detective = _config.detective || config.detective || {},
     prune = _config.prune || config.prune || false,
     pretty = _config.pretty || config.pretty || false,
-  })
-  {
+
+    commonjs = _config.commonjs || config.commonjs || true,
+    typescript = _config.typescript || config.typescript || false,
+    es6 = _config.es6 || config.es6 || false,
+    amd = _config.amd || config.amd || false,
+  }) {
     /** @type {string} */
     this._root = root;
 
@@ -88,87 +100,151 @@ module.exports = class Package
 
     /** @type {boolean|number} */
     this._pretty = pretty;
+
+    /** @type {boolean} */
+    this._commonjs = commonjs;
+
+    /** @type {boolean} */
+    this._typescript = typescript;
+
+    /** @type {boolean} */
+    this._es6 = es6;
   }
 
   /**
    * The package's root directory.
    * @type {string}
    */
-  get root () {return this._root}
+  get root() {
+    return this._root
+  }
 
   /**
    * An object representing the package's package.json.
    * @type {object}
    */
-  get packageJson () {return this._packageJson}
+  get packageJson() {
+    return this._packageJson
+  }
 
   /**
    * An object representing the package's dependencies.
    * @type {object}
    */
-  get dependencies () {return this.packageJson.dependencies || (this.packageJson.dependencies = {})}
+  get dependencies() {
+    return this.packageJson.dependencies || (this.packageJson.dependencies = {})
+  }
 
   /**
    * An object representing the package's devDependencies.
    * @type {object}
    */
-  get devDependencies () {return this.packageJson.devDependencies || (this.packageJson.devDependencies = {})}
+  get devDependencies() {
+    return this.packageJson.devDependencies || (this.packageJson.devDependencies = {})
+  }
 
   /**
    * A glob that matches the package's source files
    * @type {glob}
    */
-  get source () {return this._source}
+  get source() {
+    return this._source
+  }
 
   /**
    * A glob that matches the package's dev files
    * @type {minimatch}
    */
-  get dev () {return this._dev}
+  get dev() {
+    return this._dev
+  }
 
   /**
    * An array of globs that match files not to be included with the package's
    * source files.
    * @type {glob[]}
    */
-  get ignore () {return this._ignore}
+  get ignore() {
+    return this._ignore
+  }
 
   /**
    * An array of package names to ignore in all operations.
    * @type {string[]}
    */
-  get exclude () {return this._exclude}
+  get exclude() {
+    return this._exclude
+  }
 
   /**
    * An array of field names the package should inherit from it's parent
    * package.json.
    * @type {string[]}
    */
-  get inherits () {return this._inherits}
+  get inherits() {
+    return this._inherits
+  }
 
   /**
    * The options to pass through to <a href="https://npmjs.com/package/@zdychacek/detective">detective</a>.
    * @type {object}
    */
-  get detective () {return this._detective}
+  get detective() {
+    return this._detective
+  }
 
   /**
    * Whether or not unused dependencies should be pruned from the package.json.
    * @type {boolean}
    */
-  get prune () {return this._prune}
+  get prune() {
+    return this._prune
+  }
 
   /**
    * The "maximum fixed character width" parameter to pass to json-beautify.
    * @type {boolean|number}
    */
-  get pretty () {return this._pretty}
+  get pretty() {
+    return this._pretty
+  }
+
+  /**
+   * Whether CommonJS dependencies are to be searched
+   * @type {boolean}
+   */
+  get commonjs() {
+    return this._commonjs
+  }
+
+  /**
+   * Whether AMD dependencies are to be searched
+   * @type {boolean}
+   */
+  get amd() {
+    return this._amd
+  }
+
+  /**
+   * Whether TypeScript dependencies are to be searched
+   * @type {boolean}
+   */
+  get typescript() {
+    return this._typescript
+  }
+
+  /**
+   * Whether ES6 module dependencies are to be searched
+   * @type {boolean}
+   */
+  get es6() {
+    return this._es6
+  }
 
   /**
    * Writes {@link Package#packageJson} to it's respective package.json file.
    */
-  async writePackageJson ()
-  {
+  async writePackageJson() {
     const packageJson = sortPackageJson(this.packageJson);
     const json = beautify(packageJson, null, 2, this.pretty);
     await fs.writeFilePlease(path.resolve(this.root, 'package.json'), json);
@@ -183,12 +259,60 @@ module.exports = class Package
    * @return {string | boolean} - The resolved dependency name, or false if the
    * the dependency is excluded.
    */
-  resolveDependency (dependency)
-  {
+  resolveDependency(dependency) {
     if (dependency.charAt(0) == '.') return false;
     if (this.exclude.indexOf(dependency) >= 0) return false;
     const split = dependency.split('/');
     return split[0].charAt(0) == '@' ? split[0] + '/' + split[1] : split[0];
+  }
+
+  detectiveOpts(name) {
+    return (this.detective || {})[name] || this.detective
+  }
+
+  depsFor(name, src) {
+    if (!this[name]) return []
+    const opts = this.detectiveOpts(name)
+    return detective[name](src, opts)
+  }
+
+  fileExtension(file) {
+    return path.extname(file).slice(1)
+  }
+
+  resolveTs(src, ext) {
+    if (/^ts/.test(ext)) return this.depsFor('commonjs', src)
+  }
+
+  resolveMjs(src, ext) {
+    if (/^mjs/.test(ext)) return this.depsFor('es6', src)
+  }
+
+  resolveJs(src, ext) {
+    if (/^js/.test(ext)) return [].concat(
+      this.depsFor('commonjs', src),
+      this.depsFor('es6', src),
+      this.depsFor('amd', src)
+    )
+  }
+
+  resolveDefault(ext, src) {
+    // default fallback to include all
+    return [].concat(
+      this.depsFor('commonjs', src),
+      this.depsFor('es6', src),
+      this.depsFor('typescript', src),
+      this.depsFor('amd', src)
+    )
+  }
+
+  /**
+   * Find dependencies in source file
+   * @param {*} src
+   */
+  findDependencies(src, file) {
+    const ext = this.fileExtension(file)
+    return this.resolveJs(src, ext) || this.resolveMjs(src, ext) || this.resolveTs(src, ext) || this.resolveDefault(src, ext)
   }
 
   /**
@@ -197,8 +321,7 @@ module.exports = class Package
    * @return {Map<string, object>} - A map with the dependency names as keys
    * and the dependency metadata as values.
    */
-  async analyzeSourceDependencies ()
-  {
+  async analyzeSourceDependencies() {
     const files = await glob.please(path.resolve(this.root, this.source), {
       ignore: this.ignore,
       nodir: true,
@@ -206,11 +329,14 @@ module.exports = class Package
     const deps = {};
     await Promise.all(files.map(async (file) => {
       const src = await fs.readFilePlease(file);
-      const dependencies = detective(src, this.detective);
+      // const dependencies = nodeDetective(src, this.detective);
+      const dependencies = this.findDependencies(src, file)
       const relFile = path.relative(this.root, file);
       for (let dep of dependencies) {
         if (dep = this.resolveDependency(dep)) {
-          deps[dep] = deps[dep] || {files: []};
+          deps[dep] = deps[dep] || {
+            files: []
+          };
           deps[dep].files.push(relFile);
         }
       }
@@ -225,15 +351,15 @@ module.exports = class Package
    * @param {object} dependencies - The dependencies to generate a patch for.
    * @return {Patch[]} - The patches that will make {@link Package#packageJson} match the inputted dependencies
    */
-  generateDependencyPatches (dependencies)
-  {
+  generateDependencyPatches(dependencies) {
     const patches = [];
     const usedDeps = {};
     // const usedDev = {};
 
-    for (let dep in dependencies)
-    {
-      let {files} = dependencies[dep];
+    for (let dep in dependencies) {
+      let {
+        files
+      } = dependencies[dep];
       let dev = true;
 
       for (let file of files) {
@@ -246,24 +372,37 @@ module.exports = class Package
       usedDeps[dep] = true;
 
       if (dev && !(dep in this.devDependencies) && !(dep in this.dependencies)) {
-        patches.push(new Patch(Patch.ADD, {name: dep, dev, files}));
-      }
-      else if (!dev && !(dep in this.dependencies)) {
-        patches.push(new Patch(Patch.ADD, {name: dep, files}));
-      }
-      else {
+        patches.push(new Patch(Patch.ADD, {
+          name: dep,
+          dev,
+          files
+        }));
+      } else if (!dev && !(dep in this.dependencies)) {
+        patches.push(new Patch(Patch.ADD, {
+          name: dep,
+          files
+        }));
+      } else {
         if (dep in this.devDependencies) {
-          patches.push(new Patch(Patch.UPDATE, {name: dep, dev: true, files}));
-        }
-        else if (dep in this.dependencies) {
-          patches.push(new Patch(Patch.UPDATE, {name: dep, files}));
+          patches.push(new Patch(Patch.UPDATE, {
+            name: dep,
+            dev: true,
+            files
+          }));
+        } else if (dep in this.dependencies) {
+          patches.push(new Patch(Patch.UPDATE, {
+            name: dep,
+            files
+          }));
         }
       }
     }
 
     for (let dep in this.dependencies) {
       if (!usedDeps[dep] && this.exclude.indexOf(dep) < 0) {
-        patches.push(new Patch(Patch.REMOVE, {name: dep}))
+        patches.push(new Patch(Patch.REMOVE, {
+          name: dep
+        }))
       }
     }
 
@@ -274,17 +413,17 @@ module.exports = class Package
    * Generates the patches that will satisfy {@link Package#inherits}
    * @return {Patch[]} - The patches that will update {@link Package#packageJson} with the inherited fields.
    */
-  generateInheritPatches ()
-  {
-    return this.inherits.map((name) => new Patch(Patch.INHERIT, {name}));
+  generateInheritPatches() {
+    return this.inherits.map((name) => new Patch(Patch.INHERIT, {
+      name
+    }));
   }
 
   /**
    * Applies a given patch to {@link Package#packageJson}.
    * @param {Patch} patch - The patch to apply,
    */
-  applyPatch (patch)
-  {
+  applyPatch(patch) {
     if (patch.disabled) return;
 
     let depField = patch.dev ? 'devDependencies' : 'dependencies';
@@ -312,8 +451,7 @@ module.exports = class Package
    * Generates an exclude array
    * @param {Array<string|object>} excludes - The excludes array to use as a base.
    */
-  static generateExcludes (excludes)
-  {
+  static generateExcludes(excludes) {
     const result = [];
 
     for (let exclude of excludes) {
