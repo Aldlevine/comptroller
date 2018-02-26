@@ -355,6 +355,12 @@ To enable logging while running a test suite, set `LOG="ON"`
 
 `$ LOG="ON" TS="ON" npm run test:typescript`
 
+### Test Status
+
+The infrastructure should work, but somehow the tests for `amd`, `es6` and `typescript` are still a bit "off".
+
+Please help fix the tests to make them all pass :)
+
 ### CommonJS
 
 - `test/commonjs` - test suite
