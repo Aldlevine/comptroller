@@ -51,13 +51,18 @@ module.exports = class Package {
    * dependencies should be pruned from the package.json.
    * @param {boolean|number} [opts.config.pretty = false] - The "maximum fixed
    * character width" parameter to pass to json-beautify.
-   */
+   * @param {boolean} [opts.config.commonjs = true] - search for commonjs dependencies
+   * @param {boolean} [opts.config.es6 = false] - search for es6 module dependencies
+   * @param {boolean} [opts.config.amd = false] - search for amd module dependencies
+   * @param {boolean} [opts.config.typescript = false] - search for typescript module dependencies
+   * @param {boolean} [opts.config.log = false] - Whether logging is turned on
+   **/
   constructor({
     root,
     packageJson = fs.readJsonSync(path.resolve(root, 'package.json')),
     config = {},
     _config = packageJson.comptroller || {},
-    source = _config.source || config.source || '**/*.js',
+    source = _config.source || config.source || '**/*.js ',
     dev = _config.dev || config.dev || '**/test/*.js',
     ignore = _config.ignore || config.ignore || ['**/node_modules/**'],
     exclude = _config.exclude || config.exclude || builtins,
@@ -70,6 +75,7 @@ module.exports = class Package {
     typescript = _config.typescript || config.typescript || false,
     es6 = _config.es6 || config.es6 || false,
     amd = _config.amd || config.amd || false,
+    logOn = _config.log || config.log || false,
   }) {
     /** @type {string} */
     this._root = root;
@@ -109,6 +115,9 @@ module.exports = class Package {
 
     /** @type {boolean} */
     this._es6 = es6;
+
+    /** @type {boolean} */
+    this._logOn = logOn;
   }
 
   get checkExtMap() {
@@ -251,6 +260,15 @@ module.exports = class Package {
   }
 
   /**
+   * Whether Logging is turned on
+   * @type {boolean}
+   */
+  get logOn() {
+    return this._logOn
+  }
+
+
+  /**
    * Writes {@link Package#packageJson} to it's respective package.json file.
    */
   async writePackageJson() {
@@ -279,10 +297,18 @@ module.exports = class Package {
     return (this.detective || {})[name] || this.detective
   }
 
-  // SEE: https://github.com/kristianmandrup/comptroller/blob/master/src/package.js#L269
+  log(msg, data) {
+    if (!this.logOn) return
+    data ? console.log(msg, data) : console.log(msg, data)
+  }
 
-  depsFor(name, src) {
+
+  depsFor(name, src, file) {
     if (!this[name]) return []
+    this.log('depsFor', {
+      name,
+      file
+    })
     const opts = this.detectiveOpts(name) || {}
     const $detective = detective[name]
     if (!$detective) {
@@ -305,29 +331,28 @@ module.exports = class Package {
     return regExp.test(ext)
   }
 
-  resolve_ts(src, ext) {
-    if (this.matchExt(ext)) return this.depsFor('typescript', src)
+  resolve_ts(src, ext, file) {
+    return this.matchExt(ext) ? this.depsFor('typescript', src, file) : []
   }
 
-  resolve_es6(src, ext) {
-    if (this.matchExt(ext)) return this.depsFor('es6', src)
+  resolve_es6(src, ext, file) {
+    return this.matchExt(ext) ? this.depsFor('es6', src, file) : []
   }
 
-  resolve_js(src, ext) {
-    if (this.matchExt(ext)) return this.concatDeps(
-      this.depsFor('commonjs', src),
-      this.depsFor('es6', src),
-      this.depsFor('amd', src)
-    )
+  resolve_js(src, ext, file) {
+    return this.matchExt(ext) ? this.concatDeps(
+      this.depsFor('commonjs', src, file),
+      this.depsFor('es6', src, file),
+      this.depsFor('amd', src, file)) : []
   }
 
-  resolve_default(src, ext) {
+  resolve_default(src, ext, file) {
     // default fallback to include all
     return this.concatDeps(
-      this.depsFor('commonjs', src),
-      this.depsFor('es6', src),
-      this.depsFor('typescript', src),
-      this.depsFor('amd', src)
+      this.depsFor('commonjs', src, file),
+      this.depsFor('es6', src, file),
+      this.depsFor('typescript', src, file),
+      this.depsFor('amd', src, file)
     )
   }
 
@@ -340,7 +365,7 @@ module.exports = class Package {
       // try to resolve using each extension until one returns dependencies
       if (acc.length > 0) return acc
       const fun = this[`resolve_${name}`].bind(this)
-      const result = fun(src, ext)
+      const result = fun(src, ext, file)
       if (result) {
         acc = acc.concat(result)
       }

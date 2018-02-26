@@ -49,28 +49,28 @@ describe('Package', function () {
     it('should return correct dependencies', async function () {
       const dependencies = {
         'dependency-1': {
-          files: ['index.js', 'packages/package-1/index.js', 'packages/package-2/index.js']
+          files: ['index.mjs', 'packages/package-1/index.mjs', 'packages/package-2/index.mjs']
         },
         'dependency-2': {
-          files: ['index.js', 'packages/package-2/index.js']
+          files: ['index.mjs', 'packages/package-2/index.mjs']
         },
         'http': {
-          files: ['index.js']
+          files: ['index.mjs']
         },
         'not-a-package': {
-          files: ['index.js']
+          files: ['index.mjs']
         },
         'doesnt-exist': {
-          files: ['packages/package-1/index.js']
+          files: ['packages/package-1/index.mjs']
         },
         'events': {
-          files: ['packages/package-1/index.js']
+          files: ['packages/package-1/index.mjs']
         },
         '@test/package-1': {
-          files: ['packages/package-2/index.js']
+          files: ['packages/package-2/index.mjs']
         },
         'dev-dependency-1': {
-          files: ['index.js', 'test.js']
+          files: ['index.mjs', 'test.mjs']
         },
       };
       const analyzed = await this.package.analyzeSourceDependencies();
@@ -78,25 +78,25 @@ describe('Package', function () {
         'events', '@test/package-1', 'dev-dependency-1', 'dev-dependency-3');
 
       expect(analyzed['dependency-1']).to.have.key('files');
-      expect(analyzed['dependency-1']['files']).to.include('index.js', 'packages/package-1/index.js', 'packages/package-2/index.js');
+      expect(analyzed['dependency-1']['files']).to.include('index.mjs', 'packages/package-1/index.mjs', 'packages/package-2/index.mjs');
 
       expect(analyzed['dependency-2']).to.have.key('files');
-      expect(analyzed['dependency-2']['files']).to.include('index.js', 'packages/package-2/index.js');
+      expect(analyzed['dependency-2']['files']).to.include('index.mjs', 'packages/package-2/index.mjs');
 
       expect(analyzed['http']).to.have.key('files');
-      expect(analyzed['http']['files']).to.include('index.js');
+      expect(analyzed['http']['files']).to.include('index.mjs');
 
       expect(analyzed['not-a-package']).to.have.key('files');
-      expect(analyzed['not-a-package']['files']).to.include('index.js');
+      expect(analyzed['not-a-package']['files']).to.include('index.mjs');
 
       expect(analyzed['doesnt-exist']).to.have.key('files');
-      expect(analyzed['doesnt-exist']['files']).to.include('packages/package-1/index.js');
+      expect(analyzed['doesnt-exist']['files']).to.include('packages/package-1/index.mjs');
 
       expect(analyzed['events']).to.have.key('files');
-      expect(analyzed['events']['files']).to.include('packages/package-1/index.js');
+      expect(analyzed['events']['files']).to.include('packages/package-1/index.mjs');
 
       expect(analyzed['@test/package-1']).to.have.key('files');
-      expect(analyzed['@test/package-1']['files']).to.include('packages/package-2/index.js');
+      expect(analyzed['@test/package-1']['files']).to.include('packages/package-2/index.mjs');
     });
   });
 
@@ -104,10 +104,10 @@ describe('Package', function () {
     it('should generate update patches for used dependences', function () {
       const newDeps = {
         'dependency-1': {
-          files: ['file-1.js']
+          files: ['file-1.mjs']
         },
         'dependency-2': {
-          files: ['file-2.js']
+          files: ['file-2.mjs']
         }
       };
       const patches = this.package.generateDependencyPatches(newDeps);
@@ -118,21 +118,21 @@ describe('Package', function () {
       expect(patches[0]).to.be.an.instanceof(Patch);
       expect(patches[0].type).to.equal(Patch.UPDATE);
       expect(patches[0].name).to.equal('dependency-1');
-      expect(patches[0].files).to.deep.equal(['file-1.js']);
+      expect(patches[0].files).to.deep.equal(['file-1.mjs']);
 
       expect(patches[1]).to.be.an.instanceof(Patch);
       expect(patches[1].type).to.equal(Patch.UPDATE);
       expect(patches[1].name).to.equal('dependency-2');
-      expect(patches[1].files).to.deep.equal(['file-2.js']);
+      expect(patches[1].files).to.deep.equal(['file-2.mjs']);
     });
 
     it('should generate update patches for used devDependences', function () {
       const newDeps = {
         'dev-dependency-1': {
-          files: ['test.js']
+          files: ['test.mjs']
         },
         'dev-dependency-2': {
-          files: ['test.js']
+          files: ['test.mjs']
         }
       };
       const patches = this.package.generateDependencyPatches(newDeps);
@@ -143,24 +143,24 @@ describe('Package', function () {
       expect(patches[0]).to.be.an.instanceof(Patch);
       expect(patches[0].type).to.equal(Patch.UPDATE);
       expect(patches[0].name).to.equal('dev-dependency-1');
-      expect(patches[0].files).to.deep.equal(['test.js']);
+      expect(patches[0].files).to.deep.equal(['test.mjs']);
 
       expect(patches[1]).to.be.an.instanceof(Patch);
       expect(patches[1].type).to.equal(Patch.UPDATE);
       expect(patches[1].name).to.equal('dev-dependency-2');
-      expect(patches[1].files).to.deep.equal(['test.js']);
+      expect(patches[1].files).to.deep.equal(['test.mjs']);
     });
 
     it('should generate add patches for new dependencies', function () {
       const newDeps = {
         'dependency-1': {
-          files: ['file-1.js']
+          files: ['file-1.mjs']
         },
         'dependency-2': {
-          files: ['file-2.js']
+          files: ['file-2.mjs']
         },
         'dependency-3': {
-          files: ['file-3.js']
+          files: ['file-3.mjs']
         }
       };
       const patches = this.package.generateDependencyPatches(newDeps);
@@ -170,13 +170,13 @@ describe('Package', function () {
       expect(patches[2]).to.be.an.instanceof(Patch);
       expect(patches[2].type).to.equal(Patch.ADD);
       expect(patches[2].name).to.equal('dependency-3');
-      expect(patches[2].files).to.deep.equal(['file-3.js']);
+      expect(patches[2].files).to.deep.equal(['file-3.mjs']);
     });
 
     it('should generate add patches for new devDependencies', function () {
       const newDeps = {
         'dev-dependency-3': {
-          files: ['test.js']
+          files: ['test.mjs']
         }
       };
       const patches = this.package.generateDependencyPatches(newDeps);
@@ -186,7 +186,7 @@ describe('Package', function () {
       expect(patches[0]).to.be.an.instanceof(Patch);
       expect(patches[0].type).to.equal(Patch.ADD);
       expect(patches[0].name).to.equal('dev-dependency-3');
-      expect(patches[0].files).to.deep.equal(['test.js']);
+      expect(patches[0].files).to.deep.equal(['test.mjs']);
     });
 
     it('should generate remove patches for unused dependencies', function () {

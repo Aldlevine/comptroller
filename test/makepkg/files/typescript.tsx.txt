@@ -1,9 +1,8 @@
 import from 'dependency-1';
 import from 'dependency-2';
+import { x as $x } from 'excluded-dependency';
 
-import { x as $x } from 'excluded-dependency'
-
-const x: string
+const x: string;
 
 class App extends Component {
   render({props : any}): void {
@@ -11,9 +10,9 @@ class App extends Component {
       <Header title={props.title}>
         <Text>{props.text}</Text>
       </Header>
-    )
+    );
   }
 }
 
-import from 'http'
+import from 'http';
 import * from 'not-a-package';

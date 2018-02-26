@@ -153,7 +153,7 @@ describe('Comptroller', function () {
     it('should warn when add patch has no value', function () {
       const patch = new Patch(Patch.ADD, {
         name: 'dependency',
-        files: ['index.js', 'other.js'],
+        files: ['index.mjs', 'other.mjs'],
       });
       const child = new Package({
         root: path.join(this.packageDir, 'packages', 'package-1')
@@ -165,7 +165,7 @@ describe('Comptroller', function () {
     it('should warn when non-dev add patch has is defined in devDependencies', function () {
       const patch = new Patch(Patch.ADD, {
         name: 'dev-dependency-1',
-        files: ['test.js'],
+        files: ['test.mjs'],
       });
       const child = this.comptroller;
       this.comptroller.logPatch(child, patch);
@@ -175,7 +175,7 @@ describe('Comptroller', function () {
     it('should warn when non-dev update patch has is defined in devDependencies', function () {
       const patch = new Patch(Patch.UPDATE, {
         name: 'dev-dependency-1',
-        files: ['test.js'],
+        files: ['test.mjs'],
       });
       const child = this.comptroller;
       this.comptroller.logPatch(child, patch);
@@ -185,7 +185,7 @@ describe('Comptroller', function () {
     it('should warn when update patch has no value', function () {
       const patch = new Patch(Patch.UPDATE, {
         name: 'dependency',
-        files: ['index.js', 'other.js'],
+        files: ['index.mjs', 'other.mjs'],
       });
       const child = new Package({
         root: path.join(this.packageDir, 'packages', 'package-1')

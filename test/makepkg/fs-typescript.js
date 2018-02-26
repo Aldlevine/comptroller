@@ -22,6 +22,7 @@ module.exports = {
         "dev-dependency-2": "8.8.8"
       },
       "comptroller": {
+        "log": true,
         "source": "index.js",
         "dev": "test.js",
         "inherits": ["version", "author"],
@@ -31,8 +32,8 @@ module.exports = {
   `,
   'index.ts': dedent(srcFile),
   'test.ts': dedent `
-    import from "dev-dependency-1"
-    import from "dev-dependency-3";
+    import { z } from "dev-dependency-1";
+    import { a } from "dev-dependency-3";
   `,
   'packages': {
     'package-1': {
@@ -51,10 +52,10 @@ module.exports = {
         }
       `,
       'index.ts': dedent `
-        import from 'dependency-1';
-        import from 'dependency-2';
-        import from 'doesnt-exist';
-        import from 'events';
+        import * from 'dependency-1';
+        import * from 'dependency-2';
+        import * from 'doesnt-exist';
+        import * from 'events';
       `
     },
     'package-2': {
@@ -68,9 +69,9 @@ module.exports = {
         }
       `,
       'index.ts': dedent `
-        import from 'dependency-1';
-        import from 'dependency-2';
-        import from '@test/package-1';
+        import * from 'dependency-1';
+        import * from 'dependency-2';
+        import * from '@test/package-1';
       `
     }
   }

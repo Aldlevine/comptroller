@@ -30,8 +30,8 @@ module.exports = {
   `,
   'index.mjs': dedent(srcFile),
   'test.mjs': dedent `
-    import from "dev-dependency-1"
-    import from "dev-dependency-3";
+    import * from "dev-dependency-1";
+    import * from "dev-dependency-3";
   `,
   'packages': {
     'package-1': {
@@ -50,10 +50,10 @@ module.exports = {
         }
       `,
       'index.mjs': dedent `
-        import from 'dependency-1';
-        import from 'dependency-2';
-        import from 'doesnt-exist';
-        import from 'events';
+        import * from 'dependency-1';
+        import * from 'dependency-2';
+        import * from 'doesnt-exist';
+        import * from 'events';
       `
     },
     'package-2': {
@@ -67,9 +67,9 @@ module.exports = {
         }
       `,
       'index.mjs': dedent `
-        import from 'dependency-1';
-        import from 'dependency-2';
-        import from '@test/package-1';
+        import * from 'dependency-1';
+        import * from 'dependency-2';
+        import * from '@test/package-1';
       `
     }
   }

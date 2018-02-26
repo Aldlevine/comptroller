@@ -33,6 +33,7 @@
     "test": "ez test",
     "test:cjs": "ez testcjs",
     "test:ts": "ez testts",
+    "test:typescript": "ez testts",
     "test:amd": "ez testamd",
     "test:es6": "ez testes6",
     "update": "ez update",
@@ -51,7 +52,7 @@
     "detective": "github:kristianmandrup/detective",
     "detective-amd": "^2.4.0",
     "detective-es6": "^1.2.0",
-    "detective-typescript": "^2.0.0",
+    "detective-typescript": "github:kristianmandrup/detective-typescript",
     "fs-extra": "^4.0.2",
     "glob": "^7.1.2",
     "json-beautify": "^1.0.1",
@@ -84,11 +85,14 @@
     "detective": {
       "commonjs": {
         "parse": {
-          "plugins": ["objectRestSpread"]
+          "plugins": [
+            "objectRestSpread"
+          ]
         }
       }
     },
-    "exclude": [{
+    "exclude": [
+      {
         "group": "builtins"
       },
       "babel-traverse",
