@@ -1,0 +1,19 @@
+import from 'dependency-1';
+import from 'dependency-2';
+
+import { x as $x } from 'excluded-dependency'
+
+const x = 42
+
+class App extends Component {
+  render({ props }) {
+    return (
+      <Header title={props.title}>
+        <Text>{props.text}</Text>
+      </Header>
+    )
+  }
+}
+
+import from 'http'
+import * from 'not-a-package';

@@ -325,3 +325,39 @@ node_modules
 Now you can have no fear that your interdependent packages will function exactly
 as they will in the wild (and you'll have only burned `~0.017` calories in the
 process)!
+
+## Running scripts
+
+The npm scripts are run using `ez` binary from `scripteasy` which uses a `scripts.yml` file with simple YAML entries for each script supported:
+
+```txt
+test: nyc mocha --recursive
+```
+
+## Testing
+
+The tests are written using `mocha` and `chai` spiced up with some `sinon`,
+`proxyquire` and other useful libs.
+
+Currently only tests commonJS dependencies. Please add tests and file structures
+to cover testing for the other module formats supported.
+
+### CommonJS
+
+- `test/commonjs`
+- `test/makepkg/fs-common.js`
+
+### ES6
+
+- `test/es6`
+- `test/makepkg/fs-es6.js`
+
+### TypeScript
+
+- `test/typescript`
+- `test/makepkg/fs-typescript.js`
+
+### AMD
+
+- `test/amd`
+- `test/makepkg/fs-amd.js`

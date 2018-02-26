@@ -15,8 +15,12 @@
   "license": "MIT",
   "author": "Aaron Levine <ald.levine@gmail.com>",
   "main": "src/comptroller.js",
-  "bin": { "comp": "./src/cli.js" },
-  "directories": { "doc": "docs" },
+  "bin": {
+    "comp": "./src/cli.js"
+  },
+  "directories": {
+    "doc": "docs"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Aldlevine/comptroller.git"
@@ -27,6 +31,10 @@
     "commitmsg": "ez commitmsg",
     "docs": "ez docs",
     "test": "ez test",
+    "test:cjs": "ez testcjs",
+    "test:ts": "ez testts",
+    "test:amd": "ez testamd",
+    "test:es6": "ez testes6",
     "update": "ez update",
     "version": "ez version"
   },
@@ -71,15 +79,18 @@
   },
   "comptroller": {
     "source": "src/**/*.js",
-    "dev": "{test/**.*.js,utils/**/*.js}",
+    "dev": "{test/**/*.js,utils/**/*.js}",
     "pretty": 40,
     "detective": {
-      "parse": {
-        "plugins": [ "objectRestSpread" ]
+      "commonjs": {
+        "parse": {
+          "plugins": ["objectRestSpread"]
+        }
       }
     },
-    "exclude": [
-      { "group": "builtins" },
+    "exclude": [{
+        "group": "builtins"
+      },
       "babel-traverse",
       "babylon"
     ]

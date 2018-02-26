@@ -111,6 +111,15 @@ module.exports = class Package {
     this._es6 = es6;
   }
 
+  get checkExtMap() {
+    return {
+      ts: /tsx?$/,
+      js: /jsx?$/,
+      es6: /mjsx?$/,
+      default: /jsx?$/
+    }
+  }
+
   /**
    * The package's root directory.
    * @type {string}
@@ -270,40 +279,73 @@ module.exports = class Package {
     return (this.detective || {})[name] || this.detective
   }
 
+  // SEE: https://github.com/kristianmandrup/comptroller/blob/master/src/package.js#L269
+
   depsFor(name, src) {
     if (!this[name]) return []
-    const opts = this.detectiveOpts(name)
-    return detective[name](src, opts)
+    const opts = this.detectiveOpts(name) || {}
+    const $detective = detective[name]
+    if (!$detective) {
+      throw new Error(`detective not registered: ${name}`)
+    }
+    return $detective(src, opts)
   }
 
   fileExtension(file) {
     return path.extname(file).slice(1)
   }
 
-  resolveTs(src, ext) {
-    if (/^ts/.test(ext)) return this.depsFor('commonjs', src)
+  concatDeps(...deps) {
+    deps = deps.filter(dep => Array.isArray(dep))
+    return [].concat(...deps)
   }
 
-  resolveMjs(src, ext) {
-    if (/^mjs/.test(ext)) return this.depsFor('es6', src)
+  matchExt(ext) {
+    const regExp = this.checkExtMap[ext] || this.checkExtMap.default
+    return regExp.test(ext)
   }
 
-  resolveJs(src, ext) {
-    if (/^js/.test(ext)) return [].concat(
+  resolve_ts(src, ext) {
+    if (this.matchExt(ext)) return this.depsFor('typescript', src)
+  }
+
+  resolve_es6(src, ext) {
+    if (this.matchExt(ext)) return this.depsFor('es6', src)
+  }
+
+  resolve_js(src, ext) {
+    if (this.matchExt(ext)) return this.concatDeps(
       this.depsFor('commonjs', src),
       this.depsFor('es6', src),
       this.depsFor('amd', src)
     )
   }
 
-  resolveDefault(ext, src) {
+  resolve_default(src, ext) {
     // default fallback to include all
-    return [].concat(
+    return this.concatDeps(
       this.depsFor('commonjs', src),
       this.depsFor('es6', src),
       this.depsFor('typescript', src),
       this.depsFor('amd', src)
     )
+  }
+
+  resolveByExt(src, ext, {
+    file,
+    names
+  }) {
+    names = names || ['js', 'es6', 'ts', 'default']
+    return names.reduce((acc, name) => {
+      // try to resolve using each extension until one returns dependencies
+      if (acc.length > 0) return acc
+      const fun = this[`resolve_${name}`].bind(this)
+      const result = fun(src, ext)
+      if (result) {
+        acc = acc.concat(result)
+      }
+      return acc
+    }, [])
   }
 
   /**
@@ -312,7 +354,9 @@ module.exports = class Package {
    */
   findDependencies(src, file) {
     const ext = this.fileExtension(file)
-    return this.resolveJs(src, ext) || this.resolveMjs(src, ext) || this.resolveTs(src, ext) || this.resolveDefault(src, ext)
+    return this.resolveByExt(src, ext, {
+      file
+    })
   }
 
   /**
