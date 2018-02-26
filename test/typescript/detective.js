@@ -18,7 +18,11 @@ describe('typescript detective', () => {
   })
 
   it('should detect dependencies in /files/typescript.tsx with TSX', () => {
-    const src = readSrcFile('typescript.tsx')
+    const src = readSrcFile('typescript.tsx', {
+      ecmaFeatures: {
+        jsx: true
+      }
+    })
     const expectedDeps = ['http', 'not-a-package', 'dependency-1', 'dependency-2', 'excluded-dependency']
 
     const dependencies = detective(src)

@@ -294,7 +294,7 @@ module.exports = class Package {
   }
 
   detectiveOpts(name) {
-    return (this.detective || {})[name] || this.detective
+    return (this.detective || {})[name] || this.detective || {}
   }
 
   log(msg, data) {
@@ -318,7 +318,14 @@ module.exports = class Package {
       name,
       file
     })
-    const opts = this.detectiveOpts(name) || {}
+    const ext = thisfileExtension(file)
+    const baseOpts = ext === 'tsx' ? {
+      ecmaFeatures: {
+        jsx: true
+      }
+    } : {}
+
+    const opts = Object.assign(baseOpts, this.detectiveOpts(name))
     const $detective = detective[name]
 
     if (!$detective) {
