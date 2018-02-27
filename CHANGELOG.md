@@ -1,3 +1,19 @@
+<a name="0.4.0"></a>
+## [0.4.0](https://github.com/kristianmandrup/comptroller/commit/99ee5a0c6356b1fe727f61b4c908e393aecd82c4) (2018-1-3)
+
+Project module dependencies:
+
+- Adds detective support for
+  - CommonJS
+  - AMD
+  - TypeScript (with TSX)
+  - ES6 modules (with JSX)
+
+Performance:
+
+- Use [fast-glob](https://www.npmjs.com/package/fast-glob)
+
+
 <a name="0.3.1-0"></a>
 ## [0.3.1-0](https://github.com/Aldlevine/comptroller/compare/v0.3.0...v0.3.1-0) (2017-11-15)
 
