@@ -1,15 +1,22 @@
+require('./settings')
 require('mocha-sinon');
 const proxyquire = require('proxyquire');
-const path = require('../src/path');
-const {expect} = require('chai');
-const {makepkg, rempkg, fileStructure} = require('./makepkg');
-const fs = require('../src/fs');
-const Patch = require('../src/patch');
-const Package = require('../src/package');
+const path = require('../../src/path');
+const {
+  expect
+} = require('chai');
+const {
+  makepkg,
+  rempkg,
+  fileStructure
+} = require('./makepkg');
+const fs = require('../../src/fs');
+const Patch = require('../../src/patch');
+const Package = require('../../src/package');
 
 proxyquire.noCallThru().noPreserveCache();
 
-describe('Comptroller', function () {
+describe('Comptroller: TypeScript', function () {
   beforeEach(async function () {
     this.logger = {
       log: this.sinon.stub(),
@@ -17,14 +24,16 @@ describe('Comptroller', function () {
       warn: this.sinon.stub(),
       error: this.sinon.stub(),
     };
-    const Comptroller = proxyquire('../src/comptroller', {
+    const Comptroller = proxyquire('../../src/comptroller', {
       './logger': this.logger,
     });
 
     this.packageDir = path.resolve(__dirname, 'test-package')
     await rempkg(this.packageDir);
     await makepkg(this.packageDir, fileStructure);
-    this.comptroller = new Comptroller({root: this.packageDir});
+    this.comptroller = new Comptroller({
+      root: this.packageDir
+    });
   });
 
   afterEach(async function () {
@@ -35,7 +44,7 @@ describe('Comptroller', function () {
   });
 
   describe('#readChildren()', function () {
-    it('should return all children with package.json files', function () {
+    it('should return all children with package.tson files', function () {
       const children = this.comptroller.readChildren();
       expect(children.length).to.equal(2);
       expect(children[0]).to.be.an.instanceof(Package);
@@ -56,16 +65,20 @@ describe('Comptroller', function () {
   });
 
   describe('#updatePatches(patches)', function () {
-    it('should get value from package.json for remote add patch', function () {
-      const patch = new Patch(Patch.ADD, {name: 'dependency-1'});
+    it('should get value from package.tson for remote add patch', function () {
+      const patch = new Patch(Patch.ADD, {
+        name: 'dependency-1'
+      });
       const updated = this.comptroller.updatePatches([patch]);
       expect(updated.length).to.equal(1);
       expect(updated[0].source).to.equal('remote');
       expect(updated[0].value).to.equal('0.0.0');
     });
 
-    it('should get value from package.json for remote update patch', function () {
-      const patch = new Patch(Patch.UPDATE, {name: 'dependency-2'});
+    it('should get value from package.tson for remote update patch', function () {
+      const patch = new Patch(Patch.UPDATE, {
+        name: 'dependency-2'
+      });
       const updated = this.comptroller.updatePatches([patch]);
       expect(updated.length).to.equal(1);
       expect(updated[0].source).to.equal('remote');
@@ -73,7 +86,9 @@ describe('Comptroller', function () {
     });
 
     it('should get value from local packages for local add patch', function () {
-      const patch = new Patch(Patch.ADD, {name: '@test/package-1'});
+      const patch = new Patch(Patch.ADD, {
+        name: '@test/package-1'
+      });
       const updated = this.comptroller.updatePatches([patch]);
       expect(updated.length).to.equal(1);
       expect(updated[0].source).to.equal('local');
@@ -81,15 +96,19 @@ describe('Comptroller', function () {
     });
 
     it('should get value from local packages for local update patch', function () {
-      const patch = new Patch(Patch.ADD, {name: '@test/package-2'});
+      const patch = new Patch(Patch.ADD, {
+        name: '@test/package-2'
+      });
       const updated = this.comptroller.updatePatches([patch]);
       expect(updated.length).to.equal(1);
       expect(updated[0].source).to.equal('local');
       expect(updated[0].value).to.equal('0.0.2');
     });
 
-    it('should get value from package.json for remote update patch', function () {
-      const patch = new Patch(Patch.UPDATE, {name: 'dependency-2'});
+    it('should get value from package.tson for remote update patch', function () {
+      const patch = new Patch(Patch.UPDATE, {
+        name: 'dependency-2'
+      });
       const updated = this.comptroller.updatePatches([patch]);
       expect(updated.length).to.equal(1);
       expect(updated[0].source).to.equal('remote');
@@ -97,14 +116,18 @@ describe('Comptroller', function () {
     });
 
     it('should mark remove patches as disabled when prune is false', function () {
-      const patch = new Patch(Patch.REMOVE, {name: 'dependency'});
+      const patch = new Patch(Patch.REMOVE, {
+        name: 'dependency'
+      });
       const updated = this.comptroller.updatePatches([patch]);
       expect(updated.length).to.equal(1);
       expect(updated[0].disabled).to.be.true;
     });
 
     it('should mark remove patches as not disabled when prune is true', function () {
-      const patch = new Patch(Patch.REMOVE, {name: 'dependency'});
+      const patch = new Patch(Patch.REMOVE, {
+        name: 'dependency'
+      });
       this.comptroller._prune = true;
       const updated = this.comptroller.updatePatches([patch]);
       expect(updated.length).to.equal(1);
@@ -112,7 +135,9 @@ describe('Comptroller', function () {
     });
 
     it('should update inherit patches with value from packageJson', function () {
-      const patch = new Patch(Patch.INHERIT, {name: 'version'});
+      const patch = new Patch(Patch.INHERIT, {
+        name: 'version'
+      });
       const updated = this.comptroller.updatePatches([patch]);
       expect(updated.length).to.equal(1);
       expect(updated[0].value).to.equal('0.0.1');
@@ -129,41 +154,45 @@ describe('Comptroller', function () {
     it('should warn when add patch has no value', function () {
       const patch = new Patch(Patch.ADD, {
         name: 'dependency',
-        files: ['index.js', 'other.js'],
+        files: ['index.ts', 'other.ts'],
       });
-      const child = new Package({root: path.join(this.packageDir, 'packages', 'package-1')});
+      const child = new Package({
+        root: path.join(this.packageDir, 'packages', 'package-1')
+      });
       this.comptroller.logPatch(child, patch);
-      expect(this.logger.warn.calledWith(`WARNING: 'dependency' required by @test/package-1 (index.js,other.js) not found in package.json or local packages.`)).to.be.true;
+      expect(this.logger.warn.calledWith(`WARNING: 'dependency' required by @test/package-1 (index.ts,other.ts) not found in package.json or local packages.`)).to.be.true;
     });
 
     it('should warn when non-dev add patch has is defined in devDependencies', function () {
       const patch = new Patch(Patch.ADD, {
         name: 'dev-dependency-1',
-        files: ['test.js'],
+        files: ['test.ts'],
       });
       const child = this.comptroller;
       this.comptroller.logPatch(child, patch);
-      expect(this.logger.warn.calledWith(`WARNING: 'dev-dependency-1' required by test-package in non-dev source (test.js) was found in package.json devDependencies.`)).to.be.true;
+      expect(this.logger.warn.calledWith(`WARNING: 'dev-dependency-1' required by test-package in non-dev source (test.ts) was found in package.json devDependencies.`)).to.be.true;
     });
 
     it('should warn when non-dev update patch has is defined in devDependencies', function () {
       const patch = new Patch(Patch.UPDATE, {
         name: 'dev-dependency-1',
-        files: ['test.js'],
+        files: ['test.ts'],
       });
       const child = this.comptroller;
       this.comptroller.logPatch(child, patch);
-      expect(this.logger.warn.calledWith(`WARNING: 'dev-dependency-1' required by test-package in non-dev source (test.js) was found in package.json devDependencies.`)).to.be.true;
+      expect(this.logger.warn.calledWith(`WARNING: 'dev-dependency-1' required by test-package in non-dev source (test.ts) was found in package.json devDependencies.`)).to.be.true;
     });
 
     it('should warn when update patch has no value', function () {
       const patch = new Patch(Patch.UPDATE, {
         name: 'dependency',
-        files: ['index.js', 'other.js'],
+        files: ['index.ts', 'other.ts'],
       });
-      const child = new Package({root: path.join(this.packageDir, 'packages', 'package-1')});
+      const child = new Package({
+        root: path.join(this.packageDir, 'packages', 'package-1')
+      });
       this.comptroller.logPatch(child, patch);
-      expect(this.logger.warn.calledWith(`WARNING: 'dependency' required by @test/package-1 (index.js,other.js) not found in package.json or local packages.`)).to.be.true;
+      expect(this.logger.warn.calledWith(`WARNING: 'dependency' required by @test/package-1 (index.ts,other.ts) not found in package.json or local packages.`)).to.be.true;
     });
 
     it('should log add patch', function () {
@@ -172,7 +201,9 @@ describe('Comptroller', function () {
         source: 'local',
         value: '1.0.0',
       });
-      const child = new Package({root: path.join(this.packageDir, 'packages', 'package-1')});
+      const child = new Package({
+        root: path.join(this.packageDir, 'packages', 'package-1')
+      });
       this.comptroller.logPatch(child, patch);
       expect(this.logger.log.calledWith(`Adding local package 'dependency@1.0.0' to package '@test/package-1'`)).to.be.true;
     });
@@ -183,7 +214,9 @@ describe('Comptroller', function () {
         source: 'remote',
         value: '1.0.0',
       });
-      const child = new Package({root: path.join(this.packageDir, 'packages', 'package-1')});
+      const child = new Package({
+        root: path.join(this.packageDir, 'packages', 'package-1')
+      });
       this.comptroller.logPatch(child, patch);
       expect(this.logger.log.calledWith(`Updating remote package 'dependency-1' from 0.0.0 to 1.0.0 in package '@test/package-1'`)).to.be.true;
     });
@@ -194,7 +227,9 @@ describe('Comptroller', function () {
         source: 'remote',
         value: '0.0.0',
       });
-      const child = new Package({root: path.join(this.packageDir, 'packages', 'package-1')});
+      const child = new Package({
+        root: path.join(this.packageDir, 'packages', 'package-1')
+      });
       this.comptroller.logPatch(child, patch);
       expect(this.logger.log.calledOnce).to.be.false;
     });
@@ -203,7 +238,9 @@ describe('Comptroller', function () {
       const patch = new Patch(Patch.REMOVE, {
         name: 'dependency',
       });
-      const child = new Package({root: path.join(this.packageDir, 'packages', 'package-1')});
+      const child = new Package({
+        root: path.join(this.packageDir, 'packages', 'package-1')
+      });
       this.comptroller.logPatch(child, patch);
       expect(this.logger.log.calledWith(`Removing package 'dependency' from '@test/package-1'`)).to.be.true;
     });
@@ -213,7 +250,9 @@ describe('Comptroller', function () {
         name: 'version',
         value: '1.0.0',
       });
-      const child = new Package({root: path.join(this.packageDir, 'packages', 'package-1')});
+      const child = new Package({
+        root: path.join(this.packageDir, 'packages', 'package-1')
+      });
       this.comptroller.logPatch(child, patch);
       expect(this.logger.log.calledWith(`Updating field version from "0.0.0" to "1.0.0" in package '@test/package-1'`)).to.be.true;
     });
@@ -223,7 +262,9 @@ describe('Comptroller', function () {
         name: 'author',
         value: 'Some Body',
       });
-      const child = new Package({root: path.join(this.packageDir, 'packages', 'package-1')});
+      const child = new Package({
+        root: path.join(this.packageDir, 'packages', 'package-1')
+      });
       this.comptroller.logPatch(child, patch);
       expect(this.logger.log.calledWith(`Adding field author as "Some Body" to package '@test/package-1'`)).to.be.true;
     });
@@ -233,7 +274,9 @@ describe('Comptroller', function () {
         name: 'version',
         value: '0.0.0',
       });
-      const child = new Package({root: path.join(this.packageDir, 'packages', 'package-1')});
+      const child = new Package({
+        root: path.join(this.packageDir, 'packages', 'package-1')
+      });
       this.comptroller.logPatch(child, patch);
       expect(this.logger.log.calledOnce).to.be.false;
     });
@@ -243,7 +286,9 @@ describe('Comptroller', function () {
         name: 'dependency',
         disabled: true,
       });
-      const child = new Package({root: path.join(this.packageDir, 'packages', 'package-1')});
+      const child = new Package({
+        root: path.join(this.packageDir, 'packages', 'package-1')
+      });
       this.comptroller.logPatch(child, patch);
       expect(this.logger.log.calledWith(`DISABLED: Removing package 'dependency' from '@test/package-1'`)).to.be.true;
     });
@@ -325,4 +370,3 @@ describe('Comptroller', function () {
     });
   });
 });
-

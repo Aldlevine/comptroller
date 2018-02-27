@@ -1,9 +1,16 @@
-const path = require('../src/path');
 const dedent = require('dedent');
-const fs = require('../src/fs');
 
-exports.fileStructure = {
-  'package.json': dedent`
+// "comptroller": {
+//   "srource": "index.js",
+// }
+
+// FUCKS UP!
+// "comptroller": {
+//   "source": "index.js",
+// }
+
+module.exports = {
+  'package.json': dedent `
     {
       "name": "test-package",
       "version": "0.0.1",
@@ -18,27 +25,27 @@ exports.fileStructure = {
         "dev-dependency-2": "8.8.8"
       },
       "comptroller": {
-        "srource": "index.js",
+        "source": "**/*.js",
         "dev": "test.js",
         "inherits": ["version", "author"],
         "exclude": ["excluded-dependency"]
       }
     }
   `,
-  'index.js': dedent`
+  'index.js': dedent `
     require('dependency-1');
     require('dependency-2');
     require('excluded-dependency');
     require('http');
     require('not-a-package');
   `,
-  'test.js': dedent`
+  'test.js': dedent `
     require("dev-dependency-1");
     require("dev-dependency-3");
   `,
   'packages': {
     'package-1': {
-      'package.json': dedent`
+      'package.json': dedent `
         {
           "name": "@test/package-1",
           "version": "0.0.0",
@@ -52,7 +59,7 @@ exports.fileStructure = {
           }
         }
       `,
-      'index.js': dedent`
+      'index.js': dedent `
         require('dependency-1');
         require('dependency-2');
         require('doesnt-exist');
@@ -60,7 +67,7 @@ exports.fileStructure = {
       `
     },
     'package-2': {
-      'package.json': dedent`
+      'package.json': dedent `
         {
           "name": "@test/package-2",
           "version": "0.0.2",
@@ -69,31 +76,11 @@ exports.fileStructure = {
           }
         }
       `,
-      'index.js': dedent`
+      'index.js': dedent `
         require('dependency-1');
         require('dependency-2');
         require('@test/package-1');
       `
     }
   }
-};
-
-exports.makepkg = async function makepkg (location, structure)
-{
-  await fs.ensureDirPlease(location);
-  for (let entry in structure) {
-    const dir = path.resolve(location, entry);
-    const content = structure[entry];
-    if (typeof content === 'object') {
-      await makepkg(dir, content);
-    }
-    else {
-      await fs.writeFilePlease(dir, content);
-    }
-  }
-};
-
-exports.rempkg = async function rempkg (location)
-{
-  await fs.removePlease(location);
 };

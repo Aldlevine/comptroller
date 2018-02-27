@@ -1,16 +1,25 @@
-const path = require('../src/path');
-const {expect} = require('chai');
-const {makepkg, rempkg, fileStructure} = require('./makepkg');
-const fs = require('../src/fs');
-const Patch = require('../src/patch');
-const Package = require('../src/package');
+require('./settings')
+const path = require('../../src/path');
+const {
+  expect
+} = require('chai');
+const {
+  makepkg,
+  rempkg,
+  fileStructure
+} = require('./makepkg');
+const fs = require('../../src/fs');
+const Patch = require('../../src/patch');
+const Package = require('../../src/package');
 
-describe('Package', function () {
+describe('Package: AMD', function () {
   beforeEach(async function () {
     this.packageDir = path.resolve(__dirname, 'test-package')
     await rempkg(this.packageDir);
     await makepkg(this.packageDir, fileStructure);
-    this.package = new Package({root: this.packageDir});
+    this.package = new Package({
+      root: this.packageDir
+    });
   });
 
   afterEach(async function () {
@@ -40,18 +49,46 @@ describe('Package', function () {
   describe('#analyzeSourceDependencies()', function () {
     it('should return correct dependencies', async function () {
       const dependencies = {
-        'dependency-1': {files: ['index.js', 'packages/package-1/index.js', 'packages/package-2/index.js']},
-        'dependency-2': {files: ['index.js', 'packages/package-2/index.js']},
-        'http': {files: ['index.js']},
-        'not-a-package': {files: ['index.js']},
-        'doesnt-exist': {files: ['packages/package-1/index.js']},
-        'events': {files: ['packages/package-1/index.js']},
-        '@test/package-1': {files: ['packages/package-2/index.js']},
-        'dev-dependency-1': {files: ['index.js', 'test.js']},
+        'dependency-1': {
+          files: ['index.js', 'packages/package-1/index.js', 'packages/package-2/index.js']
+        },
+        'dependency-2': {
+          files: ['index.js', 'packages/package-2/index.js']
+        },
+        'http': {
+          files: ['index.js']
+        },
+        'not-a-package': {
+          files: ['index.js']
+        },
+        'doesnt-exist': {
+          files: ['packages/package-1/index.js']
+        },
+        'events': {
+          files: ['packages/package-1/index.js']
+        },
+        '@test/package-1': {
+          files: ['packages/package-2/index.js']
+        },
+        'dev-dependency-1': {
+          files: ['index.js', 'test.js']
+        },
       };
       const analyzed = await this.package.analyzeSourceDependencies();
-      expect(analyzed).to.have.all.keys('dependency-1', 'dependency-2', 'http', 'not-a-package', 'doesnt-exist',
-                                        'events', '@test/package-1', 'dev-dependency-1', 'dev-dependency-3');
+
+      // NOTE: AMD dependencies resolved a bit differently :P
+      const keys = [
+        'dependency-1',
+        'dependency-2',
+        'dependency-3',
+        'http',
+        'not-a-package',
+        'doesnt-exist',
+        'events',
+        '@test/package-1',
+      ]
+
+      expect(analyzed).to.have.all.keys(keys);
 
       expect(analyzed['dependency-1']).to.have.key('files');
       expect(analyzed['dependency-1']['files']).to.include('index.js', 'packages/package-1/index.js', 'packages/package-2/index.js');
@@ -78,7 +115,14 @@ describe('Package', function () {
 
   describe('#generateDependencyPatches(dependencies)', function () {
     it('should generate update patches for used dependences', function () {
-      const newDeps = {'dependency-1': {files: ['file-1.js']}, 'dependency-2': {files: ['file-2.js']}};
+      const newDeps = {
+        'dependency-1': {
+          files: ['file-1.js']
+        },
+        'dependency-2': {
+          files: ['file-2.js']
+        }
+      };
       const patches = this.package.generateDependencyPatches(newDeps);
 
       expect(patches).to.be.an('array');
@@ -96,7 +140,14 @@ describe('Package', function () {
     });
 
     it('should generate update patches for used devDependences', function () {
-      const newDeps = {'dev-dependency-1': {files: ['test.js']}, 'dev-dependency-2': {files: ['test.js']}};
+      const newDeps = {
+        'dev-dependency-1': {
+          files: ['test.js']
+        },
+        'dev-dependency-2': {
+          files: ['test.js']
+        }
+      };
       const patches = this.package.generateDependencyPatches(newDeps);
 
       expect(patches).to.be.an('array');
@@ -114,7 +165,17 @@ describe('Package', function () {
     });
 
     it('should generate add patches for new dependencies', function () {
-      const newDeps = {'dependency-1': {files: ['file-1.js']}, 'dependency-2': {files: ['file-2.js']}, 'dependency-3': {files: ['file-3.js']}};
+      const newDeps = {
+        'dependency-1': {
+          files: ['file-1.js']
+        },
+        'dependency-2': {
+          files: ['file-2.js']
+        },
+        'dependency-3': {
+          files: ['file-3.js']
+        }
+      };
       const patches = this.package.generateDependencyPatches(newDeps);
       expect(patches).to.be.an('array');
       expect(patches.length).to.equal(4);
@@ -126,7 +187,11 @@ describe('Package', function () {
     });
 
     it('should generate add patches for new devDependencies', function () {
-      const newDeps = {'dev-dependency-3': {files: ['test.js']}};
+      const newDeps = {
+        'dev-dependency-3': {
+          files: ['test.js']
+        }
+      };
       const patches = this.package.generateDependencyPatches(newDeps);
       expect(patches).to.be.an('array');
       expect(patches.length).to.equal(4);

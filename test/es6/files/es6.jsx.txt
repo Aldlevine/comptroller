@@ -1,0 +1,17 @@
+import * as a from 'dependency-1';
+import * as b from 'dependency-2';
+import { x as $x } from 'excluded-dependency';
+const x = 42;
+
+class App extends Component {
+  render({ props }) {
+    return (
+      <Header title={props.title}>
+        <Text>{props.text}</Text>
+      </Header>
+    );
+  }
+};
+
+import * as c from 'http';
+import * as d from 'not-a-package';
