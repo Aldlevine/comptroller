@@ -1,6 +1,9 @@
-const {promisify} = require('util');
+const {
+  promisify
+} = require('util');
+const fastGlob = require('fast-glob');
 const glob = require('glob');
 
-glob.please = promisify(glob);
+glob.please = fastGlob // promisify(glob);
 
 module.exports = glob;

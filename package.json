@@ -1,12 +1,13 @@
 {
   "name": "comptroller",
-  "version": "0.3.1-0",
+  "version": "0.4.0",
   "description": "A simple and lightweight tool to manage your monorepo.",
   "keywords": [
     "dependency-analysis",
     "dependency-manager",
     "monorepo",
-    "repository-management"
+    "repository-management",
+    "lerna-alternative"
   ],
   "homepage": "https://aldlevine.github.io/comptroller",
   "bugs": {
@@ -53,6 +54,7 @@
     "detective-amd": "^2.4.0",
     "detective-es6": "^1.2.0",
     "detective-typescript": "github:kristianmandrup/detective-typescript",
+    "fast-glob": "^2.1.0",
     "fs-extra": "^4.0.2",
     "glob": "^7.1.2",
     "json-beautify": "^1.0.1",
@@ -91,8 +93,7 @@
         }
       }
     },
-    "exclude": [
-      {
+    "exclude": [{
         "group": "builtins"
       },
       "babel-traverse",
