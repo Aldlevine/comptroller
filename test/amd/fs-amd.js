@@ -1,4 +1,11 @@
 const dedent = require('dedent');
+const fs = require('../../src/fs');
+const path = require('../../src/path');
+
+exports.readSrcFile = function (srcPath) {
+  const fullSrcPath = path.join(__dirname, 'files', srcPath)
+  return fs.readFileSync(fullSrcPath, 'utf8')
+}
 
 module.exports = {
   'package.json': dedent `
@@ -16,7 +23,7 @@ module.exports = {
         "dev-dependency-2": "8.8.8"
       },
       "comptroller": {
-        "source": "index.js",
+        "source": "**/*.js",
         "dev": "test.js",
         "inherits": ["version", "author"],
         "exclude": ["excluded-dependency"]

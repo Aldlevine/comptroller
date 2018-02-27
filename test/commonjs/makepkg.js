@@ -2,11 +2,7 @@ const path = require('../../src/path');
 const dedent = require('dedent');
 const fs = require('../../src/fs');
 
-const fileStructure = require('./fs-commonjs')
-
-console.log(fileStructure)
-
-exports.fileStructure = fileStructure
+exports.fileStructure = require('./fs-commonjs')
 
 exports.makepkg = async function makepkg(location, structure) {
   await fs.ensureDirPlease(location);

@@ -1,3 +1,4 @@
+require('./settings')
 const path = require('../../src/path');
 const {
   expect
@@ -6,16 +7,16 @@ const {
   makepkg,
   rempkg,
   fileStructure
-} = require('../makepkg');
+} = require('./makepkg');
 const fs = require('../../src/fs');
 const Patch = require('../../src/patch');
 const Package = require('../../src/package');
 
-describe('Package', function () {
+describe('Package: TypeScript', function () {
   beforeEach(async function () {
     this.packageDir = path.resolve(__dirname, 'test-package')
     await rempkg(this.packageDir);
-    await makepkg(this.packageDir, fileStructure.typescript);
+    await makepkg(this.packageDir, fileStructure);
     this.package = new Package({
       root: this.packageDir
     });
@@ -45,7 +46,7 @@ describe('Package', function () {
     });
   });
 
-  describe.only('#analyzeSourceDependencies()', function () {
+  describe('#analyzeSourceDependencies()', function () {
     it('should return correct dependencies', async function () {
       const dependencies = {
         'dependency-1': {
@@ -73,12 +74,8 @@ describe('Package', function () {
           files: ['index.ts', 'test.ts']
         },
       };
+
       const analyzed = await this.package.analyzeSourceDependencies();
-
-      console.log({
-        analyzed
-      })
-
       const keys = [
         'dependency-1',
         'dependency-2',
@@ -93,26 +90,26 @@ describe('Package', function () {
 
       expect(analyzed).to.have.all.keys(keys);
 
-      // expect(analyzed['dependency-1']).to.have.key('files');
-      // expect(analyzed['dependency-1']['files']).to.include('index.ts', 'packages/package-1/index.ts', 'packages/package-2/index.ts');
+      expect(analyzed['dependency-1']).to.have.key('files');
+      expect(analyzed['dependency-1']['files']).to.include('index.ts', 'packages/package-1/index.ts', 'packages/package-2/index.ts');
 
-      // expect(analyzed['dependency-2']).to.have.key('files');
-      // expect(analyzed['dependency-2']['files']).to.include('index.ts', 'packages/package-2/index.ts');
+      expect(analyzed['dependency-2']).to.have.key('files');
+      expect(analyzed['dependency-2']['files']).to.include('index.ts', 'packages/package-2/index.ts');
 
-      // expect(analyzed['http']).to.have.key('files');
-      // expect(analyzed['http']['files']).to.include('index.ts');
+      expect(analyzed['http']).to.have.key('files');
+      expect(analyzed['http']['files']).to.include('index.ts');
 
-      // expect(analyzed['not-a-package']).to.have.key('files');
-      // expect(analyzed['not-a-package']['files']).to.include('index.ts');
+      expect(analyzed['not-a-package']).to.have.key('files');
+      expect(analyzed['not-a-package']['files']).to.include('index.ts');
 
-      // expect(analyzed['doesnt-exist']).to.have.key('files');
-      // expect(analyzed['doesnt-exist']['files']).to.include('packages/package-1/index.ts');
+      expect(analyzed['doesnt-exist']).to.have.key('files');
+      expect(analyzed['doesnt-exist']['files']).to.include('packages/package-1/index.ts');
 
-      // expect(analyzed['events']).to.have.key('files');
-      // expect(analyzed['events']['files']).to.include('packages/package-1/index.ts');
+      expect(analyzed['events']).to.have.key('files');
+      expect(analyzed['events']['files']).to.include('packages/package-1/index.ts');
 
-      // expect(analyzed['@test/package-1']).to.have.key('files');
-      // expect(analyzed['@test/package-1']['files']).to.include('packages/package-2/index.ts');
+      expect(analyzed['@test/package-1']).to.have.key('files');
+      expect(analyzed['@test/package-1']['files']).to.include('packages/package-2/index.ts');
     });
   });
 

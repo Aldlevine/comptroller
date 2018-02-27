@@ -25,6 +25,7 @@ module.exports = {
         "dev-dependency-2": "8.8.8"
       },
       "comptroller": {
+        "source": "**/*.js",
         "dev": "test.js",
         "inherits": ["version", "author"],
         "exclude": ["excluded-dependency"]

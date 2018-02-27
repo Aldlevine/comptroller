@@ -32,6 +32,10 @@ Options:
 --------
 --prune -p                Remove unused dependencies from subpackges' package.json
 --self -s                 If set, only the root package will be updated
+--log                     Turn on logging (when resolving dependencies)
+--commonjs --cjs          CommonJS (ie. node.js require) module dependencies
+--typescript --ts         TypeScript (ie. import/export) module dependencies
+--es6 --mjs               ES6 (ie. import/export) module dependencies
 ```
 
 ## How it works
@@ -117,6 +121,10 @@ the need for to specify relative paths or to `npm install` or `npm link` them.
 
 ### Options
 
+__logOn__
+
+Turn on logging.
+
 __prune__
 
 Comptroller's `prune` option takes all those extraneous dependencies found by
@@ -126,6 +134,28 @@ __self__
 
 Comptroller's `self` option switches from managing subpackage dependencies and
 inherits to only managing the top level dependencies.
+
+### Module dependency types
+
+__commonjs__
+
+Search for CommonJS module dependencies (node.js `require`).
+Default: `true` (ON). Alias `cjs`
+
+__es6__
+
+Search for ES6 module dependencies.
+Default: `false` (OFF). Alias `mjs`
+
+__typescript__
+
+Search for TypeScript (ES6 module) dependencies.
+Default: `false` (OFF). Alias `ts`
+
+__amd__
+
+Search for AMD module dependencies.
+Default: `false` (OFF)
 
 ## The nitty gritty
 
@@ -154,9 +184,11 @@ is likely to expand to accomodate a variety of workflows.
   "author": "Some Body",
   "homepage": "https://somewhere.org",
   "comptroller": {
-    "es6": true,
-    "typescript": true,
-    "source": "**/*.{js|jsx|mjs|tsx|ts}",
+    "modules": {
+      "es6": true,
+      "ts": true,
+    },
+    "source": "**/*.{jsx?,m?js,tsx?}",
     "ignore": "**/node_modules/**",
     "exclude": [
       "not-the-droid-youre-looking-for"
@@ -175,6 +207,54 @@ is likely to expand to accomodate a variety of workflows.
   "dependencies": {
     "need-this": "1.0.0",
     "and-this": "1.2.0"
+  }
+}
+```
+
+#### Module types
+
+The module types to enable for dependency lookup can be set under `modules`
+
+```json
+"comptroller": {
+  "modules": {
+    "es6": true,
+    "ts": true,
+  }
+}
+```
+
+They can also be set directly as keys under `comptroller` (to be used only for simple cases)
+
+```json
+"comptroller": {
+  "es6": true,
+  "ts": true,
+}
+```
+
+#### Source and Dev dependencies
+
+The `source` and `dev` entries are used to set which files to search for `dependencies` and `devDependencies` respectively.
+
+For convenience, we allow a pipe `|` operator (make it more clear to the eye), which internally is substituted with `,` to be compatible with node file globs format.
+
+```json
+"comptroller": {
+  "source": "**/*.{jsx?,m?js,tsx?}",
+  "dev": "**/*.{jsx?|m?js|tsx?}" // alternative syntax using | separator
+}
+```
+
+#### Typescript and TSX
+
+For typescript, TSX will be parsed correctly only if the file extension is `.tsx` or you have set detective options to enable it specifically. Please see [typescript-eslint-parser](https://github.com/eslint/typescript-eslint-parser) for details. We recommend sticking with file extensions as the options used internally by the eslint-parser could change.
+
+```js
+"detective": {
+  "useJSXTextNode": true,
+  "ecmaFeatures": {
+    "jsx": true // can also auto-detect by supplying filePath option below
   }
 }
 ```
@@ -355,40 +435,40 @@ To enable logging while running a test suite, set `LOG="ON"`
 
 `$ LOG="ON" TS="ON" npm run test:typescript`
 
-### Test Status
-
-The infrastructure should work, but somehow the tests for `amd`, `es6` and `typescript` are still a bit "off".
-
-Please help fix the tests to make them all pass :)
+### Running tests
 
 ### CommonJS
 
 - `test/commonjs` - test suite
 - `test/makepkg/fs-common.js` - fake file structure
 
-`$ CJS="ON" nyc mocha test/commonjs/package.js`
+- Detective `$ CJS="ON" nyc mocha test/commonjs/detective.js`
+- Package `$ CJS="ON" nyc mocha test/commonjs/package.js`
+- Comptroller `$ CJS="ON" nyc mocha test/commonjs/comptroller.js`
 
 ### ES6
 
 - `test/es6` - test suite
 - `test/makepkg/fs-es6.js` - fake file structure
 
-`$ ES6="ON" nyc mocha test/es6/detective.js`
+- Detective `$ ES6="ON" nyc mocha test/es6/detective.js`
+- Package `$ ES6="ON" nyc mocha test/es6/package.js`
+- Comptroller `$ ES6="ON" nyc mocha test/es6/comptroller.js`
 
 ### TypeScript
 
 - `test/typescript` - test suite
 - `test/makepkg/fs-typescript.js` - fake file structure
 
-Individual tests:
-
 - Detective `$ TS="ON" nyc mocha test/typescript/detective.js`
-- Comptroller `$ TS="ON" nyc mocha test/typescript/comptroller.js`
 - Package `$ TS="ON" nyc mocha test/typescript/package.js`
+- Comptroller `$ TS="ON" nyc mocha test/typescript/comptroller.js`
 
 ### AMD
 
 - `test/amd` - test suite
 - `test/makepkg/fs-amd.js` - fake file structure
 
-`$ AMD="ON" nyc mocha test/amd/detective.js`
+- Detective `$ AMD="ON" nyc mocha test/amd/detective.js`
+- Package `$ AMD="ON" nyc mocha test/amd/package.js`
+- Comptroller `$ AMD="ON" nyc mocha test/amd/comptroller.js`

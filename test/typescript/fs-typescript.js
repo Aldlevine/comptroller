@@ -1,9 +1,13 @@
 const dedent = require('dedent');
-const {
-  readSrcFile
-} = require('.')
+const path = require('../../src/path');
+const fs = require('../../src/fs');
 
-const fileName = 'typescript.ts' // TODO: 'typescript.tsx'
+function readSrcFile(srcPath) {
+  const fullSrcPath = path.join(__dirname, 'files', srcPath)
+  return fs.readFileSync(fullSrcPath, 'utf8')
+}
+
+const fileName = 'typescript.ts.txt' // TODO: 'typescript.tsx'
 const srcFile = readSrcFile(fileName)
 
 // "srource": "index.ts",
@@ -24,7 +28,7 @@ module.exports = {
         "dev-dependency-2": "8.8.8"
       },
       "comptroller": {
-        "log": true,
+        "source": "**/*.{ts|tsx}",
         "dev": "test.ts",
         "inherits": ["version", "author"],
         "exclude": ["excluded-dependency"]

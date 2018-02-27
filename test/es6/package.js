@@ -1,3 +1,4 @@
+require('./settings')
 const path = require('../../src/path');
 const {
   expect
@@ -11,7 +12,7 @@ const fs = require('../../src/fs');
 const Patch = require('../../src/patch');
 const Package = require('../../src/package');
 
-describe('Package', function () {
+describe('Package: ES6', function () {
   beforeEach(async function () {
     this.packageDir = path.resolve(__dirname, 'test-package')
     await rempkg(this.packageDir);
@@ -45,7 +46,7 @@ describe('Package', function () {
     });
   });
 
-  describe.only('#analyzeSourceDependencies()', function () {
+  describe('#analyzeSourceDependencies()', function () {
     it('should return correct dependencies', async function () {
       const dependencies = {
         'dependency-1': {
@@ -74,8 +75,19 @@ describe('Package', function () {
         },
       };
       const analyzed = await this.package.analyzeSourceDependencies();
-      expect(analyzed).to.have.all.keys('dependency-1', 'dependency-2', 'http', 'not-a-package', 'doesnt-exist',
-        'events', '@test/package-1', 'dev-dependency-1', 'dev-dependency-3');
+      const keys = [
+        'dependency-1',
+        'dependency-2',
+        'http',
+        'not-a-package',
+        'doesnt-exist',
+        'events',
+        '@test/package-1',
+        'dev-dependency-1',
+        'dev-dependency-3'
+      ]
+
+      expect(analyzed).to.have.all.keys(keys);
 
       expect(analyzed['dependency-1']).to.have.key('files');
       expect(analyzed['dependency-1']['files']).to.include('index.mjs', 'packages/package-1/index.mjs', 'packages/package-2/index.mjs');

@@ -1,11 +1,6 @@
-const path = require('../../src/path');
 const dedent = require('dedent');
 const fs = require('../../src/fs');
-
-exports.readSrcFile = function (srcPath) {
-  const fullSrcPath = path.join(__dirname, 'files', srcPath)
-  return fs.readFileSync(fullSrcPath, 'utf8')
-}
+const path = require('../../src/path');
 
 exports.fileStructure = require('./fs-amd')
 

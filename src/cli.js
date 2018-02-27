@@ -34,11 +34,11 @@ const root = argv._[1] || '.';
  */
 const prune = argv.prune || argv.p;
 
-const logOn = argv.log || argv.logging;
+const logOn = argv.log || argv.logging || argv.logOn || argv.logon;
 const amd = argv.amd
-const commonjs = argv.commonjs || argv.cjs;
+let commonjs = argv.commonjs || argv.cjs;
 const typescript = argv.typescript || argv.ts;
-const es6 = argv.es6 || argv.modules;
+const es6 = argv.es6 || argv.mjs;
 
 // by default set commonjs to true
 if (commonjs === undefined) {
@@ -78,11 +78,11 @@ const cli = {
       --------
       --prune -p                Remove unused dependencies from subpackges' package.json
       --self -s                 If set, only the root package will be updated
-      --log                     Turn logging on for resolving dependencies
-      --commonjs --cjs          Search for CommonJS (ie. node.js require) module dependencies
-      --typescript --ts         Search for TypeScript (ie. import/export) module dependencies
-      --es6 --modules           Search for ES6 (ie. import/export) module dependencies
-    `);
+      --log                     Turn on logging (when resolving dependencies)
+      --commonjs --cjs          CommonJS (ie. node.js require) module dependencies
+      --typescript --ts         TypeScript (ie. import/export) module dependencies
+      --es6 --mjs               ES6 (ie. import/export) module dependencies
+  `);
   },
 
   /**

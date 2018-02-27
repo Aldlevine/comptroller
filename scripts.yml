@@ -15,7 +15,7 @@ commitmsg: commitlint -e $GIT_PARAMS
 
 docs: esdoc
 
-test: nyc mocha --recursive
+test: nyc mocha test/**/*.js --recursive
 
 testcjs: CJS="ON" nyc mocha test/commonjs --recursive
 testts: TS="ON" nyc mocha test/typescript --recursive

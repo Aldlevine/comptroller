@@ -1,3 +1,4 @@
+require('./settings')
 require('mocha-sinon');
 const proxyquire = require('proxyquire');
 const path = require('../../src/path');
@@ -15,7 +16,7 @@ const Package = require('../../src/package');
 
 proxyquire.noCallThru().noPreserveCache();
 
-describe('Comptroller', function () {
+describe('Comptroller: ES6', function () {
   beforeEach(async function () {
     this.logger = {
       log: this.sinon.stub(),
@@ -159,7 +160,8 @@ describe('Comptroller', function () {
         root: path.join(this.packageDir, 'packages', 'package-1')
       });
       this.comptroller.logPatch(child, patch);
-      expect(this.logger.warn.calledWith(`WARNING: 'dependency' required by @test/package-1 (index.js,other.js) not found in package.json or local packages.`)).to.be.true;
+      const files = `index.mjs,other.mjs`
+      expect(this.logger.warn.calledWith(`WARNING: 'dependency' required by @test/package-1 (${files}) not found in package.json or local packages.`)).to.be.true;
     });
 
     it('should warn when non-dev add patch has is defined in devDependencies', function () {
@@ -169,7 +171,8 @@ describe('Comptroller', function () {
       });
       const child = this.comptroller;
       this.comptroller.logPatch(child, patch);
-      expect(this.logger.warn.calledWith(`WARNING: 'dev-dependency-1' required by test-package in non-dev source (test.js) was found in package.json devDependencies.`)).to.be.true;
+      const file = `test.mjs`
+      expect(this.logger.warn.calledWith(`WARNING: 'dev-dependency-1' required by test-package in non-dev source (${file}) was found in package.json devDependencies.`)).to.be.true;
     });
 
     it('should warn when non-dev update patch has is defined in devDependencies', function () {
@@ -179,7 +182,8 @@ describe('Comptroller', function () {
       });
       const child = this.comptroller;
       this.comptroller.logPatch(child, patch);
-      expect(this.logger.warn.calledWith(`WARNING: 'dev-dependency-1' required by test-package in non-dev source (test.js) was found in package.json devDependencies.`)).to.be.true;
+      const file = `test.mjs`
+      expect(this.logger.warn.calledWith(`WARNING: 'dev-dependency-1' required by test-package in non-dev source (${file}) was found in package.json devDependencies.`)).to.be.true;
     });
 
     it('should warn when update patch has no value', function () {
@@ -191,7 +195,8 @@ describe('Comptroller', function () {
         root: path.join(this.packageDir, 'packages', 'package-1')
       });
       this.comptroller.logPatch(child, patch);
-      expect(this.logger.warn.calledWith(`WARNING: 'dependency' required by @test/package-1 (index.js,other.js) not found in package.json or local packages.`)).to.be.true;
+      const files = `index.mjs,other.mjs`
+      expect(this.logger.warn.calledWith(`WARNING: 'dependency' required by @test/package-1 (${files}) not found in package.json or local packages.`)).to.be.true;
     });
 
     it('should log add patch', function () {

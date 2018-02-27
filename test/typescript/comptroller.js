@@ -1,3 +1,4 @@
+require('./settings')
 require('mocha-sinon');
 const proxyquire = require('proxyquire');
 const path = require('../../src/path');
@@ -8,14 +9,14 @@ const {
   makepkg,
   rempkg,
   fileStructure
-} = require('../makepkg');
+} = require('./makepkg');
 const fs = require('../../src/fs');
 const Patch = require('../../src/patch');
 const Package = require('../../src/package');
 
 proxyquire.noCallThru().noPreserveCache();
 
-describe('Comptroller', function () {
+describe('Comptroller: TypeScript', function () {
   beforeEach(async function () {
     this.logger = {
       log: this.sinon.stub(),
@@ -29,7 +30,7 @@ describe('Comptroller', function () {
 
     this.packageDir = path.resolve(__dirname, 'test-package')
     await rempkg(this.packageDir);
-    await makepkg(this.packageDir, fileStructure.typescript);
+    await makepkg(this.packageDir, fileStructure);
     this.comptroller = new Comptroller({
       root: this.packageDir
     });
@@ -43,7 +44,7 @@ describe('Comptroller', function () {
   });
 
   describe('#readChildren()', function () {
-    it('should return all children with package.json files', function () {
+    it('should return all children with package.tson files', function () {
       const children = this.comptroller.readChildren();
       expect(children.length).to.equal(2);
       expect(children[0]).to.be.an.instanceof(Package);
@@ -64,7 +65,7 @@ describe('Comptroller', function () {
   });
 
   describe('#updatePatches(patches)', function () {
-    it('should get value from package.json for remote add patch', function () {
+    it('should get value from package.tson for remote add patch', function () {
       const patch = new Patch(Patch.ADD, {
         name: 'dependency-1'
       });
@@ -74,7 +75,7 @@ describe('Comptroller', function () {
       expect(updated[0].value).to.equal('0.0.0');
     });
 
-    it('should get value from package.json for remote update patch', function () {
+    it('should get value from package.tson for remote update patch', function () {
       const patch = new Patch(Patch.UPDATE, {
         name: 'dependency-2'
       });
@@ -104,7 +105,7 @@ describe('Comptroller', function () {
       expect(updated[0].value).to.equal('0.0.2');
     });
 
-    it('should get value from package.json for remote update patch', function () {
+    it('should get value from package.tson for remote update patch', function () {
       const patch = new Patch(Patch.UPDATE, {
         name: 'dependency-2'
       });
@@ -159,7 +160,7 @@ describe('Comptroller', function () {
         root: path.join(this.packageDir, 'packages', 'package-1')
       });
       this.comptroller.logPatch(child, patch);
-      expect(this.logger.warn.calledWith(`WARNING: 'dependency' required by @test/package-1 (index.js,other.js) not found in package.json or local packages.`)).to.be.true;
+      expect(this.logger.warn.calledWith(`WARNING: 'dependency' required by @test/package-1 (index.ts,other.ts) not found in package.json or local packages.`)).to.be.true;
     });
 
     it('should warn when non-dev add patch has is defined in devDependencies', function () {
@@ -169,17 +170,17 @@ describe('Comptroller', function () {
       });
       const child = this.comptroller;
       this.comptroller.logPatch(child, patch);
-      expect(this.logger.warn.calledWith(`WARNING: 'dev-dependency-1' required by test-package in non-dev source (test.js) was found in package.json devDependencies.`)).to.be.true;
+      expect(this.logger.warn.calledWith(`WARNING: 'dev-dependency-1' required by test-package in non-dev source (test.ts) was found in package.json devDependencies.`)).to.be.true;
     });
 
     it('should warn when non-dev update patch has is defined in devDependencies', function () {
       const patch = new Patch(Patch.UPDATE, {
         name: 'dev-dependency-1',
-        files: ['test.js'],
+        files: ['test.ts'],
       });
       const child = this.comptroller;
       this.comptroller.logPatch(child, patch);
-      expect(this.logger.warn.calledWith(`WARNING: 'dev-dependency-1' required by test-package in non-dev source (test.js) was found in package.json devDependencies.`)).to.be.true;
+      expect(this.logger.warn.calledWith(`WARNING: 'dev-dependency-1' required by test-package in non-dev source (test.ts) was found in package.json devDependencies.`)).to.be.true;
     });
 
     it('should warn when update patch has no value', function () {
@@ -191,7 +192,7 @@ describe('Comptroller', function () {
         root: path.join(this.packageDir, 'packages', 'package-1')
       });
       this.comptroller.logPatch(child, patch);
-      expect(this.logger.warn.calledWith(`WARNING: 'dependency' required by @test/package-1 (index.js,other.js) not found in package.json or local packages.`)).to.be.true;
+      expect(this.logger.warn.calledWith(`WARNING: 'dependency' required by @test/package-1 (index.ts,other.ts) not found in package.json or local packages.`)).to.be.true;
     });
 
     it('should log add patch', function () {

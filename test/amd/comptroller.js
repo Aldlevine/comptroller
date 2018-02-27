@@ -1,3 +1,4 @@
+require('./settings')
 require('mocha-sinon');
 const proxyquire = require('proxyquire');
 const path = require('../../src/path');
@@ -8,14 +9,14 @@ const {
   makepkg,
   rempkg,
   fileStructure
-} = require('../makepkg');
+} = require('./makepkg');
 const fs = require('../../src/fs');
 const Patch = require('../../src/patch');
 const Package = require('../../src/package');
 
 proxyquire.noCallThru().noPreserveCache();
 
-describe('Comptroller', function () {
+describe('Comptroller: AMD', function () {
   beforeEach(async function () {
     this.logger = {
       log: this.sinon.stub(),

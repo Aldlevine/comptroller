@@ -1,3 +1,4 @@
+require('./settings')
 require('mocha-sinon');
 const proxyquire = require('proxyquire');
 const path = require('../../src/path');
@@ -15,7 +16,7 @@ const Package = require('../../src/package');
 
 proxyquire.noCallThru().noPreserveCache();
 
-describe('Comptroller', function () {
+describe('Comptroller: CommonJS', function () {
   beforeEach(async function () {
     this.logger = {
       log: this.sinon.stub(),

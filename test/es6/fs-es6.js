@@ -7,13 +7,8 @@ function readSrcFile(srcPath) {
   return fs.readFileSync(fullSrcPath, 'utf8')
 }
 
-const fileName = 'es6.js' // TODO: 'es6.jsx.txt'
+const fileName = 'es6.js.txt' // TODO: 'es6.jsx.txt'
 const srcFile = readSrcFile(fileName)
-
-console.log(srcFile)
-
-// comptroller:
-// "srource": "index.mjs",
 
 module.exports = {
   'package.json': dedent `
@@ -31,6 +26,7 @@ module.exports = {
         "dev-dependency-2": "8.8.8"
       },
       "comptroller": {
+        "source": "**/*.{mjs|js|jsx}",
         "dev": "test.mjs",
         "inherits": ["version", "author"],
         "exclude": ["excluded-dependency"]

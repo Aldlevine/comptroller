@@ -62,8 +62,8 @@ module.exports = class Package {
     packageJson = fs.readJsonSync(path.resolve(root, 'package.json')),
     config = {},
     _config = packageJson.comptroller || {},
-    source = _config.source || config.source || '**/*.js ',
-    dev = _config.dev || config.dev || '**/test/*.js',
+    source = _config.source || config.source,
+    dev = _config.dev || config.dev,
     ignore = _config.ignore || config.ignore || ['**/node_modules/**'],
     exclude = _config.exclude || config.exclude || builtins,
     inherits = _config.inherits || config.inherits || [],
@@ -75,8 +75,25 @@ module.exports = class Package {
     typescript = !!(_config.typescript || config.typescript || process.env.TS),
     es6 = !!(_config.es6 || config.es6 || process.env.ES6),
     amd = !!(_config.amd || config.amd || process.env.AMD),
-    logOn = !!(_config.log || config.log || process.env.LOG),
+    logOn = !!(_config.logOn || config.logOn || process.env.LOG),
+    modules = _config.modules || config.modules || {},
   }) {
+    const moduleTypes = Object.assign(modules, {
+      commonjs,
+      amd,
+      es6,
+      typescript
+    })
+
+    function normalizeGlob(glob) {
+      return glob.replace(/\|/g, ',')
+    }
+
+    source = normalizeGlob(source || this.defaultSourceFilesGlob(moduleTypes))
+    dev = normalizeGlob(dev || this.defaultTestFilesGlob(moduleTypes))
+
+    this._moduleTypes = moduleTypes
+
     /** @type {string} */
     this._root = root;
 
@@ -111,6 +128,9 @@ module.exports = class Package {
     this._commonjs = commonjs;
 
     /** @type {boolean} */
+    this._amd = amd;
+
+    /** @type {boolean} */
     this._typescript = typescript;
 
     /** @type {boolean} */
@@ -120,12 +140,46 @@ module.exports = class Package {
     this._logOn = logOn;
 
     this._tried = {}
+
+    this.log({
+      LOG: process.env.LOG,
+      CJS: process.env.CJS,
+      ES6: process.env.ES6,
+      TS: process.env.TS,
+      AMD: process.env.AMD,
+      config,
+      _config,
+    })
+
+    this.log({
+      moduleTypes,
+      source,
+      dev
+    })
+  }
+
+  defaultSourceFilesGlob(moduleTypes = {}) {
+    if (moduleTypes.es6) return '**/*.m?jsx?'
+    if (moduleTypes.typescript) return '**/*.tsx?'
+    // if (moduleTypes.amd || moduleTypes.commonjs) return '**/*.js'
+    return '**/*.js'
+  }
+
+  defaultTestFilesGlob(moduleTypes = {}) {
+    if (moduleTypes.es6) return '**/*.test.m?jsx?'
+    if (moduleTypes.typescript) return '**/*.test.tsx?'
+    // if (moduleTypes.amd || moduleTypes.commonjs) return '**/*.test.js'
+    return '**/*.test.js'
+  }
+
+  get moduleTypes() {
+    return this._moduleTypes
   }
 
   get checkExtMap() {
     return {
       ts: /tsx?$/,
-      js: /jsx?$/,
+      js: /m?jsx?$/,
       es6: /mjsx?$/,
       default: /jsx?$/
     }
@@ -308,6 +362,9 @@ module.exports = class Package {
 
   log(msg, data) {
     if (!this.logOn) return
+    console.log({
+      LOGGING: this.logOn
+    })
     data ? console.log(msg, data) : console.log(msg)
   }
 
@@ -318,12 +375,17 @@ module.exports = class Package {
 
   depsFor(name, src, file) {
     if (!this[name]) {
-      // this.log('depsFor: skipped', name, {
-      //   file
-      // })
+      this.log('depsFor: skipped', name, {
+        file
+      })
       return []
     }
-    if (this.tried[name]) return
+    if (this.tried[name]) {
+      this.log('depsFor: already tried', name, {
+        file
+      })
+      return
+    }
 
     this.log('depsFor', {
       name,
@@ -436,16 +498,10 @@ module.exports = class Package {
    */
   findDependencies(src, file) {
     this.reset()
-
-    console.log('findDependencies', file)
     const ext = this.fileExtension(file)
-    const result = this.resolveByExt(src, ext, {
+    return this.resolveByExt(src, ext, {
       file
     })
-    console.log('found', result)
-    // const deps = detective.commonjs(src)
-    // console.log('deps', deps)
-    return result
   }
 
   /**
