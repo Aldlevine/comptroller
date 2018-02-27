@@ -366,6 +366,8 @@ Please help fix the tests to make them all pass :)
 - `test/commonjs` - test suite
 - `test/makepkg/fs-common.js` - fake file structure
 
+`$ CJS="ON" nyc mocha test/commonjs/package.js`
+
 ### ES6
 
 - `test/es6` - test suite
@@ -378,7 +380,11 @@ Please help fix the tests to make them all pass :)
 - `test/typescript` - test suite
 - `test/makepkg/fs-typescript.js` - fake file structure
 
-`$ TS="ON" nyc mocha test/typescript/detective.js`
+Individual tests:
+
+- Detective `$ TS="ON" nyc mocha test/typescript/detective.js`
+- Comptroller `$ TS="ON" nyc mocha test/typescript/comptroller.js`
+- Package `$ TS="ON" nyc mocha test/typescript/package.js`
 
 ### AMD
 

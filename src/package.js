@@ -118,6 +118,8 @@ module.exports = class Package {
 
     /** @type {boolean} */
     this._logOn = logOn;
+
+    this._tried = {}
   }
 
   get checkExtMap() {
@@ -267,6 +269,13 @@ module.exports = class Package {
     return this._logOn
   }
 
+  get tried() {
+    return this._tried || {}
+  }
+
+  reset() {
+    this._tried = {}
+  }
 
   /**
    * Writes {@link Package#packageJson} to it's respective package.json file.
@@ -314,15 +323,15 @@ module.exports = class Package {
       // })
       return []
     }
+    if (this.tried[name]) return
+
     this.log('depsFor', {
       name,
       file
     })
-    const ext = thisfileExtension(file)
+    const ext = this.fileExtension(file)
     const baseOpts = ext === 'tsx' ? {
-      ecmaFeatures: {
-        jsx: true
-      }
+      filePath: file, // to auto-detect appropriate jsx setting
     } : {}
 
     const opts = Object.assign(baseOpts, this.detectiveOpts(name))
@@ -338,6 +347,7 @@ module.exports = class Package {
     let deps
     try {
       deps = $detective(src, opts)
+      this.tried[name] = true
     } catch (err) {
       this.error(err)
     }
@@ -425,11 +435,17 @@ module.exports = class Package {
    * @param {*} src
    */
   findDependencies(src, file) {
+    this.reset()
+
     console.log('findDependencies', file)
     const ext = this.fileExtension(file)
-    return this.resolveByExt(src, ext, {
+    const result = this.resolveByExt(src, ext, {
       file
     })
+    console.log('found', result)
+    // const deps = detective.commonjs(src)
+    // console.log('deps', deps)
+    return result
   }
 
   /**
@@ -461,14 +477,22 @@ module.exports = class Package {
       // const dependencies = nodeDetective(src, this.detective);
       const dependencies = this.findDependencies(src, file)
       const relFile = path.relative(this.root, file);
+
+      this.log(relFile)
+
       for (let dep of dependencies) {
         if (dep = this.resolveDependency(dep)) {
+          this.log('resolved dependency', {
+            dep
+          })
           deps[dep] = deps[dep] || {
             files: []
           };
+          this.log('add dependency to map', relFile)
           deps[dep].files.push(relFile);
         }
       }
+      this.log('dependency map', JSON.stringify(deps, null, 2))
     }));
     return deps;
   }

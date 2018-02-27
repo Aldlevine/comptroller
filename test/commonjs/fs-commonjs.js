@@ -1,5 +1,14 @@
 const dedent = require('dedent');
 
+// "comptroller": {
+//   "srource": "index.js",
+// }
+
+// FUCKS UP!
+// "comptroller": {
+//   "source": "index.js",
+// }
+
 module.exports = {
   'package.json': dedent `
     {
@@ -16,7 +25,6 @@ module.exports = {
         "dev-dependency-2": "8.8.8"
       },
       "comptroller": {
-        "source": "index.js",
         "dev": "test.js",
         "inherits": ["version", "author"],
         "exclude": ["excluded-dependency"]

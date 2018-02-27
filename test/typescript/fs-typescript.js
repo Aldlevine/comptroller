@@ -2,8 +2,11 @@ const dedent = require('dedent');
 const {
   readSrcFile
 } = require('.')
-const fileName = 'es6.js' // TODO: 'es6.jsx.txt'
+
+const fileName = 'typescript.ts' // TODO: 'typescript.tsx'
 const srcFile = readSrcFile(fileName)
+
+// "srource": "index.ts",
 
 module.exports = {
   'package.json': dedent `
@@ -21,18 +24,18 @@ module.exports = {
         "dev-dependency-2": "8.8.8"
       },
       "comptroller": {
-        "source": "index.mjs",
-        "dev": "test.mjs",
+        "log": true,
+        "dev": "test.ts",
         "inherits": ["version", "author"],
         "exclude": ["excluded-dependency"]
       }
     }
   `,
-  'index.mjs': dedent(srcFile),
-  'test.mjs': dedent `
-  import { z } from "dev-dependency-1";
-  import { a } from "dev-dependency-3";
-`,
+  'index.ts': dedent(srcFile),
+  'test.ts': dedent `
+    import { z } from "dev-dependency-1";
+    import { a } from "dev-dependency-3";
+  `,
   'packages': {
     'package-1': {
       'package.json': dedent `
@@ -49,12 +52,12 @@ module.exports = {
           }
         }
       `,
-      'index.mjs': dedent `
-      import * as a from 'dependency-1';
-      import * as b from 'dependency-2';
-      import * as c from 'doesnt-exist';
-      import * as d from 'events';
-    `
+      'index.ts': dedent `
+        import * as a from 'dependency-1';
+        import * as b from 'dependency-2';
+        import * as c from 'doesnt-exist';
+        import * as d from 'events';
+      `
     },
     'package-2': {
       'package.json': dedent `
@@ -66,7 +69,7 @@ module.exports = {
           }
         }
       `,
-      'index.mjs': dedent `
+      'index.ts': dedent `
       import * as a from 'dependency-1';
       import * as b from 'dependency-2';
       import * as c from '@test/package-1';

@@ -6,7 +6,7 @@ const {
   makepkg,
   rempkg,
   fileStructure
-} = require('../makepkg');
+} = require('./makepkg');
 const fs = require('../../src/fs');
 const Patch = require('../../src/patch');
 const Package = require('../../src/package');
@@ -15,7 +15,7 @@ describe('Package', function () {
   beforeEach(async function () {
     this.packageDir = path.resolve(__dirname, 'test-package')
     await rempkg(this.packageDir);
-    await makepkg(this.packageDir, fileStructure.es6);
+    await makepkg(this.packageDir, fileStructure);
     this.package = new Package({
       root: this.packageDir
     });
@@ -45,7 +45,7 @@ describe('Package', function () {
     });
   });
 
-  describe('#analyzeSourceDependencies()', function () {
+  describe.only('#analyzeSourceDependencies()', function () {
     it('should return correct dependencies', async function () {
       const dependencies = {
         'dependency-1': {

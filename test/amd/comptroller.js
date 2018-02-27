@@ -29,7 +29,7 @@ describe('Comptroller', function () {
 
     this.packageDir = path.resolve(__dirname, 'test-package')
     await rempkg(this.packageDir);
-    await makepkg(this.packageDir, fileStructure.amd);
+    await makepkg(this.packageDir, fileStructure);
     this.comptroller = new Comptroller({
       root: this.packageDir
     });
