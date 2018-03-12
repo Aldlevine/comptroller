@@ -31,6 +31,7 @@ version                   Print Comptroller version
 Options:
 --------
 --prune -p                Remove unused dependencies from subpackges' package.json
+--prune-inherited -i      Remove unused inherited fields from subpackges' package.json
 --self -s                 If set, only the root package will be updated
 --log                     Turn on logging (when resolving dependencies)
 --commonjs --cjs          CommonJS (ie. node.js require) module dependencies
@@ -126,6 +127,12 @@ __prune__
 
 Comptroller's `prune` option takes all those extraneous dependencies found by
 the `update` command and delivers them to the void.
+
+__prune-inherited__
+
+Comptroller's `prune-inherited` option works similarly to the `prune` option but
+instead removes any inherited fields which aren't found in the root
+`package.json`.
 
 __self__
 
