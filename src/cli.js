@@ -33,6 +33,8 @@ const root = argv._[1] || '.';
  * @type {boolean}
  */
 const prune = argv.prune || argv.p;
+const pruneInherited = argv['prune-inherited'] || argv.i;
+
 
 const logOn = argv.log || argv.logging || argv.logOn || argv.logon;
 const amd = argv.amd
@@ -77,6 +79,7 @@ const cli = {
       Options:
       --------
       --prune -p                Remove unused dependencies from subpackges' package.json
+      --prune-inherited -i      Remove unused inherited fields from subpackges' package.json
       --self -s                 If set, only the root package will be updated
       --log                     Turn on logging (when resolving dependencies)
       --commonjs --cjs          CommonJS (ie. node.js require) module dependencies
@@ -92,6 +95,7 @@ const cli = {
     const comp = new Comptroller({
       root,
       prune,
+      pruneInherited,
       logOn,
       commonjs,
       amd,

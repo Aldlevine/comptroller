@@ -4,23 +4,23 @@
     "filePath": "src/package.js",
     "lines": [
       {
-        "lineNumber": 492,
+        "lineNumber": 506,
         "line": "  }"
       },
       {
-        "lineNumber": 493,
+        "lineNumber": 507,
         "line": ""
       },
       {
-        "lineNumber": 494,
+        "lineNumber": 508,
         "line": "  /**"
       },
       {
-        "lineNumber": 495,
+        "lineNumber": 509,
         "line": "   * Find dependencies in source file"
       },
       {
-        "lineNumber": 496,
+        "lineNumber": 510,
         "line": "   * @param {*} src"
       }
     ],

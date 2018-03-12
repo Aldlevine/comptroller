@@ -166,9 +166,12 @@ module.exports = class Comptroller extends Package {
           break;
 
         case Patch.INHERIT:
+          const val = this.packageJson[patch.name];
+          const disabled = typeof val == &apos;undefined&apos; &amp;&amp; !this.pruneInherited;
           newPatches.push(new Patch(patch.type, {
             ...patch,
-            value: this.packageJson[patch.name],
+            value: val,
+            disabled,
           }));
           break;
 
@@ -222,7 +225,12 @@ module.exports = class Comptroller extends Package {
         const newValue = JSON.stringify(patch.value);
         if (oldValue !== newValue) {
           if (oldValue) {
-            logger.log(`${disabled}Updating field ${patch.name} from ${oldValue} to ${newValue} in package &apos;${childName}&apos;`);
+            if (typeof newValue === &apos;undefined&apos;) {
+              logger.log(`${disabled}Removing field ${patch.name} from package &apos;${childName}&apos;`);
+            }
+            else {
+              logger.log(`${disabled}Updating field ${patch.name} from ${oldValue} to ${newValue} in package &apos;${childName}&apos;`);
+            }
           } else {
             logger.log(`${disabled}Adding field ${patch.name} as ${newValue} to package &apos;${childName}&apos;`);
           }

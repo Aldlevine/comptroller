@@ -1,18 +1,19 @@
 {
-  "coverage": "74.31%",
-  "expectCount": 109,
-  "actualCount": 81,
+  "coverage": "74.1%",
+  "expectCount": 112,
+  "actualCount": 83,
   "files": {
     "src/cli.js": {
-      "expectCount": 12,
+      "expectCount": 13,
       "actualCount": 6,
       "undocumentLines": [
         3,
-        37,
-        38,
+        36,
         39,
         40,
-        41
+        41,
+        42,
+        43
       ]
     },
     "src/comptroller.js": {
@@ -28,30 +29,30 @@
       ]
     },
     "src/package.js": {
-      "expectCount": 63,
-      "actualCount": 42,
+      "expectCount": 65,
+      "actualCount": 44,
       "undocumentLines": [
         8,
-        93,
-        140,
-        159,
-        166,
-        173,
-        177,
-        324,
-        328,
-        357,
-        361,
-        369,
-        374,
-        422,
-        426,
-        431,
-        441,
+        96,
+        146,
+        165,
+        172,
+        179,
+        183,
+        338,
+        342,
+        371,
+        375,
+        383,
+        388,
+        436,
+        440,
         445,
-        449,
-        456,
-        466
+        455,
+        459,
+        463,
+        470,
+        480
       ]
     },
     "src/patch.js": {

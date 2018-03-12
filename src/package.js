@@ -49,6 +49,8 @@ module.exports = class Package {
    * to <a href="https://npmjs.com/package/@zdychacek/detective">detective</a>.
    * @param {boolean} [opts.config.prune = false] - Whether or not unused
    * dependencies should be pruned from the package.json.
+   * @param {boolean} [opts.config.pruneInherited = false] - Whether or not to
+   * prune inherited fields that aren't present in the root package.json
    * @param {boolean|number} [opts.config.pretty = false] - The "maximum fixed
    * character width" parameter to pass to json-beautify.
    * @param {boolean} [opts.config.commonjs = true] - search for commonjs dependencies
@@ -69,6 +71,7 @@ module.exports = class Package {
     inherits = _config.inherits || config.inherits || [],
     detective = _config.detective || config.detective || {},
     prune = !!(_config.prune || config.prune),
+    pruneInherited = !!(_config.pruneInherited || config.pruneInherited),
     pretty = _config.pretty || config.pretty,
 
     commonjs = !!(_config.commonjs || config.commonjs || process.env.CJS),
@@ -120,6 +123,9 @@ module.exports = class Package {
 
     /** @type {boolean} */
     this._prune = prune;
+
+    /** @type {boolean} */
+    this._pruneInherited = pruneInherited;
 
     /** @type {boolean|number} */
     this._pretty = pretty;
@@ -273,6 +279,14 @@ module.exports = class Package {
    */
   get prune() {
     return this._prune
+  }
+
+  /**
+   * Whether or not to prune inherited fields that aren't present in the root package.json
+   * @type {boolean}
+   */
+  get pruneInherited() {
+    return this._pruneInherited
   }
 
   /**
@@ -650,6 +664,9 @@ module.exports = class Package {
       case Patch.INHERIT:
         if (typeof patch.value !== 'undefined') {
           this.packageJson[patch.name] = patch.value;
+        }
+        else {
+          delete this.packageJson[patch.name];
         }
       default:
         break;

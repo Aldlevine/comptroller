@@ -337,13 +337,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~`crypto`_module_methods_and_properties~creatediffiehellman",
-    "https://nodejs.org/api/`crypto`_module_methods_and_properties.html#`crypto`_module_methods_and_properties_crypto_creatediffiehellman_primelength_generator",
+    "https://nodejs.org/api/`crypto`_module_methods_and_properties.html#`crypto`_module_methods_and_properties_crypto_creatediffiehellman_prime_primeencoding_generator_generatorencoding",
     "src/.external-node.js~`crypto`_module_methods_and_properties~createDiffieHellman",
     "external"
   ],
   [
     "src/.external-node.js~`crypto`_module_methods_and_properties~creatediffiehellman",
-    "https://nodejs.org/api/`crypto`_module_methods_and_properties.html#`crypto`_module_methods_and_properties_crypto_creatediffiehellman_prime_primeencoding_generator_generatorencoding",
+    "https://nodejs.org/api/`crypto`_module_methods_and_properties.html#`crypto`_module_methods_and_properties_crypto_creatediffiehellman_primelength_generator",
     "src/.external-node.js~`crypto`_module_methods_and_properties~createDiffieHellman",
     "external"
   ],
@@ -469,13 +469,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~`dgram`_module_functions~createsocket",
-    "https://nodejs.org/api/`dgram`_module_functions.html#`dgram`_module_functions_dgram_createsocket_options_callback",
+    "https://nodejs.org/api/`dgram`_module_functions.html#`dgram`_module_functions_dgram_createsocket_type_callback",
     "src/.external-node.js~`dgram`_module_functions~createSocket",
     "external"
   ],
   [
     "src/.external-node.js~`dgram`_module_functions~createsocket",
-    "https://nodejs.org/api/`dgram`_module_functions.html#`dgram`_module_functions_dgram_createsocket_type_callback",
+    "https://nodejs.org/api/`dgram`_module_functions.html#`dgram`_module_functions_dgram_createsocket_options_callback",
     "src/.external-node.js~`dgram`_module_functions~createSocket",
     "external"
   ],
@@ -1903,13 +1903,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~dgram~socket#bind",
-    "https://nodejs.org/api/dgram.html#dgram_socket_bind_port_address_callback",
+    "https://nodejs.org/api/dgram.html#dgram_socket_bind_options_callback",
     "src/.external-node.js~dgram~Socket#bind",
     "external"
   ],
   [
     "src/.external-node.js~dgram~socket#bind",
-    "https://nodejs.org/api/dgram.html#dgram_socket_bind_options_callback",
+    "https://nodejs.org/api/dgram.html#dgram_socket_bind_port_address_callback",
     "src/.external-node.js~dgram~Socket#bind",
     "external"
   ],
@@ -4351,13 +4351,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~stream~writable",
-    "https://nodejs.org/api/stream.html#stream_constructor:newstream_writable_options",
+    "https://nodejs.org/api/stream.html#stream_class_stream_writable",
     "src/.external-node.js~stream~Writable",
     "external"
   ],
   [
     "src/.external-node.js~stream~writable",
-    "https://nodejs.org/api/stream.html#stream_class_stream_writable",
+    "https://nodejs.org/api/stream.html#stream_constructor:newstream_writable_options",
     "src/.external-node.js~stream~Writable",
     "external"
   ],
@@ -4753,13 +4753,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~tls~connect",
-    "https://nodejs.org/api/tls.html#tls_tls_connect_options_callback",
+    "https://nodejs.org/api/tls.html#tls_tls_connect_port_host_options_callback",
     "src/.external-node.js~tls~connect",
     "external"
   ],
   [
     "src/.external-node.js~tls~connect",
-    "https://nodejs.org/api/tls.html#tls_tls_connect_port_host_options_callback",
+    "https://nodejs.org/api/tls.html#tls_tls_connect_options_callback",
     "src/.external-node.js~tls~connect",
     "external"
   ],
@@ -5493,6 +5493,12 @@ window.esdocSearchIndex = [
     "src/package.js~package#prune",
     "class/src/package.js~Package.html#instance-get-prune",
     "src/package.js~Package#prune",
+    "member"
+  ],
+  [
+    "src/package.js~package#pruneinherited",
+    "class/src/package.js~Package.html#instance-get-pruneInherited",
+    "src/package.js~Package#pruneInherited",
     "member"
   ],
   [

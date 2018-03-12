@@ -10371,7 +10371,7 @@
     "__docId__": 866,
     "kind": "file",
     "name": "src/cli.js",
-    "content": "#!/usr/bin/env node\n\nconst {\n  version\n} = require('../package.json');\nconst path = require('./path');\nconst minimist = require('minimist');\nconst dedent = require('dedent');\nconst fs = require('./fs');\nconst logger = require('./logger');\nconst Comptroller = require('./comptroller');\n\n/**\n * The cli arguments\n * @type {object}\n */\nconst argv = minimist(process.argv.slice(2));\n\n/**\n * The command to run\n * @type {string}\n */\nconst command = argv._[0] || 'help';\n\n/**\n * The package root dir\n * @type {string}\n */\nconst root = argv._[1] || '.';\n\n/**\n * Whether or not Comtroller should prune dependencies.\n * @type {boolean}\n */\nconst prune = argv.prune || argv.p;\n\nconst logOn = argv.log || argv.logging || argv.logOn || argv.logon;\nconst amd = argv.amd\nlet commonjs = argv.commonjs || argv.cjs;\nconst typescript = argv.typescript || argv.ts;\nconst es6 = argv.es6 || argv.mjs;\n\n// by default set commonjs to true\nif (commonjs === undefined) {\n  commonjs = true\n}\n\n/**\n * Whether or not Comptroller should update the root package.\n * @type {boolean}\n */\nconst self = argv.self || argv.s;\n\n/**\n * A function map for all cli commands\n * @type {Map<string, function>}\n */\nconst cli = {\n  /**\n   * Prints the help message\n   */\n  help() {\n    logger.log(dedent `\n      Comptroller ${version}\n\n      Usage:\n      --------\n      comp <command> [options]\n\n      Commands:\n      --------\n      help                      Show this message\n      update [root-directory]   Update all subpackages of package found at [root-directory]\n      link [root-directory]     Create symlink in node_modules for each subpackage found at [root-directory]\n      version                   Print Comptroller version\n\n      Options:\n      --------\n      --prune -p                Remove unused dependencies from subpackges' package.json\n      --self -s                 If set, only the root package will be updated\n      --log                     Turn on logging (when resolving dependencies)\n      --commonjs --cjs          CommonJS (ie. node.js require) module dependencies\n      --typescript --ts         TypeScript (ie. import/export) module dependencies\n      --es6 --mjs               ES6 (ie. import/export) module dependencies\n  `);\n  },\n\n  /**\n   * Updates all subpackages of package found at [root-directory]\n   */\n  async update() {\n    const comp = new Comptroller({\n      root,\n      prune,\n      logOn,\n      commonjs,\n      amd,\n      typescript,\n      es6\n    });\n\n    if (self) {\n      await comp.updateSelf();\n      await comp.writePackageJson();\n    } else {\n      await comp.updatePackages();\n      await comp.writePackages();\n    }\n  },\n\n  /**\n   * Creates symlink in node_modules for each subpackage found at [root-directory]\n   */\n  async link() {\n    const comp = new Comptroller({\n      root,\n      prune\n    });\n    await comp.linkPackages();\n  },\n\n  /**\n   * Prints Comptroller version\n   */\n  version() {\n    logger.log(`Comptroller ${version}`);\n  },\n}\n\n;\n(async function main() {\n  try {\n    await cli[command]();\n  } catch (err) {\n    if (err instanceof Error) {\n      return logger.error(err.stack);\n    }\n    logger.error(err);\n  }\n})();\n",
+    "content": "#!/usr/bin/env node\n\nconst {\n  version\n} = require('../package.json');\nconst path = require('./path');\nconst minimist = require('minimist');\nconst dedent = require('dedent');\nconst fs = require('./fs');\nconst logger = require('./logger');\nconst Comptroller = require('./comptroller');\n\n/**\n * The cli arguments\n * @type {object}\n */\nconst argv = minimist(process.argv.slice(2));\n\n/**\n * The command to run\n * @type {string}\n */\nconst command = argv._[0] || 'help';\n\n/**\n * The package root dir\n * @type {string}\n */\nconst root = argv._[1] || '.';\n\n/**\n * Whether or not Comtroller should prune dependencies.\n * @type {boolean}\n */\nconst prune = argv.prune || argv.p;\nconst pruneInherited = argv['prune-inherited'] || argv.i;\n\n\nconst logOn = argv.log || argv.logging || argv.logOn || argv.logon;\nconst amd = argv.amd\nlet commonjs = argv.commonjs || argv.cjs;\nconst typescript = argv.typescript || argv.ts;\nconst es6 = argv.es6 || argv.mjs;\n\n// by default set commonjs to true\nif (commonjs === undefined) {\n  commonjs = true\n}\n\n/**\n * Whether or not Comptroller should update the root package.\n * @type {boolean}\n */\nconst self = argv.self || argv.s;\n\n/**\n * A function map for all cli commands\n * @type {Map<string, function>}\n */\nconst cli = {\n  /**\n   * Prints the help message\n   */\n  help() {\n    logger.log(dedent `\n      Comptroller ${version}\n\n      Usage:\n      --------\n      comp <command> [options]\n\n      Commands:\n      --------\n      help                      Show this message\n      update [root-directory]   Update all subpackages of package found at [root-directory]\n      link [root-directory]     Create symlink in node_modules for each subpackage found at [root-directory]\n      version                   Print Comptroller version\n\n      Options:\n      --------\n      --prune -p                Remove unused dependencies from subpackges' package.json\n      --prune-inherited -i      Remove unused inherited fields from subpackges' package.json\n      --self -s                 If set, only the root package will be updated\n      --log                     Turn on logging (when resolving dependencies)\n      --commonjs --cjs          CommonJS (ie. node.js require) module dependencies\n      --typescript --ts         TypeScript (ie. import/export) module dependencies\n      --es6 --mjs               ES6 (ie. import/export) module dependencies\n  `);\n  },\n\n  /**\n   * Updates all subpackages of package found at [root-directory]\n   */\n  async update() {\n    const comp = new Comptroller({\n      root,\n      prune,\n      pruneInherited,\n      logOn,\n      commonjs,\n      amd,\n      typescript,\n      es6\n    });\n\n    if (self) {\n      await comp.updateSelf();\n      await comp.writePackageJson();\n    } else {\n      await comp.updatePackages();\n      await comp.writePackages();\n    }\n  },\n\n  /**\n   * Creates symlink in node_modules for each subpackage found at [root-directory]\n   */\n  async link() {\n    const comp = new Comptroller({\n      root,\n      prune\n    });\n    await comp.linkPackages();\n  },\n\n  /**\n   * Prints Comptroller version\n   */\n  version() {\n    logger.log(`Comptroller ${version}`);\n  },\n}\n\n;\n(async function main() {\n  try {\n    await cli[command]();\n  } catch (err) {\n    if (err instanceof Error) {\n      return logger.error(err.stack);\n    }\n    logger.error(err);\n  }\n})();\n",
     "static": true,
     "longname": "/mnt/fast/Projects/comptroller/src/cli.js",
     "access": "public",
@@ -10494,16 +10494,16 @@
   {
     "__docId__": 872,
     "kind": "variable",
-    "name": "logOn",
+    "name": "pruneInherited",
     "memberof": "src/cli.js",
     "static": true,
-    "longname": "src/cli.js~logOn",
+    "longname": "src/cli.js~pruneInherited",
     "access": "public",
     "export": false,
     "importPath": "comptroller/src/cli.js",
     "importStyle": null,
     "description": null,
-    "lineNumber": 37,
+    "lineNumber": 36,
     "undocument": true,
     "type": {
       "types": [
@@ -10515,31 +10515,10 @@
   {
     "__docId__": 873,
     "kind": "variable",
-    "name": "amd",
+    "name": "logOn",
     "memberof": "src/cli.js",
     "static": true,
-    "longname": "src/cli.js~amd",
-    "access": "public",
-    "export": false,
-    "importPath": "comptroller/src/cli.js",
-    "importStyle": null,
-    "description": null,
-    "lineNumber": 38,
-    "undocument": true,
-    "type": {
-      "types": [
-        "*"
-      ]
-    },
-    "ignore": true
-  },
-  {
-    "__docId__": 874,
-    "kind": "variable",
-    "name": "commonjs",
-    "memberof": "src/cli.js",
-    "static": true,
-    "longname": "src/cli.js~commonjs",
+    "longname": "src/cli.js~logOn",
     "access": "public",
     "export": false,
     "importPath": "comptroller/src/cli.js",
@@ -10555,12 +10534,12 @@
     "ignore": true
   },
   {
-    "__docId__": 875,
+    "__docId__": 874,
     "kind": "variable",
-    "name": "typescript",
+    "name": "amd",
     "memberof": "src/cli.js",
     "static": true,
-    "longname": "src/cli.js~typescript",
+    "longname": "src/cli.js~amd",
     "access": "public",
     "export": false,
     "importPath": "comptroller/src/cli.js",
@@ -10576,12 +10555,12 @@
     "ignore": true
   },
   {
-    "__docId__": 876,
+    "__docId__": 875,
     "kind": "variable",
-    "name": "es6",
+    "name": "commonjs",
     "memberof": "src/cli.js",
     "static": true,
-    "longname": "src/cli.js~es6",
+    "longname": "src/cli.js~commonjs",
     "access": "public",
     "export": false,
     "importPath": "comptroller/src/cli.js",
@@ -10597,7 +10576,49 @@
     "ignore": true
   },
   {
+    "__docId__": 876,
+    "kind": "variable",
+    "name": "typescript",
+    "memberof": "src/cli.js",
+    "static": true,
+    "longname": "src/cli.js~typescript",
+    "access": "public",
+    "export": false,
+    "importPath": "comptroller/src/cli.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 42,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    },
+    "ignore": true
+  },
+  {
     "__docId__": 877,
+    "kind": "variable",
+    "name": "es6",
+    "memberof": "src/cli.js",
+    "static": true,
+    "longname": "src/cli.js~es6",
+    "access": "public",
+    "export": false,
+    "importPath": "comptroller/src/cli.js",
+    "importStyle": null,
+    "description": null,
+    "lineNumber": 43,
+    "undocument": true,
+    "type": {
+      "types": [
+        "*"
+      ]
+    },
+    "ignore": true
+  },
+  {
+    "__docId__": 878,
     "kind": "variable",
     "name": "self",
     "memberof": "src/cli.js",
@@ -10608,7 +10629,7 @@
     "importPath": "comptroller/src/cli.js",
     "importStyle": null,
     "description": "Whether or not Comptroller should update the root package.",
-    "lineNumber": 52,
+    "lineNumber": 54,
     "type": {
       "nullable": null,
       "types": [
@@ -10620,7 +10641,7 @@
     "ignore": true
   },
   {
-    "__docId__": 878,
+    "__docId__": 879,
     "kind": "variable",
     "name": "cli",
     "memberof": "src/cli.js",
@@ -10631,7 +10652,7 @@
     "importPath": "comptroller/src/cli.js",
     "importStyle": null,
     "description": "A function map for all cli commands",
-    "lineNumber": 58,
+    "lineNumber": 60,
     "type": {
       "nullable": null,
       "types": [
@@ -10643,10 +10664,10 @@
     "ignore": true
   },
   {
-    "__docId__": 879,
+    "__docId__": 880,
     "kind": "file",
     "name": "src/comptroller.js",
-    "content": "const path = require('./path');\nconst fs = require('./fs');\nconst glob = require('./glob');\nconst logger = require('./logger');\nconst Package = require('./package');\nconst Patch = require('./patch');\n\n/**\n * This is the main Comptroller class. It serves as the entry point into all of\n * Comptroller's higher level functionality.\n */\nmodule.exports = class Comptroller extends Package {\n  /**\n   * Creates a new Comptroller instance. It accepts all of the arguments in\n   * {@link Package#constructor} as well as...\n   * @param {string} [opts.config.packages = packages] - The directory name\n   * where packages can be found.\n   */\n  constructor(config) {\n    super(config);\n\n    /** @type {string} */\n    this._packages = config.packages || 'packages';\n\n    /** @type {Package[]} */\n    this._children = this.readChildren();\n  }\n\n  /**\n   * The packages directory.\n   * @type {string}\n   */\n  get packages() {\n    return this._packages\n  }\n\n  /**\n   * The child packages.\n   * @type {Package[]}\n   */\n  get children() {\n    return this._children\n  }\n\n  /**\n   * Scans the {@link Comptroller#packages} directory, finds package.json files\n   * and generates {@link Package}s. Note that all package.json files must be\n   * in a direct subdirectory of the packages directory.\n   * @return {Package[]} - The child packages.\n   */\n  readChildren() {\n    const packageJsons = glob.sync(path.resolve(this.root, this.packages, '*', 'package.json'), {\n      ignore: this.ignore,\n      nodir: true,\n    });\n    return packageJsons.map((pkgjson) => new Package({\n      root: path.dirname(pkgjson),\n      config: this\n    }));\n  }\n\n  /**\n   * Loops through all packages in {@link Comptroller#children} and writes it's\n   * package.json.\n   */\n  async writePackages() {\n    for (let child of this.children) {\n      try {\n        await child.writePackageJson()\n      } catch (err) {\n        logger.error(err);\n        return\n      }\n    }\n  }\n\n  /**\n   * A convenience method that locates a package in {@link Comptroller#children}\n   * by it's name in {@link Package#packageJson}.\n   * @param {string} name - The name of the child package.\n   * @return {Package | boolean} - The found package, or `false` if not found.\n   */\n  getChildByName(name) {\n    for (let child of this.children) {\n      if (child.packageJson.name == name) return child;\n    }\n    return false;\n  }\n\n  /**\n   * Takes an array of raw patches (returned by\n   * {@link Package#generateDependencyPatches} or\n   * {@link Package#generateInheritPatches}) and updates them with the\n   * information in the {@link Comptroller#packageJson}\n   * @param {Patch[]} patches - The patches to update.\n   * @return {Patch[]} - The updated patches.\n   */\n  updatePatches(patches) {\n    const newPatches = [];\n    for (let patch of patches) {\n      switch (patch.type) {\n        case Patch.ADD:\n        case Patch.UPDATE:\n          const child = this.getChildByName(patch.name);\n          const source = child ? 'local' : 'remote';\n          let value = child ?\n            child.packageJson.version :\n            this.dependencies[patch.name];\n\n          if (!value && patch.dev) {\n            value = this.devDependencies[patch.name];\n          }\n\n          newPatches.push(new Patch(patch.type, {\n            ...patch,\n            source,\n            value,\n          }));\n\n          break;\n\n        case Patch.REMOVE:\n          newPatches.push(new Patch(patch.type, {\n            ...patch,\n            disabled: !this.prune,\n          }));\n          break;\n\n        case Patch.INHERIT:\n          newPatches.push(new Patch(patch.type, {\n            ...patch,\n            value: this.packageJson[patch.name],\n          }));\n          break;\n\n        default:\n          break;\n      }\n    }\n    return newPatches;\n  }\n\n  /**\n   * Logs patch operations.\n   * @param {Package} child - The child the patch is being applied to.\n   * @param {Patch} patch - The patch being applied.\n   */\n  logPatch(child, patch) {\n    const childName = child.packageJson.name;\n    const disabled = patch.disabled ? 'DISABLED: ' : '';\n    const dev = patch.dev ? ' dev ' : ' ';\n\n    if ((patch.type == Patch.ADD || patch.type == Patch.UPDATE) && !patch.value) {\n      if (patch.name in child.devDependencies) {\n        const msg = `WARNING: '${patch.name}' required by ${childName} in non-dev source (${patch.files}) was found in package.json devDependencies.`\n        logger.warn(msg);\n      } else {\n        const msg = `WARNING: '${patch.name}' required by ${childName} (${patch.files}) not found in package.json or local packages.`\n        logger.warn(msg);\n      }\n      return;\n    }\n\n    switch (patch.type) {\n      case Patch.ADD:\n        logger.log(`${disabled}Adding ${patch.source}${dev}package '${patch.name}@${patch.value}' to package '${childName}'`);\n        break;\n\n      case Patch.UPDATE:\n        const depField = patch.dev ? 'devDependencies' : 'dependencies';\n        const oldVersion = child[depField][patch.name];\n        if (oldVersion !== patch.value) {\n          logger.log(`${disabled}Updating ${patch.source}${dev}package '${patch.name}' from ${oldVersion} to ${patch.value} in package '${childName}'`);\n        }\n        break;\n\n      case Patch.REMOVE:\n        logger.log(`${disabled}Removing${dev}package '${patch.name}' from '${childName}'`);\n        break;\n\n      case Patch.INHERIT:\n        const oldValue = JSON.stringify(child.packageJson[patch.name]);\n        const newValue = JSON.stringify(patch.value);\n        if (oldValue !== newValue) {\n          if (oldValue) {\n            logger.log(`${disabled}Updating field ${patch.name} from ${oldValue} to ${newValue} in package '${childName}'`);\n          } else {\n            logger.log(`${disabled}Adding field ${patch.name} as ${newValue} to package '${childName}'`);\n          }\n        }\n    }\n  }\n\n  /**\n   * Analyzes the dependencies and inherits of each package and applies the\n   * respective patches to each package.\n   */\n  async updatePackages() {\n    for (let child of this.children) {\n      let deps = await child.analyzeSourceDependencies();\n      let patches = [\n        ...child.generateDependencyPatches(deps),\n        ...child.generateInheritPatches(),\n      ];\n      patches = this.updatePatches(patches);\n      for (let patch of patches) {\n        this.logPatch(child, patch);\n        child.applyPatch(patch);\n      }\n    }\n  }\n\n  /**\n   * Analyzes the dependencies of the root package and applies the respective\n   * patches.\n   */\n  async updateSelf() {\n    const deps = await this.analyzeSourceDependencies();\n    let patches = this.generateDependencyPatches(deps)\n    for (let child of this.children) {\n      const childDeps = await child.analyzeSourceDependencies();\n      const childPatches = child.generateDependencyPatches(childDeps);\n      patches.push(...childPatches);\n    }\n\n    patches = this.updatePatches(patches);\n\n    // shake out patches\n    const shaken = {};\n    for (let patch of patches) {\n      if (patch.source == 'local') continue;\n\n      const name = patch.name;\n\n      if (!shaken[name]) {\n        shaken[name] = patch;\n        continue;\n      }\n\n      shaken[name] = Comptroller.mergePatches(shaken[name], patch);\n    }\n\n    for (let name in shaken) {\n      const patch = shaken[name];\n      this.logPatch(this, patch);\n      this.applyPatch(patch);\n    }\n  }\n\n  /**\n   * Merges patches generated by child packages in order to apply to the parent\n   * package. This resolves conflicts that occur when applying patches\n   * generated by multiple sources.\n   * @param {Patch} a - A patch\n   * @param {Patch} b - Another patch\n   * @return {Patch} - The merged patch\n   */\n  static mergePatches(a, b) {\n    const priority = [Patch.UPDATE, Patch.ADD, Patch.REMOVE];\n    const name = a.name;\n    const value = a.value || b.value;\n    const source = a.source || b.source;\n    const dev = a.dev && b.dev;\n    const files = [...a.files, ...b.files];\n    const type = priority[\n      Math.min(priority.indexOf(a.type), priority.indexOf(b.type))\n    ];\n    const disabled = (a.disabled || b.disabled) && type == Patch.REMOVE;\n    return new Patch(type, {\n      name,\n      value,\n      source,\n      dev,\n      disabled,\n      files,\n    });\n  }\n\n  /**\n   * Links the packages to node_modules in a way that enables them to be\n   * resolved by other packages by name.\n   */\n  async linkPackages() {\n    const node_modules = path.resolve(this.root, 'node_modules');\n    await fs.ensureDirPlease(node_modules);\n\n    for (let child of this.children) {\n      const name = child.packageJson.name;\n      await fs.ensureSymlinkPlease(child.root, path.resolve(node_modules, name));\n    }\n\n  }\n}\n",
+    "content": "const path = require('./path');\nconst fs = require('./fs');\nconst glob = require('./glob');\nconst logger = require('./logger');\nconst Package = require('./package');\nconst Patch = require('./patch');\n\n/**\n * This is the main Comptroller class. It serves as the entry point into all of\n * Comptroller's higher level functionality.\n */\nmodule.exports = class Comptroller extends Package {\n  /**\n   * Creates a new Comptroller instance. It accepts all of the arguments in\n   * {@link Package#constructor} as well as...\n   * @param {string} [opts.config.packages = packages] - The directory name\n   * where packages can be found.\n   */\n  constructor(config) {\n    super(config);\n\n    /** @type {string} */\n    this._packages = config.packages || 'packages';\n\n    /** @type {Package[]} */\n    this._children = this.readChildren();\n  }\n\n  /**\n   * The packages directory.\n   * @type {string}\n   */\n  get packages() {\n    return this._packages\n  }\n\n  /**\n   * The child packages.\n   * @type {Package[]}\n   */\n  get children() {\n    return this._children\n  }\n\n  /**\n   * Scans the {@link Comptroller#packages} directory, finds package.json files\n   * and generates {@link Package}s. Note that all package.json files must be\n   * in a direct subdirectory of the packages directory.\n   * @return {Package[]} - The child packages.\n   */\n  readChildren() {\n    const packageJsons = glob.sync(path.resolve(this.root, this.packages, '*', 'package.json'), {\n      ignore: this.ignore,\n      nodir: true,\n    });\n    return packageJsons.map((pkgjson) => new Package({\n      root: path.dirname(pkgjson),\n      config: this\n    }));\n  }\n\n  /**\n   * Loops through all packages in {@link Comptroller#children} and writes it's\n   * package.json.\n   */\n  async writePackages() {\n    for (let child of this.children) {\n      try {\n        await child.writePackageJson()\n      } catch (err) {\n        logger.error(err);\n        return\n      }\n    }\n  }\n\n  /**\n   * A convenience method that locates a package in {@link Comptroller#children}\n   * by it's name in {@link Package#packageJson}.\n   * @param {string} name - The name of the child package.\n   * @return {Package | boolean} - The found package, or `false` if not found.\n   */\n  getChildByName(name) {\n    for (let child of this.children) {\n      if (child.packageJson.name == name) return child;\n    }\n    return false;\n  }\n\n  /**\n   * Takes an array of raw patches (returned by\n   * {@link Package#generateDependencyPatches} or\n   * {@link Package#generateInheritPatches}) and updates them with the\n   * information in the {@link Comptroller#packageJson}\n   * @param {Patch[]} patches - The patches to update.\n   * @return {Patch[]} - The updated patches.\n   */\n  updatePatches(patches) {\n    const newPatches = [];\n    for (let patch of patches) {\n      switch (patch.type) {\n        case Patch.ADD:\n        case Patch.UPDATE:\n          const child = this.getChildByName(patch.name);\n          const source = child ? 'local' : 'remote';\n          let value = child ?\n            child.packageJson.version :\n            this.dependencies[patch.name];\n\n          if (!value && patch.dev) {\n            value = this.devDependencies[patch.name];\n          }\n\n          newPatches.push(new Patch(patch.type, {\n            ...patch,\n            source,\n            value,\n          }));\n\n          break;\n\n        case Patch.REMOVE:\n          newPatches.push(new Patch(patch.type, {\n            ...patch,\n            disabled: !this.prune,\n          }));\n          break;\n\n        case Patch.INHERIT:\n          const val = this.packageJson[patch.name];\n          const disabled = typeof val == 'undefined' && !this.pruneInherited;\n          newPatches.push(new Patch(patch.type, {\n            ...patch,\n            value: val,\n            disabled,\n          }));\n          break;\n\n        default:\n          break;\n      }\n    }\n    return newPatches;\n  }\n\n  /**\n   * Logs patch operations.\n   * @param {Package} child - The child the patch is being applied to.\n   * @param {Patch} patch - The patch being applied.\n   */\n  logPatch(child, patch) {\n    const childName = child.packageJson.name;\n    const disabled = patch.disabled ? 'DISABLED: ' : '';\n    const dev = patch.dev ? ' dev ' : ' ';\n\n    if ((patch.type == Patch.ADD || patch.type == Patch.UPDATE) && !patch.value) {\n      if (patch.name in child.devDependencies) {\n        const msg = `WARNING: '${patch.name}' required by ${childName} in non-dev source (${patch.files}) was found in package.json devDependencies.`\n        logger.warn(msg);\n      } else {\n        const msg = `WARNING: '${patch.name}' required by ${childName} (${patch.files}) not found in package.json or local packages.`\n        logger.warn(msg);\n      }\n      return;\n    }\n\n    switch (patch.type) {\n      case Patch.ADD:\n        logger.log(`${disabled}Adding ${patch.source}${dev}package '${patch.name}@${patch.value}' to package '${childName}'`);\n        break;\n\n      case Patch.UPDATE:\n        const depField = patch.dev ? 'devDependencies' : 'dependencies';\n        const oldVersion = child[depField][patch.name];\n        if (oldVersion !== patch.value) {\n          logger.log(`${disabled}Updating ${patch.source}${dev}package '${patch.name}' from ${oldVersion} to ${patch.value} in package '${childName}'`);\n        }\n        break;\n\n      case Patch.REMOVE:\n        logger.log(`${disabled}Removing${dev}package '${patch.name}' from '${childName}'`);\n        break;\n\n      case Patch.INHERIT:\n        const oldValue = JSON.stringify(child.packageJson[patch.name]);\n        const newValue = JSON.stringify(patch.value);\n        if (oldValue !== newValue) {\n          if (oldValue) {\n            if (typeof newValue === 'undefined') {\n              logger.log(`${disabled}Removing field ${patch.name} from package '${childName}'`);\n            }\n            else {\n              logger.log(`${disabled}Updating field ${patch.name} from ${oldValue} to ${newValue} in package '${childName}'`);\n            }\n          } else {\n            logger.log(`${disabled}Adding field ${patch.name} as ${newValue} to package '${childName}'`);\n          }\n        }\n    }\n  }\n\n  /**\n   * Analyzes the dependencies and inherits of each package and applies the\n   * respective patches to each package.\n   */\n  async updatePackages() {\n    for (let child of this.children) {\n      let deps = await child.analyzeSourceDependencies();\n      let patches = [\n        ...child.generateDependencyPatches(deps),\n        ...child.generateInheritPatches(),\n      ];\n      patches = this.updatePatches(patches);\n      for (let patch of patches) {\n        this.logPatch(child, patch);\n        child.applyPatch(patch);\n      }\n    }\n  }\n\n  /**\n   * Analyzes the dependencies of the root package and applies the respective\n   * patches.\n   */\n  async updateSelf() {\n    const deps = await this.analyzeSourceDependencies();\n    let patches = this.generateDependencyPatches(deps)\n    for (let child of this.children) {\n      const childDeps = await child.analyzeSourceDependencies();\n      const childPatches = child.generateDependencyPatches(childDeps);\n      patches.push(...childPatches);\n    }\n\n    patches = this.updatePatches(patches);\n\n    // shake out patches\n    const shaken = {};\n    for (let patch of patches) {\n      if (patch.source == 'local') continue;\n\n      const name = patch.name;\n\n      if (!shaken[name]) {\n        shaken[name] = patch;\n        continue;\n      }\n\n      shaken[name] = Comptroller.mergePatches(shaken[name], patch);\n    }\n\n    for (let name in shaken) {\n      const patch = shaken[name];\n      this.logPatch(this, patch);\n      this.applyPatch(patch);\n    }\n  }\n\n  /**\n   * Merges patches generated by child packages in order to apply to the parent\n   * package. This resolves conflicts that occur when applying patches\n   * generated by multiple sources.\n   * @param {Patch} a - A patch\n   * @param {Patch} b - Another patch\n   * @return {Patch} - The merged patch\n   */\n  static mergePatches(a, b) {\n    const priority = [Patch.UPDATE, Patch.ADD, Patch.REMOVE];\n    const name = a.name;\n    const value = a.value || b.value;\n    const source = a.source || b.source;\n    const dev = a.dev && b.dev;\n    const files = [...a.files, ...b.files];\n    const type = priority[\n      Math.min(priority.indexOf(a.type), priority.indexOf(b.type))\n    ];\n    const disabled = (a.disabled || b.disabled) && type == Patch.REMOVE;\n    return new Patch(type, {\n      name,\n      value,\n      source,\n      dev,\n      disabled,\n      files,\n    });\n  }\n\n  /**\n   * Links the packages to node_modules in a way that enables them to be\n   * resolved by other packages by name.\n   */\n  async linkPackages() {\n    const node_modules = path.resolve(this.root, 'node_modules');\n    await fs.ensureDirPlease(node_modules);\n\n    for (let child of this.children) {\n      const name = child.packageJson.name;\n      await fs.ensureSymlinkPlease(child.root, path.resolve(node_modules, name));\n    }\n\n  }\n}\n",
     "static": true,
     "longname": "/mnt/fast/Projects/comptroller/src/comptroller.js",
     "access": "public",
@@ -10654,7 +10675,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 880,
+    "__docId__": 881,
     "kind": "class",
     "name": "Comptroller",
     "memberof": "src/comptroller.js",
@@ -10672,7 +10693,7 @@
     ]
   },
   {
-    "__docId__": 881,
+    "__docId__": 882,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "src/comptroller.js~Comptroller",
@@ -10699,7 +10720,7 @@
     ]
   },
   {
-    "__docId__": 882,
+    "__docId__": 883,
     "kind": "member",
     "name": "_packages",
     "memberof": "src/comptroller.js~Comptroller",
@@ -10719,7 +10740,7 @@
     "ignore": true
   },
   {
-    "__docId__": 883,
+    "__docId__": 884,
     "kind": "member",
     "name": "_children",
     "memberof": "src/comptroller.js~Comptroller",
@@ -10739,7 +10760,7 @@
     "ignore": true
   },
   {
-    "__docId__": 884,
+    "__docId__": 885,
     "kind": "get",
     "name": "packages",
     "memberof": "src/comptroller.js~Comptroller",
@@ -10760,7 +10781,7 @@
     }
   },
   {
-    "__docId__": 885,
+    "__docId__": 886,
     "kind": "get",
     "name": "children",
     "memberof": "src/comptroller.js~Comptroller",
@@ -10781,7 +10802,7 @@
     }
   },
   {
-    "__docId__": 886,
+    "__docId__": 887,
     "kind": "method",
     "name": "readChildren",
     "memberof": "src/comptroller.js~Comptroller",
@@ -10803,7 +10824,7 @@
     "params": []
   },
   {
-    "__docId__": 887,
+    "__docId__": 888,
     "kind": "method",
     "name": "writePackages",
     "memberof": "src/comptroller.js~Comptroller",
@@ -10818,7 +10839,7 @@
     "return": null
   },
   {
-    "__docId__": 888,
+    "__docId__": 889,
     "kind": "method",
     "name": "getChildByName",
     "memberof": "src/comptroller.js~Comptroller",
@@ -10852,7 +10873,7 @@
     }
   },
   {
-    "__docId__": 889,
+    "__docId__": 890,
     "kind": "method",
     "name": "updatePatches",
     "memberof": "src/comptroller.js~Comptroller",
@@ -10885,7 +10906,7 @@
     }
   },
   {
-    "__docId__": 890,
+    "__docId__": 891,
     "kind": "method",
     "name": "logPatch",
     "memberof": "src/comptroller.js~Comptroller",
@@ -10895,7 +10916,7 @@
     "longname": "src/comptroller.js~Comptroller#logPatch",
     "access": "public",
     "description": "Logs patch operations.",
-    "lineNumber": 148,
+    "lineNumber": 151,
     "params": [
       {
         "nullable": null,
@@ -10921,7 +10942,7 @@
     "return": null
   },
   {
-    "__docId__": 891,
+    "__docId__": 892,
     "kind": "method",
     "name": "updatePackages",
     "memberof": "src/comptroller.js~Comptroller",
@@ -10931,12 +10952,12 @@
     "longname": "src/comptroller.js~Comptroller#updatePackages",
     "access": "public",
     "description": "Analyzes the dependencies and inherits of each package and applies the\nrespective patches to each package.",
-    "lineNumber": 198,
+    "lineNumber": 206,
     "params": [],
     "return": null
   },
   {
-    "__docId__": 892,
+    "__docId__": 893,
     "kind": "method",
     "name": "updateSelf",
     "memberof": "src/comptroller.js~Comptroller",
@@ -10946,12 +10967,12 @@
     "longname": "src/comptroller.js~Comptroller#updateSelf",
     "access": "public",
     "description": "Analyzes the dependencies of the root package and applies the respective\npatches.",
-    "lineNumber": 217,
+    "lineNumber": 225,
     "params": [],
     "return": null
   },
   {
-    "__docId__": 893,
+    "__docId__": 894,
     "kind": "method",
     "name": "mergePatches",
     "memberof": "src/comptroller.js~Comptroller",
@@ -10961,7 +10982,7 @@
     "longname": "src/comptroller.js~Comptroller.mergePatches",
     "access": "public",
     "description": "Merges patches generated by child packages in order to apply to the parent\npackage. This resolves conflicts that occur when applying patches\ngenerated by multiple sources.",
-    "lineNumber": 258,
+    "lineNumber": 266,
     "params": [
       {
         "nullable": null,
@@ -10994,7 +11015,7 @@
     }
   },
   {
-    "__docId__": 894,
+    "__docId__": 895,
     "kind": "method",
     "name": "linkPackages",
     "memberof": "src/comptroller.js~Comptroller",
@@ -11004,12 +11025,12 @@
     "longname": "src/comptroller.js~Comptroller#linkPackages",
     "access": "public",
     "description": "Links the packages to node_modules in a way that enables them to be\nresolved by other packages by name.",
-    "lineNumber": 283,
+    "lineNumber": 291,
     "params": [],
     "return": null
   },
   {
-    "__docId__": 895,
+    "__docId__": 896,
     "kind": "file",
     "name": "src/fs.js",
     "content": "const fs = require('fs-extra');\nconst {promisify} = require('util');\n\nfor (let key of ['writeFile', 'readFile', 'readJson', 'ensureDir', 'ensureSymlink', 'remove']) {\n  fs[`${key}Please`] = promisify(fs[key]);\n}\n\nmodule.exports = fs;\n",
@@ -11020,7 +11041,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 896,
+    "__docId__": 897,
     "kind": "file",
     "name": "src/glob.js",
     "content": "const {\n  promisify\n} = require('util');\nconst fastGlob = require('fast-glob');\nconst glob = require('glob');\n\nglob.please = fastGlob // promisify(glob);\n\nmodule.exports = glob;\n",
@@ -11031,7 +11052,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 897,
+    "__docId__": 898,
     "kind": "variable",
     "name": "promisify",
     "memberof": "src/glob.js",
@@ -11052,7 +11073,7 @@
     "ignore": true
   },
   {
-    "__docId__": 898,
+    "__docId__": 899,
     "kind": "file",
     "name": "src/logger.js",
     "content": "module.exports = {\n  log (...args) {console.log(...args)},\n  info (...args) {console.info(...args)},\n  warn (...args) {console.warn(...args)},\n  error (...args) {console.error(...args)},\n}\n",
@@ -11063,10 +11084,10 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 899,
+    "__docId__": 900,
     "kind": "file",
     "name": "src/package.js",
-    "content": "const path = require('./path');\nconst glob = require('./glob');\nconst minimatch = require('minimatch');\nconst fs = require('./fs');\nconst builtins = require('builtin-modules');\n\nconst nodeDetective = require('detective')\n\nconst detective = {\n  commonjs: nodeDetective,\n  amd: require('detective-amd'),\n  es6: require('detective-es6'),\n  typescript: require('detective-typescript')\n}\n\nconst sortPackageJson = require('sort-package-json');\nconst beautify = require('json-beautify');\nconst Patch = require('./patch');\n\n/**\n * This is the package class. It serves as encapsulation for individual\n * packages, as a means of querying for package info, and as an outlet for\n * changes to a package.\n */\nmodule.exports = class Package {\n  /**\n   * Creates a new package instance. It can accept it's configuration either\n   * through the package.json file or through the constructor arguments.\n   * @param {object} opts - The package options.\n   * @param {string} opts.root - The root directory of the package.\n   * @param {object} [opts.packageJson = fs.readJson('root package.json')] - The\n   * package's package.json. If not specified, it's read from the root\n   * directory.\n   * @param {object} [opts.config = opts.packageJson.comptroller || {}] - The\n   * Comptroller configurations options.\n   * @param {glob} [opts.config.source = '⚹⚹/⚹.js'] - A glob that selects\n   * the packages source files.\n   * @param {glob} [opts.config.dev = '⚹⚹/test/⚹⚹/⚹.js'] - A glob that selects\n   * the packages that should also include devDependencies\n   * @param {glob[]} [opts.config.ignore = ['⚹⚹/node_modules/⚹⚹']] - An array\n   * of globs to pass into {@link glob}'s `ignore` option when searching for\n   * source files.\n   * @param {Array<string|object>} [opts.config.exclude = builtins] - An array of package\n   * names to ignore in all operations. Defaults to {@link builtin-modules}.\n   * @param {string[]} [opts.config.inherits = []] - An array of field names to\n   * inherit from the parent package.json. This is useful for values that\n   * remain the same across all packages.\n   * @param {object} [opts.config.detective = {}] - The options to pass through\n   * to <a href=\"https://npmjs.com/package/@zdychacek/detective\">detective</a>.\n   * @param {boolean} [opts.config.prune = false] - Whether or not unused\n   * dependencies should be pruned from the package.json.\n   * @param {boolean|number} [opts.config.pretty = false] - The \"maximum fixed\n   * character width\" parameter to pass to json-beautify.\n   * @param {boolean} [opts.config.commonjs = true] - search for commonjs dependencies\n   * @param {boolean} [opts.config.es6 = false] - search for es6 module dependencies\n   * @param {boolean} [opts.config.amd = false] - search for amd module dependencies\n   * @param {boolean} [opts.config.typescript = false] - search for typescript module dependencies\n   * @param {boolean} [opts.config.log = false] - Whether logging is turned on\n   **/\n  constructor({\n    root,\n    packageJson = fs.readJsonSync(path.resolve(root, 'package.json')),\n    config = {},\n    _config = packageJson.comptroller || {},\n    source = _config.source || config.source,\n    dev = _config.dev || config.dev,\n    ignore = _config.ignore || config.ignore || ['**/node_modules/**'],\n    exclude = _config.exclude || config.exclude || builtins,\n    inherits = _config.inherits || config.inherits || [],\n    detective = _config.detective || config.detective || {},\n    prune = !!(_config.prune || config.prune),\n    pretty = _config.pretty || config.pretty,\n\n    commonjs = !!(_config.commonjs || config.commonjs || process.env.CJS),\n    typescript = !!(_config.typescript || config.typescript || process.env.TS),\n    es6 = !!(_config.es6 || config.es6 || process.env.ES6),\n    amd = !!(_config.amd || config.amd || process.env.AMD),\n    logOn = !!(_config.logOn || config.logOn || process.env.LOG),\n    modules = _config.modules || config.modules || {},\n  }) {\n    const moduleTypes = Object.assign(modules, {\n      commonjs,\n      amd,\n      es6,\n      typescript\n    })\n\n    function normalizeGlob(glob) {\n      return glob.replace(/\\|/g, ',')\n    }\n\n    source = normalizeGlob(source || this.defaultSourceFilesGlob(moduleTypes))\n    dev = normalizeGlob(dev || this.defaultTestFilesGlob(moduleTypes))\n\n    this._moduleTypes = moduleTypes\n\n    /** @type {string} */\n    this._root = root;\n\n    /** @type {object} */\n    this._packageJson = packageJson;\n\n    /** @type {glob} */\n    this._source = source;\n\n    /** @type {glob} */\n    this._dev = dev;\n\n    /** @type {glob[]} */\n    this._ignore = ignore;\n\n    /** @type {string[]} */\n    this._exclude = Package.generateExcludes(exclude);\n\n    /** @type {string[]} */\n    this._inherits = inherits;\n\n    /** @type {object} */\n    this._detective = detective;\n\n    /** @type {boolean} */\n    this._prune = prune;\n\n    /** @type {boolean|number} */\n    this._pretty = pretty;\n\n    /** @type {boolean} */\n    this._commonjs = commonjs;\n\n    /** @type {boolean} */\n    this._amd = amd;\n\n    /** @type {boolean} */\n    this._typescript = typescript;\n\n    /** @type {boolean} */\n    this._es6 = es6;\n\n    /** @type {boolean} */\n    this._logOn = logOn;\n\n    this._tried = {}\n\n    this.log({\n      LOG: process.env.LOG,\n      CJS: process.env.CJS,\n      ES6: process.env.ES6,\n      TS: process.env.TS,\n      AMD: process.env.AMD,\n      config,\n      _config,\n    })\n\n    this.log({\n      moduleTypes,\n      source,\n      dev\n    })\n  }\n\n  defaultSourceFilesGlob(moduleTypes = {}) {\n    if (moduleTypes.es6) return '**/*.m?jsx?'\n    if (moduleTypes.typescript) return '**/*.tsx?'\n    // if (moduleTypes.amd || moduleTypes.commonjs) return '**/*.js'\n    return '**/*.js'\n  }\n\n  defaultTestFilesGlob(moduleTypes = {}) {\n    if (moduleTypes.es6) return '**/*.test.m?jsx?'\n    if (moduleTypes.typescript) return '**/*.test.tsx?'\n    // if (moduleTypes.amd || moduleTypes.commonjs) return '**/*.test.js'\n    return '**/*.test.js'\n  }\n\n  get moduleTypes() {\n    return this._moduleTypes\n  }\n\n  get checkExtMap() {\n    return {\n      ts: /tsx?$/,\n      js: /m?jsx?$/,\n      es6: /mjsx?$/,\n      default: /jsx?$/\n    }\n  }\n\n  /**\n   * The package's root directory.\n   * @type {string}\n   */\n  get root() {\n    return this._root\n  }\n\n  /**\n   * An object representing the package's package.json.\n   * @type {object}\n   */\n  get packageJson() {\n    return this._packageJson\n  }\n\n  /**\n   * An object representing the package's dependencies.\n   * @type {object}\n   */\n  get dependencies() {\n    return this.packageJson.dependencies || (this.packageJson.dependencies = {})\n  }\n\n  /**\n   * An object representing the package's devDependencies.\n   * @type {object}\n   */\n  get devDependencies() {\n    return this.packageJson.devDependencies || (this.packageJson.devDependencies = {})\n  }\n\n  /**\n   * A glob that matches the package's source files\n   * @type {glob}\n   */\n  get source() {\n    return this._source\n  }\n\n  /**\n   * A glob that matches the package's dev files\n   * @type {minimatch}\n   */\n  get dev() {\n    return this._dev\n  }\n\n  /**\n   * An array of globs that match files not to be included with the package's\n   * source files.\n   * @type {glob[]}\n   */\n  get ignore() {\n    return this._ignore\n  }\n\n  /**\n   * An array of package names to ignore in all operations.\n   * @type {string[]}\n   */\n  get exclude() {\n    return this._exclude\n  }\n\n  /**\n   * An array of field names the package should inherit from it's parent\n   * package.json.\n   * @type {string[]}\n   */\n  get inherits() {\n    return this._inherits\n  }\n\n  /**\n   * The options to pass through to <a href=\"https://npmjs.com/package/@zdychacek/detective\">detective</a>.\n   * @type {object}\n   */\n  get detective() {\n    return this._detective\n  }\n\n  /**\n   * Whether or not unused dependencies should be pruned from the package.json.\n   * @type {boolean}\n   */\n  get prune() {\n    return this._prune\n  }\n\n  /**\n   * The \"maximum fixed character width\" parameter to pass to json-beautify.\n   * @type {boolean|number}\n   */\n  get pretty() {\n    return this._pretty\n  }\n\n  /**\n   * Whether CommonJS dependencies are to be searched\n   * @type {boolean}\n   */\n  get commonjs() {\n    return this._commonjs\n  }\n\n  /**\n   * Whether AMD dependencies are to be searched\n   * @type {boolean}\n   */\n  get amd() {\n    return this._amd\n  }\n\n  /**\n   * Whether TypeScript dependencies are to be searched\n   * @type {boolean}\n   */\n  get typescript() {\n    return this._typescript\n  }\n\n  /**\n   * Whether ES6 module dependencies are to be searched\n   * @type {boolean}\n   */\n  get es6() {\n    return this._es6\n  }\n\n  /**\n   * Whether Logging is turned on\n   * @type {boolean}\n   */\n  get logOn() {\n    return this._logOn\n  }\n\n  get tried() {\n    return this._tried || {}\n  }\n\n  reset() {\n    this._tried = {}\n  }\n\n  /**\n   * Writes {@link Package#packageJson} to it's respective package.json file.\n   */\n  async writePackageJson() {\n    const packageJson = sortPackageJson(this.packageJson);\n    const json = beautify(packageJson, null, 2, this.pretty);\n    await fs.writeFilePlease(path.resolve(this.root, 'package.json'), json);\n  }\n\n  /**\n   * Takes a dependency name and resolves it to the actual dependency name,\n   * stripping any subdirectories from the dependency name (retaining @org\n   * style dependencies). It also excludes dependencies with relative paths (./\n   * or ../ style) and any dependencies listed in {@link Package#exclude}\n   * @param {string} dependency - The dependency to resolve\n   * @return {string | boolean} - The resolved dependency name, or false if the\n   * the dependency is excluded.\n   */\n  resolveDependency(dependency) {\n    if (dependency.charAt(0) == '.') return false;\n    if (this.exclude.indexOf(dependency) >= 0) return false;\n    const split = dependency.split('/');\n    return split[0].charAt(0) == '@' ? split[0] + '/' + split[1] : split[0];\n  }\n\n  detectiveOpts(name) {\n    return (this.detective || {})[name] || this.detective || {}\n  }\n\n  log(msg, data) {\n    if (!this.logOn) return\n    console.log({\n      LOGGING: this.logOn\n    })\n    data ? console.log(msg, data) : console.log(msg)\n  }\n\n  error(msg, data) {\n    console.error(msg, data)\n    throw new Error(msg)\n  }\n\n  depsFor(name, src, file) {\n    if (!this[name]) {\n      this.log('depsFor: skipped', name, {\n        file\n      })\n      return []\n    }\n    if (this.tried[name]) {\n      this.log('depsFor: already tried', name, {\n        file\n      })\n      return\n    }\n\n    this.log('depsFor', {\n      name,\n      file\n    })\n    const ext = this.fileExtension(file)\n    const baseOpts = ext === 'tsx' ? {\n      filePath: file, // to auto-detect appropriate jsx setting\n    } : {}\n\n    const opts = Object.assign(baseOpts, this.detectiveOpts(name))\n    const $detective = detective[name]\n\n    if (!$detective) {\n      this.error(`detective not registered: ${name}`, {\n        $detective,\n        detective,\n        name\n      })\n    }\n    let deps\n    try {\n      deps = $detective(src, opts)\n      this.tried[name] = true\n    } catch (err) {\n      this.error(err)\n    }\n\n    this.log('depsFor: dependencies found', {\n      src,\n      deps\n    })\n    return deps\n  }\n\n  fileExtension(file) {\n    return path.extname(file).slice(1)\n  }\n\n  concatDeps(...deps) {\n    deps = deps.filter(dep => Array.isArray(dep))\n    return [].concat(...deps)\n  }\n\n  matchExt(ext) {\n    const regExp = this.checkExtMap[ext] || this.checkExtMap.default\n    const match = regExp.test(ext)\n    this.log('matchExt', {\n      ext,\n      match\n    })\n    return match\n  }\n\n  resolve_ts(src, ext, file) {\n    return this.matchExt(ext) ? this.depsFor('typescript', src, file) : []\n  }\n\n  resolve_es6(src, ext, file) {\n    return this.matchExt(ext) ? this.depsFor('es6', src, file) : []\n  }\n\n  resolve_js(src, ext, file) {\n    return this.matchExt(ext) ? this.concatDeps(\n      this.depsFor('commonjs', src, file),\n      this.depsFor('es6', src, file),\n      this.depsFor('amd', src, file)) : []\n  }\n\n  resolve_default(src, ext, file) {\n    // default fallback to include all\n    return this.concatDeps(\n      this.depsFor('commonjs', src, file),\n      this.depsFor('es6', src, file),\n      this.depsFor('typescript', src, file),\n      this.depsFor('amd', src, file)\n    )\n  }\n\n  resolveByExt(src, ext, {\n    file,\n    names\n  }) {\n    names = names || ['js', 'es6', 'ts', 'default']\n    return names.reduce((acc, name) => {\n      this.log('resolveByExt', name)\n      // try to resolve using each extension until one returns dependencies\n      if (acc.length > 0) {\n        this.log('resolveByExt: found', acc)\n        return acc\n      }\n      const funName = `resolve_${name}`\n      const fun = this[funName].bind(this)\n      const result = fun(src, ext, file)\n      this.log('resolveByExt', {\n        file,\n        funName,\n        result\n      })\n      if (result) {\n        acc = acc.concat(result)\n      }\n      return acc\n    }, [])\n  }\n\n  /**\n   * Find dependencies in source file\n   * @param {*} src\n   */\n  findDependencies(src, file) {\n    this.reset()\n    const ext = this.fileExtension(file)\n    return this.resolveByExt(src, ext, {\n      file\n    })\n  }\n\n  /**\n   * Analyzes the package's source files and returns all of the invoked\n   * dependencies mapped to the files invoking them.\n   * @return {Map<string, object>} - A map with the dependency names as keys\n   * and the dependency metadata as values.\n   */\n  async analyzeSourceDependencies() {\n    const globPath = path.resolve(this.root, this.source)\n    const globOpts = {\n      ignore: this.ignore,\n      nodir: true,\n    }\n    const files = await glob.please(globPath, globOpts);\n    const deps = {};\n    this.log('analyzeSourceDependencies', {\n      globPath,\n      globOpts,\n      files\n    })\n\n    await Promise.all(files.map(async (file) => {\n      const src = await fs.readFilePlease(file, 'utf8');\n      this.log('findDependencies', {\n        src,\n        file\n      })\n      // const dependencies = nodeDetective(src, this.detective);\n      const dependencies = this.findDependencies(src, file)\n      const relFile = path.relative(this.root, file);\n\n      this.log(relFile)\n\n      for (let dep of dependencies) {\n        if (dep = this.resolveDependency(dep)) {\n          this.log('resolved dependency', {\n            dep\n          })\n          deps[dep] = deps[dep] || {\n            files: []\n          };\n          this.log('add dependency to map', relFile)\n          deps[dep].files.push(relFile);\n        }\n      }\n      this.log('dependency map', JSON.stringify(deps, null, 2))\n    }));\n    return deps;\n  }\n\n  /**\n   * Compares a dependency object (as returned from {@link Package#analyzeSourceDependencies})\n   * with the dependencies listed in {@link Package@packageJson} and returns an\n   * array of patches.\n   * @param {object} dependencies - The dependencies to generate a patch for.\n   * @return {Patch[]} - The patches that will make {@link Package#packageJson} match the inputted dependencies\n   */\n  generateDependencyPatches(dependencies) {\n    const patches = [];\n    const usedDeps = {};\n    // const usedDev = {};\n\n    for (let dep in dependencies) {\n      let {\n        files\n      } = dependencies[dep];\n      let dev = true;\n\n      for (let file of files) {\n        if (!minimatch(file, this.dev)) {\n          dev = false;\n          break;\n        }\n      }\n\n      usedDeps[dep] = true;\n\n      if (dev && !(dep in this.devDependencies) && !(dep in this.dependencies)) {\n        patches.push(new Patch(Patch.ADD, {\n          name: dep,\n          dev,\n          files\n        }));\n      } else if (!dev && !(dep in this.dependencies)) {\n        patches.push(new Patch(Patch.ADD, {\n          name: dep,\n          files\n        }));\n      } else {\n        if (dep in this.devDependencies) {\n          patches.push(new Patch(Patch.UPDATE, {\n            name: dep,\n            dev: true,\n            files\n          }));\n        } else if (dep in this.dependencies) {\n          patches.push(new Patch(Patch.UPDATE, {\n            name: dep,\n            files\n          }));\n        }\n      }\n    }\n\n    for (let dep in this.dependencies) {\n      if (!usedDeps[dep] && this.exclude.indexOf(dep) < 0) {\n        patches.push(new Patch(Patch.REMOVE, {\n          name: dep\n        }))\n      }\n    }\n\n    return patches;\n  }\n\n  /**\n   * Generates the patches that will satisfy {@link Package#inherits}\n   * @return {Patch[]} - The patches that will update {@link Package#packageJson} with the inherited fields.\n   */\n  generateInheritPatches() {\n    return this.inherits.map((name) => new Patch(Patch.INHERIT, {\n      name\n    }));\n  }\n\n  /**\n   * Applies a given patch to {@link Package#packageJson}.\n   * @param {Patch} patch - The patch to apply,\n   */\n  applyPatch(patch) {\n    if (patch.disabled) return;\n\n    let depField = patch.dev ? 'devDependencies' : 'dependencies';\n\n    switch (patch.type) {\n      case Patch.ADD:\n      case Patch.UPDATE:\n        if (typeof patch.value !== 'undefined') {\n          this[depField][patch.name] = patch.value;\n        }\n        break;\n      case Patch.REMOVE:\n        delete this[depField][patch.name];\n        break;\n      case Patch.INHERIT:\n        if (typeof patch.value !== 'undefined') {\n          this.packageJson[patch.name] = patch.value;\n        }\n      default:\n        break;\n    }\n  }\n\n  /**\n   * Generates an exclude array\n   * @param {Array<string|object>} excludes - The excludes array to use as a base.\n   */\n  static generateExcludes(excludes) {\n    const result = [];\n\n    for (let exclude of excludes) {\n      if (typeof exclude === 'string') {\n        result.push(exclude);\n        continue;\n      }\n      if (exclude && typeof exclude === 'object') {\n        if (exclude.group === 'builtins') {\n          result.push(...builtins);\n        }\n      }\n    }\n\n    return result;\n  }\n}\n",
+    "content": "const path = require('./path');\nconst glob = require('./glob');\nconst minimatch = require('minimatch');\nconst fs = require('./fs');\nconst builtins = require('builtin-modules');\n\nconst nodeDetective = require('detective')\n\nconst detective = {\n  commonjs: nodeDetective,\n  amd: require('detective-amd'),\n  es6: require('detective-es6'),\n  typescript: require('detective-typescript')\n}\n\nconst sortPackageJson = require('sort-package-json');\nconst beautify = require('json-beautify');\nconst Patch = require('./patch');\n\n/**\n * This is the package class. It serves as encapsulation for individual\n * packages, as a means of querying for package info, and as an outlet for\n * changes to a package.\n */\nmodule.exports = class Package {\n  /**\n   * Creates a new package instance. It can accept it's configuration either\n   * through the package.json file or through the constructor arguments.\n   * @param {object} opts - The package options.\n   * @param {string} opts.root - The root directory of the package.\n   * @param {object} [opts.packageJson = fs.readJson('root package.json')] - The\n   * package's package.json. If not specified, it's read from the root\n   * directory.\n   * @param {object} [opts.config = opts.packageJson.comptroller || {}] - The\n   * Comptroller configurations options.\n   * @param {glob} [opts.config.source = '⚹⚹/⚹.js'] - A glob that selects\n   * the packages source files.\n   * @param {glob} [opts.config.dev = '⚹⚹/test/⚹⚹/⚹.js'] - A glob that selects\n   * the packages that should also include devDependencies\n   * @param {glob[]} [opts.config.ignore = ['⚹⚹/node_modules/⚹⚹']] - An array\n   * of globs to pass into {@link glob}'s `ignore` option when searching for\n   * source files.\n   * @param {Array<string|object>} [opts.config.exclude = builtins] - An array of package\n   * names to ignore in all operations. Defaults to {@link builtin-modules}.\n   * @param {string[]} [opts.config.inherits = []] - An array of field names to\n   * inherit from the parent package.json. This is useful for values that\n   * remain the same across all packages.\n   * @param {object} [opts.config.detective = {}] - The options to pass through\n   * to <a href=\"https://npmjs.com/package/@zdychacek/detective\">detective</a>.\n   * @param {boolean} [opts.config.prune = false] - Whether or not unused\n   * dependencies should be pruned from the package.json.\n   * @param {boolean} [opts.config.pruneInherited = false] - Whether or not to\n   * prune inherited fields that aren't present in the root package.json\n   * @param {boolean|number} [opts.config.pretty = false] - The \"maximum fixed\n   * character width\" parameter to pass to json-beautify.\n   * @param {boolean} [opts.config.commonjs = true] - search for commonjs dependencies\n   * @param {boolean} [opts.config.es6 = false] - search for es6 module dependencies\n   * @param {boolean} [opts.config.amd = false] - search for amd module dependencies\n   * @param {boolean} [opts.config.typescript = false] - search for typescript module dependencies\n   * @param {boolean} [opts.config.log = false] - Whether logging is turned on\n   **/\n  constructor({\n    root,\n    packageJson = fs.readJsonSync(path.resolve(root, 'package.json')),\n    config = {},\n    _config = packageJson.comptroller || {},\n    source = _config.source || config.source,\n    dev = _config.dev || config.dev,\n    ignore = _config.ignore || config.ignore || ['**/node_modules/**'],\n    exclude = _config.exclude || config.exclude || builtins,\n    inherits = _config.inherits || config.inherits || [],\n    detective = _config.detective || config.detective || {},\n    prune = !!(_config.prune || config.prune),\n    pruneInherited = !!(_config.pruneInherited || config.pruneInherited),\n    pretty = _config.pretty || config.pretty,\n\n    commonjs = !!(_config.commonjs || config.commonjs || process.env.CJS),\n    typescript = !!(_config.typescript || config.typescript || process.env.TS),\n    es6 = !!(_config.es6 || config.es6 || process.env.ES6),\n    amd = !!(_config.amd || config.amd || process.env.AMD),\n    logOn = !!(_config.logOn || config.logOn || process.env.LOG),\n    modules = _config.modules || config.modules || {},\n  }) {\n    const moduleTypes = Object.assign(modules, {\n      commonjs,\n      amd,\n      es6,\n      typescript\n    })\n\n    function normalizeGlob(glob) {\n      return glob.replace(/\\|/g, ',')\n    }\n\n    source = normalizeGlob(source || this.defaultSourceFilesGlob(moduleTypes))\n    dev = normalizeGlob(dev || this.defaultTestFilesGlob(moduleTypes))\n\n    this._moduleTypes = moduleTypes\n\n    /** @type {string} */\n    this._root = root;\n\n    /** @type {object} */\n    this._packageJson = packageJson;\n\n    /** @type {glob} */\n    this._source = source;\n\n    /** @type {glob} */\n    this._dev = dev;\n\n    /** @type {glob[]} */\n    this._ignore = ignore;\n\n    /** @type {string[]} */\n    this._exclude = Package.generateExcludes(exclude);\n\n    /** @type {string[]} */\n    this._inherits = inherits;\n\n    /** @type {object} */\n    this._detective = detective;\n\n    /** @type {boolean} */\n    this._prune = prune;\n\n    /** @type {boolean} */\n    this._pruneInherited = pruneInherited;\n\n    /** @type {boolean|number} */\n    this._pretty = pretty;\n\n    /** @type {boolean} */\n    this._commonjs = commonjs;\n\n    /** @type {boolean} */\n    this._amd = amd;\n\n    /** @type {boolean} */\n    this._typescript = typescript;\n\n    /** @type {boolean} */\n    this._es6 = es6;\n\n    /** @type {boolean} */\n    this._logOn = logOn;\n\n    this._tried = {}\n\n    this.log({\n      LOG: process.env.LOG,\n      CJS: process.env.CJS,\n      ES6: process.env.ES6,\n      TS: process.env.TS,\n      AMD: process.env.AMD,\n      config,\n      _config,\n    })\n\n    this.log({\n      moduleTypes,\n      source,\n      dev\n    })\n  }\n\n  defaultSourceFilesGlob(moduleTypes = {}) {\n    if (moduleTypes.es6) return '**/*.m?jsx?'\n    if (moduleTypes.typescript) return '**/*.tsx?'\n    // if (moduleTypes.amd || moduleTypes.commonjs) return '**/*.js'\n    return '**/*.js'\n  }\n\n  defaultTestFilesGlob(moduleTypes = {}) {\n    if (moduleTypes.es6) return '**/*.test.m?jsx?'\n    if (moduleTypes.typescript) return '**/*.test.tsx?'\n    // if (moduleTypes.amd || moduleTypes.commonjs) return '**/*.test.js'\n    return '**/*.test.js'\n  }\n\n  get moduleTypes() {\n    return this._moduleTypes\n  }\n\n  get checkExtMap() {\n    return {\n      ts: /tsx?$/,\n      js: /m?jsx?$/,\n      es6: /mjsx?$/,\n      default: /jsx?$/\n    }\n  }\n\n  /**\n   * The package's root directory.\n   * @type {string}\n   */\n  get root() {\n    return this._root\n  }\n\n  /**\n   * An object representing the package's package.json.\n   * @type {object}\n   */\n  get packageJson() {\n    return this._packageJson\n  }\n\n  /**\n   * An object representing the package's dependencies.\n   * @type {object}\n   */\n  get dependencies() {\n    return this.packageJson.dependencies || (this.packageJson.dependencies = {})\n  }\n\n  /**\n   * An object representing the package's devDependencies.\n   * @type {object}\n   */\n  get devDependencies() {\n    return this.packageJson.devDependencies || (this.packageJson.devDependencies = {})\n  }\n\n  /**\n   * A glob that matches the package's source files\n   * @type {glob}\n   */\n  get source() {\n    return this._source\n  }\n\n  /**\n   * A glob that matches the package's dev files\n   * @type {minimatch}\n   */\n  get dev() {\n    return this._dev\n  }\n\n  /**\n   * An array of globs that match files not to be included with the package's\n   * source files.\n   * @type {glob[]}\n   */\n  get ignore() {\n    return this._ignore\n  }\n\n  /**\n   * An array of package names to ignore in all operations.\n   * @type {string[]}\n   */\n  get exclude() {\n    return this._exclude\n  }\n\n  /**\n   * An array of field names the package should inherit from it's parent\n   * package.json.\n   * @type {string[]}\n   */\n  get inherits() {\n    return this._inherits\n  }\n\n  /**\n   * The options to pass through to <a href=\"https://npmjs.com/package/@zdychacek/detective\">detective</a>.\n   * @type {object}\n   */\n  get detective() {\n    return this._detective\n  }\n\n  /**\n   * Whether or not unused dependencies should be pruned from the package.json.\n   * @type {boolean}\n   */\n  get prune() {\n    return this._prune\n  }\n\n  /**\n   * Whether or not to prune inherited fields that aren't present in the root package.json\n   * @type {boolean}\n   */\n  get pruneInherited() {\n    return this._pruneInherited\n  }\n\n  /**\n   * The \"maximum fixed character width\" parameter to pass to json-beautify.\n   * @type {boolean|number}\n   */\n  get pretty() {\n    return this._pretty\n  }\n\n  /**\n   * Whether CommonJS dependencies are to be searched\n   * @type {boolean}\n   */\n  get commonjs() {\n    return this._commonjs\n  }\n\n  /**\n   * Whether AMD dependencies are to be searched\n   * @type {boolean}\n   */\n  get amd() {\n    return this._amd\n  }\n\n  /**\n   * Whether TypeScript dependencies are to be searched\n   * @type {boolean}\n   */\n  get typescript() {\n    return this._typescript\n  }\n\n  /**\n   * Whether ES6 module dependencies are to be searched\n   * @type {boolean}\n   */\n  get es6() {\n    return this._es6\n  }\n\n  /**\n   * Whether Logging is turned on\n   * @type {boolean}\n   */\n  get logOn() {\n    return this._logOn\n  }\n\n  get tried() {\n    return this._tried || {}\n  }\n\n  reset() {\n    this._tried = {}\n  }\n\n  /**\n   * Writes {@link Package#packageJson} to it's respective package.json file.\n   */\n  async writePackageJson() {\n    const packageJson = sortPackageJson(this.packageJson);\n    const json = beautify(packageJson, null, 2, this.pretty);\n    await fs.writeFilePlease(path.resolve(this.root, 'package.json'), json);\n  }\n\n  /**\n   * Takes a dependency name and resolves it to the actual dependency name,\n   * stripping any subdirectories from the dependency name (retaining @org\n   * style dependencies). It also excludes dependencies with relative paths (./\n   * or ../ style) and any dependencies listed in {@link Package#exclude}\n   * @param {string} dependency - The dependency to resolve\n   * @return {string | boolean} - The resolved dependency name, or false if the\n   * the dependency is excluded.\n   */\n  resolveDependency(dependency) {\n    if (dependency.charAt(0) == '.') return false;\n    if (this.exclude.indexOf(dependency) >= 0) return false;\n    const split = dependency.split('/');\n    return split[0].charAt(0) == '@' ? split[0] + '/' + split[1] : split[0];\n  }\n\n  detectiveOpts(name) {\n    return (this.detective || {})[name] || this.detective || {}\n  }\n\n  log(msg, data) {\n    if (!this.logOn) return\n    console.log({\n      LOGGING: this.logOn\n    })\n    data ? console.log(msg, data) : console.log(msg)\n  }\n\n  error(msg, data) {\n    console.error(msg, data)\n    throw new Error(msg)\n  }\n\n  depsFor(name, src, file) {\n    if (!this[name]) {\n      this.log('depsFor: skipped', name, {\n        file\n      })\n      return []\n    }\n    if (this.tried[name]) {\n      this.log('depsFor: already tried', name, {\n        file\n      })\n      return\n    }\n\n    this.log('depsFor', {\n      name,\n      file\n    })\n    const ext = this.fileExtension(file)\n    const baseOpts = ext === 'tsx' ? {\n      filePath: file, // to auto-detect appropriate jsx setting\n    } : {}\n\n    const opts = Object.assign(baseOpts, this.detectiveOpts(name))\n    const $detective = detective[name]\n\n    if (!$detective) {\n      this.error(`detective not registered: ${name}`, {\n        $detective,\n        detective,\n        name\n      })\n    }\n    let deps\n    try {\n      deps = $detective(src, opts)\n      this.tried[name] = true\n    } catch (err) {\n      this.error(err)\n    }\n\n    this.log('depsFor: dependencies found', {\n      src,\n      deps\n    })\n    return deps\n  }\n\n  fileExtension(file) {\n    return path.extname(file).slice(1)\n  }\n\n  concatDeps(...deps) {\n    deps = deps.filter(dep => Array.isArray(dep))\n    return [].concat(...deps)\n  }\n\n  matchExt(ext) {\n    const regExp = this.checkExtMap[ext] || this.checkExtMap.default\n    const match = regExp.test(ext)\n    this.log('matchExt', {\n      ext,\n      match\n    })\n    return match\n  }\n\n  resolve_ts(src, ext, file) {\n    return this.matchExt(ext) ? this.depsFor('typescript', src, file) : []\n  }\n\n  resolve_es6(src, ext, file) {\n    return this.matchExt(ext) ? this.depsFor('es6', src, file) : []\n  }\n\n  resolve_js(src, ext, file) {\n    return this.matchExt(ext) ? this.concatDeps(\n      this.depsFor('commonjs', src, file),\n      this.depsFor('es6', src, file),\n      this.depsFor('amd', src, file)) : []\n  }\n\n  resolve_default(src, ext, file) {\n    // default fallback to include all\n    return this.concatDeps(\n      this.depsFor('commonjs', src, file),\n      this.depsFor('es6', src, file),\n      this.depsFor('typescript', src, file),\n      this.depsFor('amd', src, file)\n    )\n  }\n\n  resolveByExt(src, ext, {\n    file,\n    names\n  }) {\n    names = names || ['js', 'es6', 'ts', 'default']\n    return names.reduce((acc, name) => {\n      this.log('resolveByExt', name)\n      // try to resolve using each extension until one returns dependencies\n      if (acc.length > 0) {\n        this.log('resolveByExt: found', acc)\n        return acc\n      }\n      const funName = `resolve_${name}`\n      const fun = this[funName].bind(this)\n      const result = fun(src, ext, file)\n      this.log('resolveByExt', {\n        file,\n        funName,\n        result\n      })\n      if (result) {\n        acc = acc.concat(result)\n      }\n      return acc\n    }, [])\n  }\n\n  /**\n   * Find dependencies in source file\n   * @param {*} src\n   */\n  findDependencies(src, file) {\n    this.reset()\n    const ext = this.fileExtension(file)\n    return this.resolveByExt(src, ext, {\n      file\n    })\n  }\n\n  /**\n   * Analyzes the package's source files and returns all of the invoked\n   * dependencies mapped to the files invoking them.\n   * @return {Map<string, object>} - A map with the dependency names as keys\n   * and the dependency metadata as values.\n   */\n  async analyzeSourceDependencies() {\n    const globPath = path.resolve(this.root, this.source)\n    const globOpts = {\n      ignore: this.ignore,\n      nodir: true,\n    }\n    const files = await glob.please(globPath, globOpts);\n    const deps = {};\n    this.log('analyzeSourceDependencies', {\n      globPath,\n      globOpts,\n      files\n    })\n\n    await Promise.all(files.map(async (file) => {\n      const src = await fs.readFilePlease(file, 'utf8');\n      this.log('findDependencies', {\n        src,\n        file\n      })\n      // const dependencies = nodeDetective(src, this.detective);\n      const dependencies = this.findDependencies(src, file)\n      const relFile = path.relative(this.root, file);\n\n      this.log(relFile)\n\n      for (let dep of dependencies) {\n        if (dep = this.resolveDependency(dep)) {\n          this.log('resolved dependency', {\n            dep\n          })\n          deps[dep] = deps[dep] || {\n            files: []\n          };\n          this.log('add dependency to map', relFile)\n          deps[dep].files.push(relFile);\n        }\n      }\n      this.log('dependency map', JSON.stringify(deps, null, 2))\n    }));\n    return deps;\n  }\n\n  /**\n   * Compares a dependency object (as returned from {@link Package#analyzeSourceDependencies})\n   * with the dependencies listed in {@link Package@packageJson} and returns an\n   * array of patches.\n   * @param {object} dependencies - The dependencies to generate a patch for.\n   * @return {Patch[]} - The patches that will make {@link Package#packageJson} match the inputted dependencies\n   */\n  generateDependencyPatches(dependencies) {\n    const patches = [];\n    const usedDeps = {};\n    // const usedDev = {};\n\n    for (let dep in dependencies) {\n      let {\n        files\n      } = dependencies[dep];\n      let dev = true;\n\n      for (let file of files) {\n        if (!minimatch(file, this.dev)) {\n          dev = false;\n          break;\n        }\n      }\n\n      usedDeps[dep] = true;\n\n      if (dev && !(dep in this.devDependencies) && !(dep in this.dependencies)) {\n        patches.push(new Patch(Patch.ADD, {\n          name: dep,\n          dev,\n          files\n        }));\n      } else if (!dev && !(dep in this.dependencies)) {\n        patches.push(new Patch(Patch.ADD, {\n          name: dep,\n          files\n        }));\n      } else {\n        if (dep in this.devDependencies) {\n          patches.push(new Patch(Patch.UPDATE, {\n            name: dep,\n            dev: true,\n            files\n          }));\n        } else if (dep in this.dependencies) {\n          patches.push(new Patch(Patch.UPDATE, {\n            name: dep,\n            files\n          }));\n        }\n      }\n    }\n\n    for (let dep in this.dependencies) {\n      if (!usedDeps[dep] && this.exclude.indexOf(dep) < 0) {\n        patches.push(new Patch(Patch.REMOVE, {\n          name: dep\n        }))\n      }\n    }\n\n    return patches;\n  }\n\n  /**\n   * Generates the patches that will satisfy {@link Package#inherits}\n   * @return {Patch[]} - The patches that will update {@link Package#packageJson} with the inherited fields.\n   */\n  generateInheritPatches() {\n    return this.inherits.map((name) => new Patch(Patch.INHERIT, {\n      name\n    }));\n  }\n\n  /**\n   * Applies a given patch to {@link Package#packageJson}.\n   * @param {Patch} patch - The patch to apply,\n   */\n  applyPatch(patch) {\n    if (patch.disabled) return;\n\n    let depField = patch.dev ? 'devDependencies' : 'dependencies';\n\n    switch (patch.type) {\n      case Patch.ADD:\n      case Patch.UPDATE:\n        if (typeof patch.value !== 'undefined') {\n          this[depField][patch.name] = patch.value;\n        }\n        break;\n      case Patch.REMOVE:\n        delete this[depField][patch.name];\n        break;\n      case Patch.INHERIT:\n        if (typeof patch.value !== 'undefined') {\n          this.packageJson[patch.name] = patch.value;\n        }\n        else {\n          delete this.packageJson[patch.name];\n        }\n      default:\n        break;\n    }\n  }\n\n  /**\n   * Generates an exclude array\n   * @param {Array<string|object>} excludes - The excludes array to use as a base.\n   */\n  static generateExcludes(excludes) {\n    const result = [];\n\n    for (let exclude of excludes) {\n      if (typeof exclude === 'string') {\n        result.push(exclude);\n        continue;\n      }\n      if (exclude && typeof exclude === 'object') {\n        if (exclude.group === 'builtins') {\n          result.push(...builtins);\n        }\n      }\n    }\n\n    return result;\n  }\n}\n",
     "static": true,
     "longname": "/mnt/fast/Projects/comptroller/src/package.js",
     "access": "public",
@@ -11074,7 +11095,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 900,
+    "__docId__": 901,
     "kind": "variable",
     "name": "detective",
     "memberof": "src/package.js",
@@ -11095,7 +11116,7 @@
     "ignore": true
   },
   {
-    "__docId__": 901,
+    "__docId__": 902,
     "kind": "class",
     "name": "Package",
     "memberof": "src/package.js",
@@ -11110,7 +11131,7 @@
     "interface": false
   },
   {
-    "__docId__": 902,
+    "__docId__": 903,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "src/package.js~Package",
@@ -11120,7 +11141,7 @@
     "longname": "src/package.js~Package#constructor",
     "access": "public",
     "description": "Creates a new package instance. It can accept it's configuration either\nthrough the package.json file or through the constructor arguments.",
-    "lineNumber": 58,
+    "lineNumber": 60,
     "params": [
       {
         "nullable": null,
@@ -11253,6 +11274,18 @@
       {
         "nullable": null,
         "types": [
+          "boolean"
+        ],
+        "spread": false,
+        "optional": true,
+        "defaultValue": " false",
+        "defaultRaw": false,
+        "name": "opts.config.pruneInherited",
+        "description": "Whether or not to\nprune inherited fields that aren't present in the root package.json"
+      },
+      {
+        "nullable": null,
+        "types": [
           "boolean",
           "number"
         ],
@@ -11326,7 +11359,7 @@
     ]
   },
   {
-    "__docId__": 903,
+    "__docId__": 904,
     "kind": "member",
     "name": "_moduleTypes",
     "memberof": "src/package.js~Package",
@@ -11334,7 +11367,7 @@
     "longname": "src/package.js~Package#_moduleTypes",
     "access": "private",
     "description": null,
-    "lineNumber": 93,
+    "lineNumber": 96,
     "undocument": true,
     "ignore": true,
     "type": {
@@ -11344,7 +11377,7 @@
     }
   },
   {
-    "__docId__": 904,
+    "__docId__": 905,
     "kind": "member",
     "name": "_root",
     "memberof": "src/package.js~Package",
@@ -11352,7 +11385,7 @@
     "longname": "src/package.js~Package#_root",
     "access": "private",
     "description": null,
-    "lineNumber": 96,
+    "lineNumber": 99,
     "type": {
       "nullable": null,
       "types": [
@@ -11364,7 +11397,7 @@
     "ignore": true
   },
   {
-    "__docId__": 905,
+    "__docId__": 906,
     "kind": "member",
     "name": "_packageJson",
     "memberof": "src/package.js~Package",
@@ -11372,7 +11405,7 @@
     "longname": "src/package.js~Package#_packageJson",
     "access": "private",
     "description": null,
-    "lineNumber": 99,
+    "lineNumber": 102,
     "type": {
       "nullable": null,
       "types": [
@@ -11384,32 +11417,12 @@
     "ignore": true
   },
   {
-    "__docId__": 906,
+    "__docId__": 907,
     "kind": "member",
     "name": "_source",
     "memberof": "src/package.js~Package",
     "static": false,
     "longname": "src/package.js~Package#_source",
-    "access": "private",
-    "description": null,
-    "lineNumber": 102,
-    "type": {
-      "nullable": null,
-      "types": [
-        "glob"
-      ],
-      "spread": false,
-      "description": null
-    },
-    "ignore": true
-  },
-  {
-    "__docId__": 907,
-    "kind": "member",
-    "name": "_dev",
-    "memberof": "src/package.js~Package",
-    "static": false,
-    "longname": "src/package.js~Package#_dev",
     "access": "private",
     "description": null,
     "lineNumber": 105,
@@ -11426,13 +11439,33 @@
   {
     "__docId__": 908,
     "kind": "member",
+    "name": "_dev",
+    "memberof": "src/package.js~Package",
+    "static": false,
+    "longname": "src/package.js~Package#_dev",
+    "access": "private",
+    "description": null,
+    "lineNumber": 108,
+    "type": {
+      "nullable": null,
+      "types": [
+        "glob"
+      ],
+      "spread": false,
+      "description": null
+    },
+    "ignore": true
+  },
+  {
+    "__docId__": 909,
+    "kind": "member",
     "name": "_ignore",
     "memberof": "src/package.js~Package",
     "static": false,
     "longname": "src/package.js~Package#_ignore",
     "access": "private",
     "description": null,
-    "lineNumber": 108,
+    "lineNumber": 111,
     "type": {
       "nullable": null,
       "types": [
@@ -11444,32 +11477,12 @@
     "ignore": true
   },
   {
-    "__docId__": 909,
+    "__docId__": 910,
     "kind": "member",
     "name": "_exclude",
     "memberof": "src/package.js~Package",
     "static": false,
     "longname": "src/package.js~Package#_exclude",
-    "access": "private",
-    "description": null,
-    "lineNumber": 111,
-    "type": {
-      "nullable": null,
-      "types": [
-        "string[]"
-      ],
-      "spread": false,
-      "description": null
-    },
-    "ignore": true
-  },
-  {
-    "__docId__": 910,
-    "kind": "member",
-    "name": "_inherits",
-    "memberof": "src/package.js~Package",
-    "static": false,
-    "longname": "src/package.js~Package#_inherits",
     "access": "private",
     "description": null,
     "lineNumber": 114,
@@ -11486,13 +11499,33 @@
   {
     "__docId__": 911,
     "kind": "member",
+    "name": "_inherits",
+    "memberof": "src/package.js~Package",
+    "static": false,
+    "longname": "src/package.js~Package#_inherits",
+    "access": "private",
+    "description": null,
+    "lineNumber": 117,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string[]"
+      ],
+      "spread": false,
+      "description": null
+    },
+    "ignore": true
+  },
+  {
+    "__docId__": 912,
+    "kind": "member",
     "name": "_detective",
     "memberof": "src/package.js~Package",
     "static": false,
     "longname": "src/package.js~Package#_detective",
     "access": "private",
     "description": null,
-    "lineNumber": 117,
+    "lineNumber": 120,
     "type": {
       "nullable": null,
       "types": [
@@ -11504,7 +11537,7 @@
     "ignore": true
   },
   {
-    "__docId__": 912,
+    "__docId__": 913,
     "kind": "member",
     "name": "_prune",
     "memberof": "src/package.js~Package",
@@ -11512,7 +11545,7 @@
     "longname": "src/package.js~Package#_prune",
     "access": "private",
     "description": null,
-    "lineNumber": 120,
+    "lineNumber": 123,
     "type": {
       "nullable": null,
       "types": [
@@ -11524,33 +11557,12 @@
     "ignore": true
   },
   {
-    "__docId__": 913,
-    "kind": "member",
-    "name": "_pretty",
-    "memberof": "src/package.js~Package",
-    "static": false,
-    "longname": "src/package.js~Package#_pretty",
-    "access": "private",
-    "description": null,
-    "lineNumber": 123,
-    "type": {
-      "nullable": null,
-      "types": [
-        "boolean",
-        "number"
-      ],
-      "spread": false,
-      "description": null
-    },
-    "ignore": true
-  },
-  {
     "__docId__": 914,
     "kind": "member",
-    "name": "_commonjs",
+    "name": "_pruneInherited",
     "memberof": "src/package.js~Package",
     "static": false,
-    "longname": "src/package.js~Package#_commonjs",
+    "longname": "src/package.js~Package#_pruneInherited",
     "access": "private",
     "description": null,
     "lineNumber": 126,
@@ -11567,17 +11579,18 @@
   {
     "__docId__": 915,
     "kind": "member",
-    "name": "_amd",
+    "name": "_pretty",
     "memberof": "src/package.js~Package",
     "static": false,
-    "longname": "src/package.js~Package#_amd",
+    "longname": "src/package.js~Package#_pretty",
     "access": "private",
     "description": null,
     "lineNumber": 129,
     "type": {
       "nullable": null,
       "types": [
-        "boolean"
+        "boolean",
+        "number"
       ],
       "spread": false,
       "description": null
@@ -11587,10 +11600,10 @@
   {
     "__docId__": 916,
     "kind": "member",
-    "name": "_typescript",
+    "name": "_commonjs",
     "memberof": "src/package.js~Package",
     "static": false,
-    "longname": "src/package.js~Package#_typescript",
+    "longname": "src/package.js~Package#_commonjs",
     "access": "private",
     "description": null,
     "lineNumber": 132,
@@ -11607,10 +11620,10 @@
   {
     "__docId__": 917,
     "kind": "member",
-    "name": "_es6",
+    "name": "_amd",
     "memberof": "src/package.js~Package",
     "static": false,
-    "longname": "src/package.js~Package#_es6",
+    "longname": "src/package.js~Package#_amd",
     "access": "private",
     "description": null,
     "lineNumber": 135,
@@ -11627,10 +11640,10 @@
   {
     "__docId__": 918,
     "kind": "member",
-    "name": "_logOn",
+    "name": "_typescript",
     "memberof": "src/package.js~Package",
     "static": false,
-    "longname": "src/package.js~Package#_logOn",
+    "longname": "src/package.js~Package#_typescript",
     "access": "private",
     "description": null,
     "lineNumber": 138,
@@ -11647,13 +11660,53 @@
   {
     "__docId__": 919,
     "kind": "member",
+    "name": "_es6",
+    "memberof": "src/package.js~Package",
+    "static": false,
+    "longname": "src/package.js~Package#_es6",
+    "access": "private",
+    "description": null,
+    "lineNumber": 141,
+    "type": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": null
+    },
+    "ignore": true
+  },
+  {
+    "__docId__": 920,
+    "kind": "member",
+    "name": "_logOn",
+    "memberof": "src/package.js~Package",
+    "static": false,
+    "longname": "src/package.js~Package#_logOn",
+    "access": "private",
+    "description": null,
+    "lineNumber": 144,
+    "type": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": null
+    },
+    "ignore": true
+  },
+  {
+    "__docId__": 921,
+    "kind": "member",
     "name": "_tried",
     "memberof": "src/package.js~Package",
     "static": false,
     "longname": "src/package.js~Package#_tried",
     "access": "private",
     "description": null,
-    "lineNumber": 140,
+    "lineNumber": 146,
     "undocument": true,
     "ignore": true,
     "type": {
@@ -11663,7 +11716,7 @@
     }
   },
   {
-    "__docId__": 920,
+    "__docId__": 922,
     "kind": "method",
     "name": "defaultSourceFilesGlob",
     "memberof": "src/package.js~Package",
@@ -11673,7 +11726,7 @@
     "longname": "src/package.js~Package#defaultSourceFilesGlob",
     "access": "public",
     "description": null,
-    "lineNumber": 159,
+    "lineNumber": 165,
     "undocument": true,
     "params": [
       {
@@ -11693,7 +11746,7 @@
     }
   },
   {
-    "__docId__": 921,
+    "__docId__": 923,
     "kind": "method",
     "name": "defaultTestFilesGlob",
     "memberof": "src/package.js~Package",
@@ -11703,7 +11756,7 @@
     "longname": "src/package.js~Package#defaultTestFilesGlob",
     "access": "public",
     "description": null,
-    "lineNumber": 166,
+    "lineNumber": 172,
     "undocument": true,
     "params": [
       {
@@ -11723,7 +11776,7 @@
     }
   },
   {
-    "__docId__": 922,
+    "__docId__": 924,
     "kind": "get",
     "name": "moduleTypes",
     "memberof": "src/package.js~Package",
@@ -11733,7 +11786,7 @@
     "longname": "src/package.js~Package#moduleTypes",
     "access": "public",
     "description": null,
-    "lineNumber": 173,
+    "lineNumber": 179,
     "undocument": true,
     "type": {
       "types": [
@@ -11742,7 +11795,7 @@
     }
   },
   {
-    "__docId__": 923,
+    "__docId__": 925,
     "kind": "get",
     "name": "checkExtMap",
     "memberof": "src/package.js~Package",
@@ -11752,7 +11805,7 @@
     "longname": "src/package.js~Package#checkExtMap",
     "access": "public",
     "description": null,
-    "lineNumber": 177,
+    "lineNumber": 183,
     "undocument": true,
     "type": {
       "types": [
@@ -11761,7 +11814,7 @@
     }
   },
   {
-    "__docId__": 924,
+    "__docId__": 926,
     "kind": "get",
     "name": "root",
     "memberof": "src/package.js~Package",
@@ -11771,7 +11824,7 @@
     "longname": "src/package.js~Package#root",
     "access": "public",
     "description": "The package's root directory.",
-    "lineNumber": 190,
+    "lineNumber": 196,
     "type": {
       "nullable": null,
       "types": [
@@ -11782,7 +11835,7 @@
     }
   },
   {
-    "__docId__": 925,
+    "__docId__": 927,
     "kind": "get",
     "name": "packageJson",
     "memberof": "src/package.js~Package",
@@ -11792,49 +11845,7 @@
     "longname": "src/package.js~Package#packageJson",
     "access": "public",
     "description": "An object representing the package's package.json.",
-    "lineNumber": 198,
-    "type": {
-      "nullable": null,
-      "types": [
-        "object"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 926,
-    "kind": "get",
-    "name": "dependencies",
-    "memberof": "src/package.js~Package",
-    "generator": false,
-    "async": false,
-    "static": false,
-    "longname": "src/package.js~Package#dependencies",
-    "access": "public",
-    "description": "An object representing the package's dependencies.",
-    "lineNumber": 206,
-    "type": {
-      "nullable": null,
-      "types": [
-        "object"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 927,
-    "kind": "get",
-    "name": "devDependencies",
-    "memberof": "src/package.js~Package",
-    "generator": false,
-    "async": false,
-    "static": false,
-    "longname": "src/package.js~Package#devDependencies",
-    "access": "public",
-    "description": "An object representing the package's devDependencies.",
-    "lineNumber": 214,
+    "lineNumber": 204,
     "type": {
       "nullable": null,
       "types": [
@@ -11847,120 +11858,15 @@
   {
     "__docId__": 928,
     "kind": "get",
-    "name": "source",
+    "name": "dependencies",
     "memberof": "src/package.js~Package",
     "generator": false,
     "async": false,
     "static": false,
-    "longname": "src/package.js~Package#source",
+    "longname": "src/package.js~Package#dependencies",
     "access": "public",
-    "description": "A glob that matches the package's source files",
-    "lineNumber": 222,
-    "type": {
-      "nullable": null,
-      "types": [
-        "glob"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 929,
-    "kind": "get",
-    "name": "dev",
-    "memberof": "src/package.js~Package",
-    "generator": false,
-    "async": false,
-    "static": false,
-    "longname": "src/package.js~Package#dev",
-    "access": "public",
-    "description": "A glob that matches the package's dev files",
-    "lineNumber": 230,
-    "type": {
-      "nullable": null,
-      "types": [
-        "minimatch"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 930,
-    "kind": "get",
-    "name": "ignore",
-    "memberof": "src/package.js~Package",
-    "generator": false,
-    "async": false,
-    "static": false,
-    "longname": "src/package.js~Package#ignore",
-    "access": "public",
-    "description": "An array of globs that match files not to be included with the package's\nsource files.",
-    "lineNumber": 239,
-    "type": {
-      "nullable": null,
-      "types": [
-        "glob[]"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 931,
-    "kind": "get",
-    "name": "exclude",
-    "memberof": "src/package.js~Package",
-    "generator": false,
-    "async": false,
-    "static": false,
-    "longname": "src/package.js~Package#exclude",
-    "access": "public",
-    "description": "An array of package names to ignore in all operations.",
-    "lineNumber": 247,
-    "type": {
-      "nullable": null,
-      "types": [
-        "string[]"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 932,
-    "kind": "get",
-    "name": "inherits",
-    "memberof": "src/package.js~Package",
-    "generator": false,
-    "async": false,
-    "static": false,
-    "longname": "src/package.js~Package#inherits",
-    "access": "public",
-    "description": "An array of field names the package should inherit from it's parent\npackage.json.",
-    "lineNumber": 256,
-    "type": {
-      "nullable": null,
-      "types": [
-        "string[]"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 933,
-    "kind": "get",
-    "name": "detective",
-    "memberof": "src/package.js~Package",
-    "generator": false,
-    "async": false,
-    "static": false,
-    "longname": "src/package.js~Package#detective",
-    "access": "public",
-    "description": "The options to pass through to <a href=\"https://npmjs.com/package/@zdychacek/detective\">detective</a>.",
-    "lineNumber": 264,
+    "description": "An object representing the package's dependencies.",
+    "lineNumber": 212,
     "type": {
       "nullable": null,
       "types": [
@@ -11971,7 +11877,154 @@
     }
   },
   {
+    "__docId__": 929,
+    "kind": "get",
+    "name": "devDependencies",
+    "memberof": "src/package.js~Package",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/package.js~Package#devDependencies",
+    "access": "public",
+    "description": "An object representing the package's devDependencies.",
+    "lineNumber": 220,
+    "type": {
+      "nullable": null,
+      "types": [
+        "object"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 930,
+    "kind": "get",
+    "name": "source",
+    "memberof": "src/package.js~Package",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/package.js~Package#source",
+    "access": "public",
+    "description": "A glob that matches the package's source files",
+    "lineNumber": 228,
+    "type": {
+      "nullable": null,
+      "types": [
+        "glob"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 931,
+    "kind": "get",
+    "name": "dev",
+    "memberof": "src/package.js~Package",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/package.js~Package#dev",
+    "access": "public",
+    "description": "A glob that matches the package's dev files",
+    "lineNumber": 236,
+    "type": {
+      "nullable": null,
+      "types": [
+        "minimatch"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 932,
+    "kind": "get",
+    "name": "ignore",
+    "memberof": "src/package.js~Package",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/package.js~Package#ignore",
+    "access": "public",
+    "description": "An array of globs that match files not to be included with the package's\nsource files.",
+    "lineNumber": 245,
+    "type": {
+      "nullable": null,
+      "types": [
+        "glob[]"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 933,
+    "kind": "get",
+    "name": "exclude",
+    "memberof": "src/package.js~Package",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/package.js~Package#exclude",
+    "access": "public",
+    "description": "An array of package names to ignore in all operations.",
+    "lineNumber": 253,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string[]"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
     "__docId__": 934,
+    "kind": "get",
+    "name": "inherits",
+    "memberof": "src/package.js~Package",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/package.js~Package#inherits",
+    "access": "public",
+    "description": "An array of field names the package should inherit from it's parent\npackage.json.",
+    "lineNumber": 262,
+    "type": {
+      "nullable": null,
+      "types": [
+        "string[]"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 935,
+    "kind": "get",
+    "name": "detective",
+    "memberof": "src/package.js~Package",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/package.js~Package#detective",
+    "access": "public",
+    "description": "The options to pass through to <a href=\"https://npmjs.com/package/@zdychacek/detective\">detective</a>.",
+    "lineNumber": 270,
+    "type": {
+      "nullable": null,
+      "types": [
+        "object"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 936,
     "kind": "get",
     "name": "prune",
     "memberof": "src/package.js~Package",
@@ -11981,50 +12034,7 @@
     "longname": "src/package.js~Package#prune",
     "access": "public",
     "description": "Whether or not unused dependencies should be pruned from the package.json.",
-    "lineNumber": 272,
-    "type": {
-      "nullable": null,
-      "types": [
-        "boolean"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 935,
-    "kind": "get",
-    "name": "pretty",
-    "memberof": "src/package.js~Package",
-    "generator": false,
-    "async": false,
-    "static": false,
-    "longname": "src/package.js~Package#pretty",
-    "access": "public",
-    "description": "The \"maximum fixed character width\" parameter to pass to json-beautify.",
-    "lineNumber": 280,
-    "type": {
-      "nullable": null,
-      "types": [
-        "boolean",
-        "number"
-      ],
-      "spread": false,
-      "description": null
-    }
-  },
-  {
-    "__docId__": 936,
-    "kind": "get",
-    "name": "commonjs",
-    "memberof": "src/package.js~Package",
-    "generator": false,
-    "async": false,
-    "static": false,
-    "longname": "src/package.js~Package#commonjs",
-    "access": "public",
-    "description": "Whether CommonJS dependencies are to be searched",
-    "lineNumber": 288,
+    "lineNumber": 278,
     "type": {
       "nullable": null,
       "types": [
@@ -12037,15 +12047,15 @@
   {
     "__docId__": 937,
     "kind": "get",
-    "name": "amd",
+    "name": "pruneInherited",
     "memberof": "src/package.js~Package",
     "generator": false,
     "async": false,
     "static": false,
-    "longname": "src/package.js~Package#amd",
+    "longname": "src/package.js~Package#pruneInherited",
     "access": "public",
-    "description": "Whether AMD dependencies are to be searched",
-    "lineNumber": 296,
+    "description": "Whether or not to prune inherited fields that aren't present in the root package.json",
+    "lineNumber": 286,
     "type": {
       "nullable": null,
       "types": [
@@ -12058,19 +12068,20 @@
   {
     "__docId__": 938,
     "kind": "get",
-    "name": "typescript",
+    "name": "pretty",
     "memberof": "src/package.js~Package",
     "generator": false,
     "async": false,
     "static": false,
-    "longname": "src/package.js~Package#typescript",
+    "longname": "src/package.js~Package#pretty",
     "access": "public",
-    "description": "Whether TypeScript dependencies are to be searched",
-    "lineNumber": 304,
+    "description": "The \"maximum fixed character width\" parameter to pass to json-beautify.",
+    "lineNumber": 294,
     "type": {
       "nullable": null,
       "types": [
-        "boolean"
+        "boolean",
+        "number"
       ],
       "spread": false,
       "description": null
@@ -12079,15 +12090,15 @@
   {
     "__docId__": 939,
     "kind": "get",
-    "name": "es6",
+    "name": "commonjs",
     "memberof": "src/package.js~Package",
     "generator": false,
     "async": false,
     "static": false,
-    "longname": "src/package.js~Package#es6",
+    "longname": "src/package.js~Package#commonjs",
     "access": "public",
-    "description": "Whether ES6 module dependencies are to be searched",
-    "lineNumber": 312,
+    "description": "Whether CommonJS dependencies are to be searched",
+    "lineNumber": 302,
     "type": {
       "nullable": null,
       "types": [
@@ -12100,15 +12111,15 @@
   {
     "__docId__": 940,
     "kind": "get",
-    "name": "logOn",
+    "name": "amd",
     "memberof": "src/package.js~Package",
     "generator": false,
     "async": false,
     "static": false,
-    "longname": "src/package.js~Package#logOn",
+    "longname": "src/package.js~Package#amd",
     "access": "public",
-    "description": "Whether Logging is turned on",
-    "lineNumber": 320,
+    "description": "Whether AMD dependencies are to be searched",
+    "lineNumber": 310,
     "type": {
       "nullable": null,
       "types": [
@@ -12121,6 +12132,69 @@
   {
     "__docId__": 941,
     "kind": "get",
+    "name": "typescript",
+    "memberof": "src/package.js~Package",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/package.js~Package#typescript",
+    "access": "public",
+    "description": "Whether TypeScript dependencies are to be searched",
+    "lineNumber": 318,
+    "type": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 942,
+    "kind": "get",
+    "name": "es6",
+    "memberof": "src/package.js~Package",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/package.js~Package#es6",
+    "access": "public",
+    "description": "Whether ES6 module dependencies are to be searched",
+    "lineNumber": 326,
+    "type": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 943,
+    "kind": "get",
+    "name": "logOn",
+    "memberof": "src/package.js~Package",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/package.js~Package#logOn",
+    "access": "public",
+    "description": "Whether Logging is turned on",
+    "lineNumber": 334,
+    "type": {
+      "nullable": null,
+      "types": [
+        "boolean"
+      ],
+      "spread": false,
+      "description": null
+    }
+  },
+  {
+    "__docId__": 944,
+    "kind": "get",
     "name": "tried",
     "memberof": "src/package.js~Package",
     "generator": false,
@@ -12129,7 +12203,7 @@
     "longname": "src/package.js~Package#tried",
     "access": "public",
     "description": null,
-    "lineNumber": 324,
+    "lineNumber": 338,
     "undocument": true,
     "type": {
       "types": [
@@ -12138,7 +12212,7 @@
     }
   },
   {
-    "__docId__": 942,
+    "__docId__": 945,
     "kind": "method",
     "name": "reset",
     "memberof": "src/package.js~Package",
@@ -12148,13 +12222,13 @@
     "longname": "src/package.js~Package#reset",
     "access": "public",
     "description": null,
-    "lineNumber": 328,
+    "lineNumber": 342,
     "undocument": true,
     "params": [],
     "return": null
   },
   {
-    "__docId__": 944,
+    "__docId__": 947,
     "kind": "method",
     "name": "writePackageJson",
     "memberof": "src/package.js~Package",
@@ -12164,12 +12238,12 @@
     "longname": "src/package.js~Package#writePackageJson",
     "access": "public",
     "description": "Writes {@link Package#packageJson} to it's respective package.json file.",
-    "lineNumber": 335,
+    "lineNumber": 349,
     "params": [],
     "return": null
   },
   {
-    "__docId__": 945,
+    "__docId__": 948,
     "kind": "method",
     "name": "resolveDependency",
     "memberof": "src/package.js~Package",
@@ -12179,7 +12253,7 @@
     "longname": "src/package.js~Package#resolveDependency",
     "access": "public",
     "description": "Takes a dependency name and resolves it to the actual dependency name,\nstripping any subdirectories from the dependency name (retaining @org\nstyle dependencies). It also excludes dependencies with relative paths (./\nor ../ style) and any dependencies listed in {@link Package#exclude}",
-    "lineNumber": 350,
+    "lineNumber": 364,
     "params": [
       {
         "nullable": null,
@@ -12203,7 +12277,7 @@
     }
   },
   {
-    "__docId__": 946,
+    "__docId__": 949,
     "kind": "method",
     "name": "detectiveOpts",
     "memberof": "src/package.js~Package",
@@ -12213,7 +12287,7 @@
     "longname": "src/package.js~Package#detectiveOpts",
     "access": "public",
     "description": null,
-    "lineNumber": 357,
+    "lineNumber": 371,
     "undocument": true,
     "params": [
       {
@@ -12230,7 +12304,7 @@
     }
   },
   {
-    "__docId__": 947,
+    "__docId__": 950,
     "kind": "method",
     "name": "log",
     "memberof": "src/package.js~Package",
@@ -12240,7 +12314,7 @@
     "longname": "src/package.js~Package#log",
     "access": "public",
     "description": null,
-    "lineNumber": 361,
+    "lineNumber": 375,
     "undocument": true,
     "params": [
       {
@@ -12259,7 +12333,7 @@
     "return": null
   },
   {
-    "__docId__": 948,
+    "__docId__": 951,
     "kind": "method",
     "name": "error",
     "memberof": "src/package.js~Package",
@@ -12269,7 +12343,7 @@
     "longname": "src/package.js~Package#error",
     "access": "public",
     "description": null,
-    "lineNumber": 369,
+    "lineNumber": 383,
     "undocument": true,
     "params": [
       {
@@ -12288,7 +12362,7 @@
     "return": null
   },
   {
-    "__docId__": 949,
+    "__docId__": 952,
     "kind": "method",
     "name": "depsFor",
     "memberof": "src/package.js~Package",
@@ -12298,7 +12372,7 @@
     "longname": "src/package.js~Package#depsFor",
     "access": "public",
     "description": null,
-    "lineNumber": 374,
+    "lineNumber": 388,
     "undocument": true,
     "params": [
       {
@@ -12327,7 +12401,7 @@
     }
   },
   {
-    "__docId__": 950,
+    "__docId__": 953,
     "kind": "method",
     "name": "fileExtension",
     "memberof": "src/package.js~Package",
@@ -12337,7 +12411,7 @@
     "longname": "src/package.js~Package#fileExtension",
     "access": "public",
     "description": null,
-    "lineNumber": 422,
+    "lineNumber": 436,
     "undocument": true,
     "params": [
       {
@@ -12354,7 +12428,7 @@
     }
   },
   {
-    "__docId__": 951,
+    "__docId__": 954,
     "kind": "method",
     "name": "concatDeps",
     "memberof": "src/package.js~Package",
@@ -12364,7 +12438,7 @@
     "longname": "src/package.js~Package#concatDeps",
     "access": "public",
     "description": null,
-    "lineNumber": 426,
+    "lineNumber": 440,
     "undocument": true,
     "params": [
       {
@@ -12382,7 +12456,7 @@
     }
   },
   {
-    "__docId__": 952,
+    "__docId__": 955,
     "kind": "method",
     "name": "matchExt",
     "memberof": "src/package.js~Package",
@@ -12392,128 +12466,11 @@
     "longname": "src/package.js~Package#matchExt",
     "access": "public",
     "description": null,
-    "lineNumber": 431,
-    "undocument": true,
-    "params": [
-      {
-        "name": "ext",
-        "types": [
-          "*"
-        ]
-      }
-    ],
-    "return": {
-      "types": [
-        "*"
-      ]
-    }
-  },
-  {
-    "__docId__": 953,
-    "kind": "method",
-    "name": "resolve_ts",
-    "memberof": "src/package.js~Package",
-    "generator": false,
-    "async": false,
-    "static": false,
-    "longname": "src/package.js~Package#resolve_ts",
-    "access": "public",
-    "description": null,
-    "lineNumber": 441,
-    "undocument": true,
-    "params": [
-      {
-        "name": "src",
-        "types": [
-          "*"
-        ]
-      },
-      {
-        "name": "ext",
-        "types": [
-          "*"
-        ]
-      },
-      {
-        "name": "file",
-        "types": [
-          "*"
-        ]
-      }
-    ],
-    "return": {
-      "types": [
-        "*"
-      ]
-    }
-  },
-  {
-    "__docId__": 954,
-    "kind": "method",
-    "name": "resolve_es6",
-    "memberof": "src/package.js~Package",
-    "generator": false,
-    "async": false,
-    "static": false,
-    "longname": "src/package.js~Package#resolve_es6",
-    "access": "public",
-    "description": null,
     "lineNumber": 445,
     "undocument": true,
     "params": [
       {
-        "name": "src",
-        "types": [
-          "*"
-        ]
-      },
-      {
         "name": "ext",
-        "types": [
-          "*"
-        ]
-      },
-      {
-        "name": "file",
-        "types": [
-          "*"
-        ]
-      }
-    ],
-    "return": {
-      "types": [
-        "*"
-      ]
-    }
-  },
-  {
-    "__docId__": 955,
-    "kind": "method",
-    "name": "resolve_js",
-    "memberof": "src/package.js~Package",
-    "generator": false,
-    "async": false,
-    "static": false,
-    "longname": "src/package.js~Package#resolve_js",
-    "access": "public",
-    "description": null,
-    "lineNumber": 449,
-    "undocument": true,
-    "params": [
-      {
-        "name": "src",
-        "types": [
-          "*"
-        ]
-      },
-      {
-        "name": "ext",
-        "types": [
-          "*"
-        ]
-      },
-      {
-        "name": "file",
         "types": [
           "*"
         ]
@@ -12528,15 +12485,15 @@
   {
     "__docId__": 956,
     "kind": "method",
-    "name": "resolve_default",
+    "name": "resolve_ts",
     "memberof": "src/package.js~Package",
     "generator": false,
     "async": false,
     "static": false,
-    "longname": "src/package.js~Package#resolve_default",
+    "longname": "src/package.js~Package#resolve_ts",
     "access": "public",
     "description": null,
-    "lineNumber": 456,
+    "lineNumber": 455,
     "undocument": true,
     "params": [
       {
@@ -12567,6 +12524,123 @@
   {
     "__docId__": 957,
     "kind": "method",
+    "name": "resolve_es6",
+    "memberof": "src/package.js~Package",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/package.js~Package#resolve_es6",
+    "access": "public",
+    "description": null,
+    "lineNumber": 459,
+    "undocument": true,
+    "params": [
+      {
+        "name": "src",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "ext",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "file",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 958,
+    "kind": "method",
+    "name": "resolve_js",
+    "memberof": "src/package.js~Package",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/package.js~Package#resolve_js",
+    "access": "public",
+    "description": null,
+    "lineNumber": 463,
+    "undocument": true,
+    "params": [
+      {
+        "name": "src",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "ext",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "file",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 959,
+    "kind": "method",
+    "name": "resolve_default",
+    "memberof": "src/package.js~Package",
+    "generator": false,
+    "async": false,
+    "static": false,
+    "longname": "src/package.js~Package#resolve_default",
+    "access": "public",
+    "description": null,
+    "lineNumber": 470,
+    "undocument": true,
+    "params": [
+      {
+        "name": "src",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "ext",
+        "types": [
+          "*"
+        ]
+      },
+      {
+        "name": "file",
+        "types": [
+          "*"
+        ]
+      }
+    ],
+    "return": {
+      "types": [
+        "*"
+      ]
+    }
+  },
+  {
+    "__docId__": 960,
+    "kind": "method",
     "name": "resolveByExt",
     "memberof": "src/package.js~Package",
     "generator": false,
@@ -12575,7 +12649,7 @@
     "longname": "src/package.js~Package#resolveByExt",
     "access": "public",
     "description": null,
-    "lineNumber": 466,
+    "lineNumber": 480,
     "undocument": true,
     "params": [
       {
@@ -12609,7 +12683,7 @@
     }
   },
   {
-    "__docId__": 958,
+    "__docId__": 961,
     "kind": "method",
     "name": "findDependencies",
     "memberof": "src/package.js~Package",
@@ -12619,7 +12693,7 @@
     "longname": "src/package.js~Package#findDependencies",
     "access": "public",
     "description": "Find dependencies in source file",
-    "lineNumber": 497,
+    "lineNumber": 511,
     "params": [
       {
         "nullable": null,
@@ -12639,7 +12713,7 @@
     }
   },
   {
-    "__docId__": 959,
+    "__docId__": 962,
     "kind": "method",
     "name": "analyzeSourceDependencies",
     "memberof": "src/package.js~Package",
@@ -12649,7 +12723,7 @@
     "longname": "src/package.js~Package#analyzeSourceDependencies",
     "access": "public",
     "description": "Analyzes the package's source files and returns all of the invoked\ndependencies mapped to the files invoking them.",
-    "lineNumber": 511,
+    "lineNumber": 525,
     "return": {
       "nullable": null,
       "types": [
@@ -12661,7 +12735,7 @@
     "params": []
   },
   {
-    "__docId__": 960,
+    "__docId__": 963,
     "kind": "method",
     "name": "generateDependencyPatches",
     "memberof": "src/package.js~Package",
@@ -12671,7 +12745,7 @@
     "longname": "src/package.js~Package#generateDependencyPatches",
     "access": "public",
     "description": "Compares a dependency object (as returned from {@link Package#analyzeSourceDependencies})\nwith the dependencies listed in {@link Package@packageJson} and returns an\narray of patches.",
-    "lineNumber": 561,
+    "lineNumber": 575,
     "params": [
       {
         "nullable": null,
@@ -12694,7 +12768,7 @@
     }
   },
   {
-    "__docId__": 961,
+    "__docId__": 964,
     "kind": "method",
     "name": "generateInheritPatches",
     "memberof": "src/package.js~Package",
@@ -12704,7 +12778,7 @@
     "longname": "src/package.js~Package#generateInheritPatches",
     "access": "public",
     "description": "Generates the patches that will satisfy {@link Package#inherits}",
-    "lineNumber": 623,
+    "lineNumber": 637,
     "return": {
       "nullable": null,
       "types": [
@@ -12716,7 +12790,7 @@
     "params": []
   },
   {
-    "__docId__": 962,
+    "__docId__": 965,
     "kind": "method",
     "name": "applyPatch",
     "memberof": "src/package.js~Package",
@@ -12726,7 +12800,7 @@
     "longname": "src/package.js~Package#applyPatch",
     "access": "public",
     "description": "Applies a given patch to {@link Package#packageJson}.",
-    "lineNumber": 633,
+    "lineNumber": 647,
     "params": [
       {
         "nullable": null,
@@ -12742,7 +12816,7 @@
     "return": null
   },
   {
-    "__docId__": 963,
+    "__docId__": 966,
     "kind": "method",
     "name": "generateExcludes",
     "memberof": "src/package.js~Package",
@@ -12752,7 +12826,7 @@
     "longname": "src/package.js~Package.generateExcludes",
     "access": "public",
     "description": "Generates an exclude array",
-    "lineNumber": 661,
+    "lineNumber": 678,
     "params": [
       {
         "nullable": null,
@@ -12772,7 +12846,7 @@
     }
   },
   {
-    "__docId__": 964,
+    "__docId__": 967,
     "kind": "file",
     "name": "src/patch.js",
     "content": "/** @ignore */\nconst ADD = Symbol('ADD');\n/** @ignore */\nconst REMOVE = Symbol('REMOVE');\n/** @ignore */\nconst UPDATE = Symbol('UPDATE');\n/** @ignore */\nconst INHERIT = Symbol('INHERIT');\n\n/**\n * A class representing operations to apply to a package.\n */\nmodule.exports = class Patch\n{\n  /**\n   * Creates a new patch instance.\n   * @param {Symbol} type - The type of patch this is.\n   * @param {object} [config={}] - The configuration of the patch.\n   * @param {string} config.name - The name of the item being patched.\n   * @param {object} config.value - The value of the item being patched.\n   * @param {string?} config.source - The dependency type being patched.\n   * @param {boolean} [config.dev = false] - Whether or not this is a devDependency.\n   * @param {boolean} [config.disabled = false] - Whether or not the patch is disabled.\n   * @param {string[]} [config.files = []] - The files that necessitate the patch.\n   */\n  constructor (type, {\n    name,\n    value,\n    source,\n    dev = false,\n    disabled = false,\n    files = [],\n  }={})\n  {\n   /**\n    * The type of patch this is.\n    * @type {Symbol}\n    */\n    this.type = type;\n\n    /**\n     * The name of the item being patched.\n     * @type {string}\n     */\n    this.name = name;\n\n    /**\n     * The value of the item being patched.\n     * @type {object}\n     */\n    this.value = value;\n\n    /**\n     * The dependency type being patched.\n     * @type {string}\n     */\n    this.source = source;\n\n    /**\n     * Whether or not this is a devDependency\n     * @type {boolean}\n     */\n    this.dev = dev;\n\n    /**\n     * Whether or not the patch is disabled\n     * @type {boolean}\n     */\n    this.disabled = disabled;\n\n    /**\n     * The files that necessitate the patch.\n     * @type {string[]}\n     */\n    this.files = files;\n  }\n\n  /**\n  * A symbol representing the `ADD` operation.\n  * @type {Symbol}\n  */\n  static get ADD () {return ADD}\n\n  /**\n  * A symbol representing the `REMOVE` operation.\n  * @type {Symbol}\n  */\n  static get REMOVE () {return REMOVE}\n\n  /**\n  * A symbol representing the `UPDATE` operation.\n  * @type {Symbol}\n  */\n  static get UPDATE () {return UPDATE}\n\n  /**\n  * A symbol representing the `INHERIT` operation.\n  * @type {Symbol}\n  */\n  static get INHERIT () {return INHERIT}\n}\n",
@@ -12783,7 +12857,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 965,
+    "__docId__": 968,
     "kind": "variable",
     "name": "ADD",
     "memberof": "src/patch.js",
@@ -12803,7 +12877,7 @@
     }
   },
   {
-    "__docId__": 966,
+    "__docId__": 969,
     "kind": "variable",
     "name": "REMOVE",
     "memberof": "src/patch.js",
@@ -12823,7 +12897,7 @@
     }
   },
   {
-    "__docId__": 967,
+    "__docId__": 970,
     "kind": "variable",
     "name": "UPDATE",
     "memberof": "src/patch.js",
@@ -12843,7 +12917,7 @@
     }
   },
   {
-    "__docId__": 968,
+    "__docId__": 971,
     "kind": "variable",
     "name": "INHERIT",
     "memberof": "src/patch.js",
@@ -12863,7 +12937,7 @@
     }
   },
   {
-    "__docId__": 969,
+    "__docId__": 972,
     "kind": "class",
     "name": "Patch",
     "memberof": "src/patch.js",
@@ -12878,7 +12952,7 @@
     "interface": false
   },
   {
-    "__docId__": 970,
+    "__docId__": 973,
     "kind": "constructor",
     "name": "constructor",
     "memberof": "src/patch.js~Patch",
@@ -12981,7 +13055,7 @@
     ]
   },
   {
-    "__docId__": 971,
+    "__docId__": 974,
     "kind": "member",
     "name": "type",
     "memberof": "src/patch.js~Patch",
@@ -13000,7 +13074,7 @@
     }
   },
   {
-    "__docId__": 972,
+    "__docId__": 975,
     "kind": "member",
     "name": "name",
     "memberof": "src/patch.js~Patch",
@@ -13019,7 +13093,7 @@
     }
   },
   {
-    "__docId__": 973,
+    "__docId__": 976,
     "kind": "member",
     "name": "value",
     "memberof": "src/patch.js~Patch",
@@ -13038,7 +13112,7 @@
     }
   },
   {
-    "__docId__": 974,
+    "__docId__": 977,
     "kind": "member",
     "name": "source",
     "memberof": "src/patch.js~Patch",
@@ -13057,7 +13131,7 @@
     }
   },
   {
-    "__docId__": 975,
+    "__docId__": 978,
     "kind": "member",
     "name": "dev",
     "memberof": "src/patch.js~Patch",
@@ -13076,7 +13150,7 @@
     }
   },
   {
-    "__docId__": 976,
+    "__docId__": 979,
     "kind": "member",
     "name": "disabled",
     "memberof": "src/patch.js~Patch",
@@ -13095,7 +13169,7 @@
     }
   },
   {
-    "__docId__": 977,
+    "__docId__": 980,
     "kind": "member",
     "name": "files",
     "memberof": "src/patch.js~Patch",
@@ -13114,7 +13188,7 @@
     }
   },
   {
-    "__docId__": 978,
+    "__docId__": 981,
     "kind": "get",
     "name": "ADD",
     "memberof": "src/patch.js~Patch",
@@ -13135,7 +13209,7 @@
     }
   },
   {
-    "__docId__": 979,
+    "__docId__": 982,
     "kind": "get",
     "name": "REMOVE",
     "memberof": "src/patch.js~Patch",
@@ -13156,7 +13230,7 @@
     }
   },
   {
-    "__docId__": 980,
+    "__docId__": 983,
     "kind": "get",
     "name": "UPDATE",
     "memberof": "src/patch.js~Patch",
@@ -13177,7 +13251,7 @@
     }
   },
   {
-    "__docId__": 981,
+    "__docId__": 984,
     "kind": "get",
     "name": "INHERIT",
     "memberof": "src/patch.js~Patch",
@@ -13198,7 +13272,7 @@
     }
   },
   {
-    "__docId__": 982,
+    "__docId__": 985,
     "kind": "file",
     "name": "src/path.js",
     "content": "const path = require('path');\n\n/**\n * The new path object. Attemts to Posixify all path string responses.  Can't\n * just use path.posix because it doesn't seem to work for absolute paths.\n * @type {object}\n */\nconst newPath = {};\n\nfor (let key of ['resolve', 'join', 'format', 'normalize', 'relative']) {\n  const origFn = path[key];\n  newPath[key] = function (...args) {\n    return path.posix.join(...path[key](...args).split(/\\\\|\\/\\//))\n  }\n}\n\nmodule.exports = ({...path, ...newPath});\n",
@@ -13209,7 +13283,7 @@
     "lineNumber": 1
   },
   {
-    "__docId__": 983,
+    "__docId__": 986,
     "kind": "variable",
     "name": "newPath",
     "memberof": "src/path.js",
