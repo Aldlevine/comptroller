@@ -37,10 +37,13 @@
 </nav>
 
 <div class="content" data-ice="content"><h1 data-ice="title">src/glob.js</h1>
-<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">const {promisify} = require(&apos;util&apos;);
+<pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">const {
+  promisify
+} = require(&apos;util&apos;);
+const fastGlob = require(&apos;fast-glob&apos;);
 const glob = require(&apos;glob&apos;);
 
-glob.please = promisify(glob);
+glob.please = fastGlob // promisify(glob);
 
 module.exports = glob;
 </code></pre>

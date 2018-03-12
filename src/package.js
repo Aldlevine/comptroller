@@ -69,7 +69,7 @@ module.exports = class Package {
     inherits = _config.inherits || config.inherits || [],
     detective = _config.detective || config.detective || {},
     prune = !!(_config.prune || config.prune),
-    pretty = !!(_config.pretty || config.pretty),
+    pretty = _config.pretty || config.pretty,
 
     commonjs = !!(_config.commonjs || config.commonjs || process.env.CJS),
     typescript = !!(_config.typescript || config.typescript || process.env.TS),

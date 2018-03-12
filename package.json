@@ -5,9 +5,9 @@
   "keywords": [
     "dependency-analysis",
     "dependency-manager",
+    "lerna-alternative",
     "monorepo",
-    "repository-management",
-    "lerna-alternative"
+    "repository-management"
   ],
   "homepage": "https://aldlevine.github.io/comptroller",
   "bugs": {
@@ -16,12 +16,8 @@
   "license": "MIT",
   "author": "Aaron Levine <ald.levine@gmail.com>",
   "main": "src/comptroller.js",
-  "bin": {
-    "comp": "./src/cli.js"
-  },
-  "directories": {
-    "doc": "docs"
-  },
+  "bin": { "comp": "./src/cli.js" },
+  "directories": { "doc": "docs" },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Aldlevine/comptroller.git"
@@ -32,11 +28,11 @@
     "commitmsg": "ez commitmsg",
     "docs": "ez docs",
     "test": "ez test",
+    "test:amd": "ez testamd",
     "test:cjs": "ez testcjs",
+    "test:es6": "ez testes6",
     "test:ts": "ez testts",
     "test:typescript": "ez testts",
-    "test:amd": "ez testamd",
-    "test:es6": "ez testes6",
     "update": "ez update",
     "version": "ez version"
   },
@@ -87,15 +83,12 @@
     "detective": {
       "commonjs": {
         "parse": {
-          "plugins": [
-            "objectRestSpread"
-          ]
+          "plugins": [ "objectRestSpread" ]
         }
       }
     },
-    "exclude": [{
-        "group": "builtins"
-      },
+    "exclude": [
+      { "group": "builtins" },
       "babel-traverse",
       "babylon"
     ]

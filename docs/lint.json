@@ -1,1 +1,35 @@
-[]
+[
+  {
+    "name": "Package#findDependencies",
+    "filePath": "src/package.js",
+    "lines": [
+      {
+        "lineNumber": 492,
+        "line": "  }"
+      },
+      {
+        "lineNumber": 493,
+        "line": ""
+      },
+      {
+        "lineNumber": 494,
+        "line": "  /**"
+      },
+      {
+        "lineNumber": 495,
+        "line": "   * Find dependencies in source file"
+      },
+      {
+        "lineNumber": 496,
+        "line": "   * @param {*} src"
+      }
+    ],
+    "codeParams": [
+      "src",
+      "file"
+    ],
+    "docParams": [
+      "src"
+    ]
+  }
+]

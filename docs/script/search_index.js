@@ -306,12 +306,6 @@ window.esdocSearchIndex = [
     "external"
   ],
   [
-    "src/.external-node.js~*",
-    "{@zdychacek/detective} https://github.com/zdychacek/node-detective#readme",
-    "src/.external-node.js~*",
-    "external"
-  ],
-  [
     "src/.external-node.js~`crypto`_module_methods_and_properties~createcipher",
     "https://nodejs.org/api/`crypto`_module_methods_and_properties.html#`crypto`_module_methods_and_properties_crypto_createcipher_algorithm_password_options",
     "src/.external-node.js~`crypto`_module_methods_and_properties~createCipher",
@@ -517,13 +511,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~assert~fail",
-    "https://nodejs.org/api/assert.html#assert_assert_fail_actual_expected_message_operator_stackstartfunction",
+    "https://nodejs.org/api/assert.html#assert_assert_fail_message",
     "src/.external-node.js~assert~fail",
     "external"
   ],
   [
     "src/.external-node.js~assert~fail",
-    "https://nodejs.org/api/assert.html#assert_assert_fail_message",
+    "https://nodejs.org/api/assert.html#assert_assert_fail_actual_expected_message_operator_stackstartfunction",
     "src/.external-node.js~assert~fail",
     "external"
   ],
@@ -1182,9 +1176,21 @@ window.esdocSearchIndex = [
     "external"
   ],
   [
+    "src/.external-node.js~console~console#debug",
+    "https://nodejs.org/api/console.html#console_console_debug_data_args",
+    "src/.external-node.js~console~Console#debug",
+    "external"
+  ],
+  [
     "src/.external-node.js~console~console#dir",
     "https://nodejs.org/api/console.html#console_console_dir_obj_options",
     "src/.external-node.js~console~Console#dir",
+    "external"
+  ],
+  [
+    "src/.external-node.js~console~console#dirxml",
+    "https://nodejs.org/api/console.html#console_console_dirxml_data",
+    "src/.external-node.js~console~Console#dirxml",
     "external"
   ],
   [
@@ -1248,6 +1254,18 @@ window.esdocSearchIndex = [
     "external"
   ],
   [
+    "src/.external-node.js~core_api~clienthttp2session",
+    "https://nodejs.org/api/core_api.html#core_api_class_clienthttp2session",
+    "src/.external-node.js~core_api~ClientHttp2Session",
+    "external"
+  ],
+  [
+    "src/.external-node.js~core_api~clienthttp2session#request",
+    "https://nodejs.org/api/core_api.html#core_api_clienthttp2session_request_headers_options",
+    "src/.external-node.js~core_api~ClientHttp2Session#request",
+    "external"
+  ],
+  [
     "src/.external-node.js~core_api~clienthttp2stream",
     "https://nodejs.org/api/core_api.html#core_api_class_clienthttp2stream",
     "src/.external-node.js~core_api~ClientHttp2Stream",
@@ -1272,27 +1290,33 @@ window.esdocSearchIndex = [
     "external"
   ],
   [
+    "src/.external-node.js~core_api~http2session#close",
+    "https://nodejs.org/api/core_api.html#core_api_http2session_close_callback",
+    "src/.external-node.js~core_api~Http2Session#close",
+    "external"
+  ],
+  [
     "src/.external-node.js~core_api~http2session#destroy",
-    "https://nodejs.org/api/core_api.html#core_api_http2session_destroy",
+    "https://nodejs.org/api/core_api.html#core_api_http2session_destroy_error_code",
     "src/.external-node.js~core_api~Http2Session#destroy",
     "external"
   ],
   [
-    "src/.external-node.js~core_api~http2session#priority",
-    "https://nodejs.org/api/core_api.html#core_api_http2session_priority_stream_options",
-    "src/.external-node.js~core_api~Http2Session#priority",
+    "src/.external-node.js~core_api~http2session#goaway",
+    "https://nodejs.org/api/core_api.html#core_api_http2session_goaway_code_laststreamid_opaquedata",
+    "src/.external-node.js~core_api~Http2Session#goaway",
     "external"
   ],
   [
-    "src/.external-node.js~core_api~http2session#request",
-    "https://nodejs.org/api/core_api.html#core_api_http2session_request_headers_options",
-    "src/.external-node.js~core_api~Http2Session#request",
+    "src/.external-node.js~core_api~http2session#ping",
+    "https://nodejs.org/api/core_api.html#core_api_http2session_ping_payload_callback",
+    "src/.external-node.js~core_api~Http2Session#ping",
     "external"
   ],
   [
-    "src/.external-node.js~core_api~http2session#rststream",
-    "https://nodejs.org/api/core_api.html#core_api_http2session_rststream_stream_code",
-    "src/.external-node.js~core_api~Http2Session#rstStream",
+    "src/.external-node.js~core_api~http2session#ref",
+    "https://nodejs.org/api/core_api.html#core_api_http2session_ref",
+    "src/.external-node.js~core_api~Http2Session#ref",
     "external"
   ],
   [
@@ -1308,9 +1332,9 @@ window.esdocSearchIndex = [
     "external"
   ],
   [
-    "src/.external-node.js~core_api~http2session#shutdown",
-    "https://nodejs.org/api/core_api.html#core_api_http2session_shutdown_options_callback",
-    "src/.external-node.js~core_api~Http2Session#shutdown",
+    "src/.external-node.js~core_api~http2session#unref",
+    "https://nodejs.org/api/core_api.html#core_api_http2session_unref",
+    "src/.external-node.js~core_api~Http2Session#unref",
     "external"
   ],
   [
@@ -1320,51 +1344,33 @@ window.esdocSearchIndex = [
     "external"
   ],
   [
+    "src/.external-node.js~core_api~http2stream#close",
+    "https://nodejs.org/api/core_api.html#core_api_http2stream_close_code_callback",
+    "src/.external-node.js~core_api~Http2Stream#close",
+    "external"
+  ],
+  [
     "src/.external-node.js~core_api~http2stream#priority",
     "https://nodejs.org/api/core_api.html#core_api_http2stream_priority_options",
     "src/.external-node.js~core_api~Http2Stream#priority",
     "external"
   ],
   [
-    "src/.external-node.js~core_api~http2stream#rststream",
-    "https://nodejs.org/api/core_api.html#core_api_http2stream_rststream_code",
-    "src/.external-node.js~core_api~Http2Stream#rstStream",
-    "external"
-  ],
-  [
-    "src/.external-node.js~core_api~http2stream#rstwithcancel",
-    "https://nodejs.org/api/core_api.html#core_api_http2stream_rstwithcancel",
-    "src/.external-node.js~core_api~Http2Stream#rstWithCancel",
-    "external"
-  ],
-  [
-    "src/.external-node.js~core_api~http2stream#rstwithinternalerror",
-    "https://nodejs.org/api/core_api.html#core_api_http2stream_rstwithinternalerror",
-    "src/.external-node.js~core_api~Http2Stream#rstWithInternalError",
-    "external"
-  ],
-  [
-    "src/.external-node.js~core_api~http2stream#rstwithnoerror",
-    "https://nodejs.org/api/core_api.html#core_api_http2stream_rstwithnoerror",
-    "src/.external-node.js~core_api~Http2Stream#rstWithNoError",
-    "external"
-  ],
-  [
-    "src/.external-node.js~core_api~http2stream#rstwithprotocolerror",
-    "https://nodejs.org/api/core_api.html#core_api_http2stream_rstwithprotocolerror",
-    "src/.external-node.js~core_api~Http2Stream#rstWithProtocolError",
-    "external"
-  ],
-  [
-    "src/.external-node.js~core_api~http2stream#rstwithrefuse",
-    "https://nodejs.org/api/core_api.html#core_api_http2stream_rstwithrefuse",
-    "src/.external-node.js~core_api~Http2Stream#rstWithRefuse",
-    "external"
-  ],
-  [
     "src/.external-node.js~core_api~http2stream#settimeout",
     "https://nodejs.org/api/core_api.html#core_api_http2stream_settimeout_msecs_callback",
     "src/.external-node.js~core_api~Http2Stream#setTimeout",
+    "external"
+  ],
+  [
+    "src/.external-node.js~core_api~serverhttp2session",
+    "https://nodejs.org/api/core_api.html#core_api_class_serverhttp2session",
+    "src/.external-node.js~core_api~ServerHttp2Session",
+    "external"
+  ],
+  [
+    "src/.external-node.js~core_api~serverhttp2session#altsvc",
+    "https://nodejs.org/api/core_api.html#core_api_serverhttp2session_altsvc_alt_originorstream",
+    "src/.external-node.js~core_api~ServerHttp2Session#altsvc",
     "external"
   ],
   [
@@ -1854,6 +1860,30 @@ window.esdocSearchIndex = [
     "external"
   ],
   [
+    "src/.external-node.js~detective",
+    "https://github.com/browserify/detective#readme",
+    "src/.external-node.js~detective",
+    "external"
+  ],
+  [
+    "src/.external-node.js~detective-amd",
+    "https://github.com/mrjoelkemp/node-detective-amd",
+    "src/.external-node.js~detective-amd",
+    "external"
+  ],
+  [
+    "src/.external-node.js~detective-es6",
+    "https://github.com/mrjoelkemp/node-detective-es6",
+    "src/.external-node.js~detective-es6",
+    "external"
+  ],
+  [
+    "src/.external-node.js~detective-typescript",
+    "https://github.com/pahen/detective-typescript",
+    "src/.external-node.js~detective-typescript",
+    "external"
+  ],
+  [
     "src/.external-node.js~dgram~socket",
     "https://nodejs.org/api/dgram.html#dgram_class_dgram_socket",
     "src/.external-node.js~dgram~Socket",
@@ -2190,6 +2220,12 @@ window.esdocSearchIndex = [
     "external"
   ],
   [
+    "src/.external-node.js~events~eventemitter#rawlisteners",
+    "https://nodejs.org/api/events.html#events_emitter_rawlisteners_eventname",
+    "src/.external-node.js~events~EventEmitter#rawListeners",
+    "external"
+  ],
+  [
     "src/.external-node.js~events~eventemitter#removealllisteners",
     "https://nodejs.org/api/events.html#events_emitter_removealllisteners_eventname",
     "src/.external-node.js~events~EventEmitter#removeAllListeners",
@@ -2205,6 +2241,12 @@ window.esdocSearchIndex = [
     "src/.external-node.js~events~eventemitter#setmaxlisteners",
     "https://nodejs.org/api/events.html#events_emitter_setmaxlisteners_n",
     "src/.external-node.js~events~EventEmitter#setMaxListeners",
+    "external"
+  ],
+  [
+    "src/.external-node.js~fast-glob",
+    "https://github.com/mrmlnc/fast-glob#readme",
+    "src/.external-node.js~fast-glob",
     "external"
   ],
   [
@@ -2235,6 +2277,48 @@ window.esdocSearchIndex = [
     "src/.external-node.js~fs~stats",
     "https://nodejs.org/api/fs.html#fs_class_fs_stats",
     "src/.external-node.js~fs~Stats",
+    "external"
+  ],
+  [
+    "src/.external-node.js~fs~stats#isblockdevice",
+    "https://nodejs.org/api/fs.html#fs_stats_isblockdevice",
+    "src/.external-node.js~fs~Stats#isBlockDevice",
+    "external"
+  ],
+  [
+    "src/.external-node.js~fs~stats#ischaracterdevice",
+    "https://nodejs.org/api/fs.html#fs_stats_ischaracterdevice",
+    "src/.external-node.js~fs~Stats#isCharacterDevice",
+    "external"
+  ],
+  [
+    "src/.external-node.js~fs~stats#isdirectory",
+    "https://nodejs.org/api/fs.html#fs_stats_isdirectory",
+    "src/.external-node.js~fs~Stats#isDirectory",
+    "external"
+  ],
+  [
+    "src/.external-node.js~fs~stats#isfifo",
+    "https://nodejs.org/api/fs.html#fs_stats_isfifo",
+    "src/.external-node.js~fs~Stats#isFIFO",
+    "external"
+  ],
+  [
+    "src/.external-node.js~fs~stats#isfile",
+    "https://nodejs.org/api/fs.html#fs_stats_isfile",
+    "src/.external-node.js~fs~Stats#isFile",
+    "external"
+  ],
+  [
+    "src/.external-node.js~fs~stats#issocket",
+    "https://nodejs.org/api/fs.html#fs_stats_issocket",
+    "src/.external-node.js~fs~Stats#isSocket",
+    "external"
+  ],
+  [
+    "src/.external-node.js~fs~stats#issymboliclink",
+    "https://nodejs.org/api/fs.html#fs_stats_issymboliclink",
+    "src/.external-node.js~fs~Stats#isSymbolicLink",
     "external"
   ],
   [
@@ -2671,13 +2755,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~fs~write",
-    "https://nodejs.org/api/fs.html#fs_fs_write_fd_buffer_offset_length_position_callback",
+    "https://nodejs.org/api/fs.html#fs_fs_write_fd_string_position_encoding_callback",
     "src/.external-node.js~fs~write",
     "external"
   ],
   [
     "src/.external-node.js~fs~write",
-    "https://nodejs.org/api/fs.html#fs_fs_write_fd_string_position_encoding_callback",
+    "https://nodejs.org/api/fs.html#fs_fs_write_fd_buffer_offset_length_position_callback",
     "src/.external-node.js~fs~write",
     "external"
   ],
@@ -2983,7 +3067,7 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~http~createserver",
-    "https://nodejs.org/api/http.html#http_http_createserver_requestlistener",
+    "https://nodejs.org/api/http.html#http_http_createserver_options_requestlistener",
     "src/.external-node.js~http~createServer",
     "external"
   ],
@@ -2997,6 +3081,48 @@ window.esdocSearchIndex = [
     "src/.external-node.js~http~request",
     "https://nodejs.org/api/http.html#http_http_request_options_callback",
     "src/.external-node.js~http~request",
+    "external"
+  ],
+  [
+    "src/.external-node.js~inspector_only_methods~marktimeline",
+    "https://nodejs.org/api/inspector_only_methods.html#inspector_only_methods_console_marktimeline_label",
+    "src/.external-node.js~inspector_only_methods~markTimeline",
+    "external"
+  ],
+  [
+    "src/.external-node.js~inspector_only_methods~profile",
+    "https://nodejs.org/api/inspector_only_methods.html#inspector_only_methods_console_profile_label",
+    "src/.external-node.js~inspector_only_methods~profile",
+    "external"
+  ],
+  [
+    "src/.external-node.js~inspector_only_methods~profileend",
+    "https://nodejs.org/api/inspector_only_methods.html#inspector_only_methods_console_profileend",
+    "src/.external-node.js~inspector_only_methods~profileEnd",
+    "external"
+  ],
+  [
+    "src/.external-node.js~inspector_only_methods~table",
+    "https://nodejs.org/api/inspector_only_methods.html#inspector_only_methods_console_table_array_columns",
+    "src/.external-node.js~inspector_only_methods~table",
+    "external"
+  ],
+  [
+    "src/.external-node.js~inspector_only_methods~timestamp",
+    "https://nodejs.org/api/inspector_only_methods.html#inspector_only_methods_console_timestamp_label",
+    "src/.external-node.js~inspector_only_methods~timeStamp",
+    "external"
+  ],
+  [
+    "src/.external-node.js~inspector_only_methods~timeline",
+    "https://nodejs.org/api/inspector_only_methods.html#inspector_only_methods_console_timeline_label",
+    "src/.external-node.js~inspector_only_methods~timeline",
+    "external"
+  ],
+  [
+    "src/.external-node.js~inspector_only_methods~timelineend",
+    "https://nodejs.org/api/inspector_only_methods.html#inspector_only_methods_console_timelineend_label",
+    "src/.external-node.js~inspector_only_methods~timelineEnd",
     "external"
   ],
   [
@@ -3654,9 +3780,21 @@ window.esdocSearchIndex = [
     "external"
   ],
   [
+    "src/.external-node.js~performance_timing_api~performance#clearentries",
+    "https://nodejs.org/api/performance_timing_api.html#performance_timing_api_performance_clearentries_name",
+    "src/.external-node.js~performance_timing_api~Performance#clearEntries",
+    "external"
+  ],
+  [
     "src/.external-node.js~performance_timing_api~performance#clearfunctions",
     "https://nodejs.org/api/performance_timing_api.html#performance_timing_api_performance_clearfunctions_name",
     "src/.external-node.js~performance_timing_api~Performance#clearFunctions",
+    "external"
+  ],
+  [
+    "src/.external-node.js~performance_timing_api~performance#cleargc",
+    "https://nodejs.org/api/performance_timing_api.html#performance_timing_api_performance_cleargc",
+    "src/.external-node.js~performance_timing_api~Performance#clearGC",
     "external"
   ],
   [
@@ -4213,13 +4351,13 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~stream~writable",
-    "https://nodejs.org/api/stream.html#stream_class_stream_writable",
+    "https://nodejs.org/api/stream.html#stream_constructor:newstream_writable_options",
     "src/.external-node.js~stream~Writable",
     "external"
   ],
   [
     "src/.external-node.js~stream~writable",
-    "https://nodejs.org/api/stream.html#stream_constructor:newstream_writable_options",
+    "https://nodejs.org/api/stream.html#stream_class_stream_writable",
     "src/.external-node.js~stream~Writable",
     "external"
   ],
@@ -4470,6 +4608,18 @@ window.esdocSearchIndex = [
     "external"
   ],
   [
+    "src/.external-node.js~timers~immediate#ref",
+    "https://nodejs.org/api/timers.html#timers_immediate_ref",
+    "src/.external-node.js~timers~Immediate#ref",
+    "external"
+  ],
+  [
+    "src/.external-node.js~timers~immediate#unref",
+    "https://nodejs.org/api/timers.html#timers_immediate_unref",
+    "src/.external-node.js~timers~Immediate#unref",
+    "external"
+  ],
+  [
     "src/.external-node.js~timers~timeout",
     "https://nodejs.org/api/timers.html#timers_class_timeout",
     "src/.external-node.js~timers~Timeout",
@@ -4596,6 +4746,12 @@ window.esdocSearchIndex = [
     "external"
   ],
   [
+    "src/.external-node.js~tls~checkserveridentity",
+    "https://nodejs.org/api/tls.html#tls_tls_checkserveridentity_host_cert",
+    "src/.external-node.js~tls~checkServerIdentity",
+    "external"
+  ],
+  [
     "src/.external-node.js~tls~connect",
     "https://nodejs.org/api/tls.html#tls_tls_connect_options_callback",
     "src/.external-node.js~tls~connect",
@@ -4704,6 +4860,12 @@ window.esdocSearchIndex = [
     "external"
   ],
   [
+    "src/.external-node.js~util~getsystemerrorname",
+    "https://nodejs.org/api/util.html#util_util_getsystemerrorname_err",
+    "src/.external-node.js~util~getSystemErrorName",
+    "external"
+  ],
+  [
     "src/.external-node.js~util~inherits",
     "https://nodejs.org/api/util.html#util_util_inherits_constructor_superconstructor",
     "src/.external-node.js~util~inherits",
@@ -4752,6 +4914,36 @@ window.esdocSearchIndex = [
     "external"
   ],
   [
+    "src/.external-node.js~vm~module",
+    "https://nodejs.org/api/vm.html#vm_class_vm_module",
+    "src/.external-node.js~vm~Module",
+    "external"
+  ],
+  [
+    "src/.external-node.js~vm~module#module",
+    "https://nodejs.org/api/vm.html#vm_constructor:newvm_module_code_options",
+    "src/.external-node.js~vm~Module#Module",
+    "external"
+  ],
+  [
+    "src/.external-node.js~vm~module#evaluate",
+    "https://nodejs.org/api/vm.html#vm_module_evaluate_options",
+    "src/.external-node.js~vm~Module#evaluate",
+    "external"
+  ],
+  [
+    "src/.external-node.js~vm~module#instantiate",
+    "https://nodejs.org/api/vm.html#vm_module_instantiate",
+    "src/.external-node.js~vm~Module#instantiate",
+    "external"
+  ],
+  [
+    "src/.external-node.js~vm~module#link",
+    "https://nodejs.org/api/vm.html#vm_module_link_linker",
+    "src/.external-node.js~vm~Module#link",
+    "external"
+  ],
+  [
     "src/.external-node.js~vm~script",
     "https://nodejs.org/api/vm.html#vm_class_vm_script",
     "src/.external-node.js~vm~Script",
@@ -4777,7 +4969,7 @@ window.esdocSearchIndex = [
   ],
   [
     "src/.external-node.js~vm~createcontext",
-    "https://nodejs.org/api/vm.html#vm_vm_createcontext_sandbox",
+    "https://nodejs.org/api/vm.html#vm_vm_createcontext_sandbox_options",
     "src/.external-node.js~vm~createContext",
     "external"
   ],
@@ -5118,6 +5310,12 @@ window.esdocSearchIndex = [
     "file"
   ],
   [
+    "src/package.js~package#amd",
+    "class/src/package.js~Package.html#instance-get-amd",
+    "src/package.js~Package#amd",
+    "member"
+  ],
+  [
     "src/package.js~package#analyzesourcedependencies",
     "class/src/package.js~Package.html#instance-method-analyzeSourceDependencies",
     "src/package.js~Package#analyzeSourceDependencies",
@@ -5130,9 +5328,39 @@ window.esdocSearchIndex = [
     "method"
   ],
   [
+    "src/package.js~package#checkextmap",
+    "class/src/package.js~Package.html#instance-get-checkExtMap",
+    "src/package.js~Package#checkExtMap",
+    "member"
+  ],
+  [
+    "src/package.js~package#commonjs",
+    "class/src/package.js~Package.html#instance-get-commonjs",
+    "src/package.js~Package#commonjs",
+    "member"
+  ],
+  [
+    "src/package.js~package#concatdeps",
+    "class/src/package.js~Package.html#instance-method-concatDeps",
+    "src/package.js~Package#concatDeps",
+    "method"
+  ],
+  [
     "src/package.js~package#constructor",
     "class/src/package.js~Package.html#instance-constructor-constructor",
     "src/package.js~Package#constructor",
+    "method"
+  ],
+  [
+    "src/package.js~package#defaultsourcefilesglob",
+    "class/src/package.js~Package.html#instance-method-defaultSourceFilesGlob",
+    "src/package.js~Package#defaultSourceFilesGlob",
+    "method"
+  ],
+  [
+    "src/package.js~package#defaulttestfilesglob",
+    "class/src/package.js~Package.html#instance-method-defaultTestFilesGlob",
+    "src/package.js~Package#defaultTestFilesGlob",
     "method"
   ],
   [
@@ -5142,10 +5370,22 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/package.js~package#depsfor",
+    "class/src/package.js~Package.html#instance-method-depsFor",
+    "src/package.js~Package#depsFor",
+    "method"
+  ],
+  [
     "src/package.js~package#detective",
     "class/src/package.js~Package.html#instance-get-detective",
     "src/package.js~Package#detective",
     "member"
+  ],
+  [
+    "src/package.js~package#detectiveopts",
+    "class/src/package.js~Package.html#instance-method-detectiveOpts",
+    "src/package.js~Package#detectiveOpts",
+    "method"
   ],
   [
     "src/package.js~package#dev",
@@ -5160,10 +5400,34 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/package.js~package#error",
+    "class/src/package.js~Package.html#instance-method-error",
+    "src/package.js~Package#error",
+    "method"
+  ],
+  [
+    "src/package.js~package#es6",
+    "class/src/package.js~Package.html#instance-get-es6",
+    "src/package.js~Package#es6",
+    "member"
+  ],
+  [
     "src/package.js~package#exclude",
     "class/src/package.js~Package.html#instance-get-exclude",
     "src/package.js~Package#exclude",
     "member"
+  ],
+  [
+    "src/package.js~package#fileextension",
+    "class/src/package.js~Package.html#instance-method-fileExtension",
+    "src/package.js~Package#fileExtension",
+    "method"
+  ],
+  [
+    "src/package.js~package#finddependencies",
+    "class/src/package.js~Package.html#instance-method-findDependencies",
+    "src/package.js~Package#findDependencies",
+    "method"
   ],
   [
     "src/package.js~package#generatedependencypatches",
@@ -5190,6 +5454,30 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/package.js~package#log",
+    "class/src/package.js~Package.html#instance-method-log",
+    "src/package.js~Package#log",
+    "method"
+  ],
+  [
+    "src/package.js~package#logon",
+    "class/src/package.js~Package.html#instance-get-logOn",
+    "src/package.js~Package#logOn",
+    "member"
+  ],
+  [
+    "src/package.js~package#matchext",
+    "class/src/package.js~Package.html#instance-method-matchExt",
+    "src/package.js~Package#matchExt",
+    "method"
+  ],
+  [
+    "src/package.js~package#moduletypes",
+    "class/src/package.js~Package.html#instance-get-moduleTypes",
+    "src/package.js~Package#moduleTypes",
+    "member"
+  ],
+  [
     "src/package.js~package#packagejson",
     "class/src/package.js~Package.html#instance-get-packageJson",
     "src/package.js~Package#packageJson",
@@ -5208,9 +5496,45 @@ window.esdocSearchIndex = [
     "member"
   ],
   [
+    "src/package.js~package#reset",
+    "class/src/package.js~Package.html#instance-method-reset",
+    "src/package.js~Package#reset",
+    "method"
+  ],
+  [
+    "src/package.js~package#resolvebyext",
+    "class/src/package.js~Package.html#instance-method-resolveByExt",
+    "src/package.js~Package#resolveByExt",
+    "method"
+  ],
+  [
     "src/package.js~package#resolvedependency",
     "class/src/package.js~Package.html#instance-method-resolveDependency",
     "src/package.js~Package#resolveDependency",
+    "method"
+  ],
+  [
+    "src/package.js~package#resolve_default",
+    "class/src/package.js~Package.html#instance-method-resolve_default",
+    "src/package.js~Package#resolve_default",
+    "method"
+  ],
+  [
+    "src/package.js~package#resolve_es6",
+    "class/src/package.js~Package.html#instance-method-resolve_es6",
+    "src/package.js~Package#resolve_es6",
+    "method"
+  ],
+  [
+    "src/package.js~package#resolve_js",
+    "class/src/package.js~Package.html#instance-method-resolve_js",
+    "src/package.js~Package#resolve_js",
+    "method"
+  ],
+  [
+    "src/package.js~package#resolve_ts",
+    "class/src/package.js~Package.html#instance-method-resolve_ts",
+    "src/package.js~Package#resolve_ts",
     "method"
   ],
   [
@@ -5223,6 +5547,18 @@ window.esdocSearchIndex = [
     "src/package.js~package#source",
     "class/src/package.js~Package.html#instance-get-source",
     "src/package.js~Package#source",
+    "member"
+  ],
+  [
+    "src/package.js~package#tried",
+    "class/src/package.js~Package.html#instance-get-tried",
+    "src/package.js~Package#tried",
+    "member"
+  ],
+  [
+    "src/package.js~package#typescript",
+    "class/src/package.js~Package.html#instance-get-typescript",
+    "src/package.js~Package#typescript",
     "member"
   ],
   [

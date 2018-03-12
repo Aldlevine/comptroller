@@ -39,7 +39,9 @@
 <div class="content" data-ice="content"><h1 data-ice="title">src/cli.js</h1>
 <pre class="source-code line-number raw-source-code"><code class="prettyprint linenums" data-ice="content">#!/usr/bin/env node
 
-const {version} = require(&apos;../package.json&apos;);
+const {
+  version
+} = require(&apos;../package.json&apos;);
 const path = require(&apos;./path&apos;);
 const minimist = require(&apos;minimist&apos;);
 const dedent = require(&apos;dedent&apos;);
@@ -71,6 +73,17 @@ const root = argv._[1] || &apos;.&apos;;
  */
 const prune = argv.prune || argv.p;
 
+const logOn = argv.log || argv.logging || argv.logOn || argv.logon;
+const amd = argv.amd
+let commonjs = argv.commonjs || argv.cjs;
+const typescript = argv.typescript || argv.ts;
+const es6 = argv.es6 || argv.mjs;
+
+// by default set commonjs to true
+if (commonjs === undefined) {
+  commonjs = true
+}
+
 /**
  * Whether or not Comptroller should update the root package.
  * @type {boolean}
@@ -85,9 +98,8 @@ const cli = {
   /**
    * Prints the help message
    */
-  help ()
-  {
-    logger.log(dedent`
+  help() {
+    logger.log(dedent `
       Comptroller ${version}
 
       Usage:
@@ -105,21 +117,31 @@ const cli = {
       --------
       --prune -p                Remove unused dependencies from subpackges&apos; package.json
       --self -s                 If set, only the root package will be updated
-    `);
+      --log                     Turn on logging (when resolving dependencies)
+      --commonjs --cjs          CommonJS (ie. node.js require) module dependencies
+      --typescript --ts         TypeScript (ie. import/export) module dependencies
+      --es6 --mjs               ES6 (ie. import/export) module dependencies
+  `);
   },
 
   /**
    * Updates all subpackages of package found at [root-directory]
    */
-  async update ()
-  {
-    const comp = new Comptroller({root, prune});
+  async update() {
+    const comp = new Comptroller({
+      root,
+      prune,
+      logOn,
+      commonjs,
+      amd,
+      typescript,
+      es6
+    });
 
     if (self) {
       await comp.updateSelf();
       await comp.writePackageJson();
-    }
-    else {
+    } else {
       await comp.updatePackages();
       await comp.writePackages();
     }
@@ -128,26 +150,27 @@ const cli = {
   /**
    * Creates symlink in node_modules for each subpackage found at [root-directory]
    */
-  async link ()
-  {
-    const comp = new Comptroller({root, prune});
+  async link() {
+    const comp = new Comptroller({
+      root,
+      prune
+    });
     await comp.linkPackages();
   },
 
   /**
    * Prints Comptroller version
    */
-  version ()
-  {
+  version() {
     logger.log(`Comptroller ${version}`);
   },
 }
 
-;(async function main () {
+;
+(async function main() {
   try {
     await cli[command]();
-  }
-  catch (err) {
+  } catch (err) {
     if (err instanceof Error) {
       return logger.error(err.stack);
     }
