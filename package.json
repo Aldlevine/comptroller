@@ -39,7 +39,7 @@
     "@zdychacek/detective": "^5.0.2",
     "babel-traverse": "^6.26.0",
     "babylon": "^6.18.0",
-    "builtin-modules": "^2.0.0",
+    "builtin-modules": "^3.0.0",
     "dedent": "^0.7.0",
     "fs-extra": "^4.0.2",
     "glob": "^7.1.2",
