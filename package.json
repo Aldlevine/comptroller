@@ -41,7 +41,7 @@
     "babylon": "^6.18.0",
     "builtin-modules": "^2.0.0",
     "dedent": "^0.7.0",
-    "fs-extra": "^4.0.2",
+    "fs-extra": "^7.0.0",
     "glob": "^7.1.2",
     "json-beautify": "^1.0.1",
     "minimatch": "^3.0.4",
