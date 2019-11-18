@@ -58,7 +58,7 @@
     "esdoc-ecmascript-proposal-plugin": "^1.0.0",
     "esdoc-node": "^1.0.2",
     "esdoc-standard-plugin": "^1.0.0",
-    "husky": "^0.14.3",
+    "husky": "^3.1.0",
     "mocha": "^4.0.1",
     "mocha-sinon": "^2.0.0",
     "nyc": "^11.3.0",
